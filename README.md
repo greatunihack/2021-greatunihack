@@ -1,12 +1,71 @@
-# Getting Started with Create React App
+# GreatUniHack 2021
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The landing page and submission platform for GreatUniHack 2021. View at [greatunihack.com](https://greatunihack.com).
 
-## Available Scripts
+## Features
+
+- Signup to the GreatUniHack
+- Create or join a team
+- List all sponsors
+- Contact the GreatUniHack organisers
+- Edit your profile
+- View the challenges
+- Submit your project
+
+## Contributing
+
+### Setting Up
+
+1. Ensure you have NodeJS installed (you can check with `node --version` and `npm --version`)
+2. Clone the repository 
+3. Install dependencies with `npm install`
+4. Duplicate the `.env.example` file to create a `.env` file. Change the variables to use your FireBase credentials.
+5. Run the project using `npm run start`.
+
+### Coding Conventions
+
+Please observe these coding conventions when contributing to this repo:
+
+#### Naming
+
+- File names: UpperCase (e.g. Footer.js)
+- Variables: camelCase (e.g. userCounter)
+- Commits: present tense (e.g. "Update footer", "Add header", "Fix bug X")
+- Asset names: lowercase (e.g. image.png)
+- Branch names: lowercase (e.g. navbar-update)
+
+#### File & folder structure
+
+- Always create a new folder for each component/page
+- Create file names relevant to their function (e.g. Footer.js & Footer.css)
+
+#### Git
+
+- Create a new branch for every feature
+- Create branch names relevant to the issue that they’re solving
+- Don’t merge your own PRs, wait for at least one other people to review it
+- Review each other's PRs
+- Never commit to master/main directly
+- Create meaningful commit messages
+- Commit often
+- Don’t commit partially working code
+- Don't commit package.json and package-lock.json
+- Commit code that is directly related to your issue 
+- Don’t change irrelevant files, make a different issue + branch for them if you need
+- Don’t rebase master (it will mess up things for everyone else)
+- Pull changes before starting to code (every time)
+
+#### Design
+- Make everything look professional & clean (both code, and it’s result if applicable)
+
+
+### Available Scripts
+
+*Taken from [Create React App](https://github.com/facebook/create-react-app).*
 
 In the project directory, you can run:
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -14,12 +73,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You will also see any lint errors in the console.
 
-### `npm test`
+#### `npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -29,7 +88,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
@@ -39,32 +98,13 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Contributors
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The GreatUniHack platform is created and maintained by UniCS.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Full list of contributors:
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Aryan Agrawal](https://github.com/ary4n99)
+- [Nadine Abdelhalim](https://github.com/Nadineyh)
+- [Sam Hirst](https://github.com/Naeviant)
+- [Varun Shankar](https://github.com/v8runn)
