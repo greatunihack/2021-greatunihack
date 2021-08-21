@@ -23,7 +23,7 @@ export default function SponsorCard(props: SponsorCardProps) {
     return (
         <Box m={2}>
             <Card>
-                <CardActionArea>
+                <CardActionArea disableRipple>
                     <CardMedia
                         image={sponsor.image}
                         title="Contemplative Reptile"
