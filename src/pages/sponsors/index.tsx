@@ -7,7 +7,7 @@ import { useState } from 'react';
 import SponsorCategory from './SponsorCategory';
 
 export default function Sponsors() {
-  const [state, setState] = useState({
+  const [state, ] = useState({
     "gold": [
       {
         "name": "Scarfolk Tech Company Ltd.",
