@@ -9,7 +9,7 @@ import sponsors from './SponsorData.json';
 
 export default function Sponsors() {
   return (
-    <div id="Sponsors">
+    <>
       <Box m={2}>
         <Typography variant="h3">Sponsors</Typography>
       </Box>
@@ -18,6 +18,6 @@ export default function Sponsors() {
         <SponsorCategory category="Silver" colour="#B4B4B4" sponsors={sponsors.silver} />
         <SponsorCategory category="Bronze" colour="#6A3805" sponsors={sponsors.bronze} />
       </Grid>
-    </div>
+    </>
   );
 }
