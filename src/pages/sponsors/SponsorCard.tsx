@@ -1,4 +1,5 @@
 import { 
+    Box,
     Button,
     Card,
     CardActions,
@@ -10,37 +11,39 @@ import {
 
 interface SponsorCardProps {
     sponsor: {
-        name: String;
-        image: String;
-        website: String;
-        description: String;
+        name: string;
+        image: string;
+        website: string;
+        description: string;
     }
 }
 
 export default function SponsorCard(props: SponsorCardProps) {
     const { sponsor } = props;
     return (
-        <Card>
-            <CardActionArea>
-                <CardMedia
-                    image={sponsor.image}
-                    title="Contemplative Reptile"
-                    style={{height: 140}}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {sponsor.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {sponsor.description}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary" href={sponsor.website}>
-                    Visit Website
-                </Button>
-            </CardActions>
-        </Card>
+        <Box m={2}>
+            <Card>
+                <CardActionArea>
+                    <CardMedia
+                        image={sponsor.image}
+                        title="Contemplative Reptile"
+                        style={{height: 140}}
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {sponsor.name}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {sponsor.description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    <Button size="small" color="primary" href={sponsor.website}>
+                        Visit Website
+                    </Button>
+                </CardActions>
+            </Card>
+        </Box>
     );
 }
