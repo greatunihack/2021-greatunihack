@@ -3,9 +3,8 @@ import {
   Grid,
   Typography
 } from "@material-ui/core";
-import { useState } from 'react';
-import SponsorCategory from './SponsorCategory';
-import sponsors from './SponsorData.json';
+import SponsorCategory from 'src/pages/sponsors/SponsorCategory';
+import sponsors from 'src/pages/sponsors/SponsorData.json';
 
 export default function Sponsors() {
   return (

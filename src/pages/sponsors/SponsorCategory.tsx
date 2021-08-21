@@ -2,7 +2,7 @@ import {
     Grid,
     Typography
 } from '@material-ui/core';
-import SponsorCard from './SponsorCard';
+import SponsorCard from 'src/pages/sponsors/SponsorCard';
 
 interface SponsorCategoryProps {
     category: string;
