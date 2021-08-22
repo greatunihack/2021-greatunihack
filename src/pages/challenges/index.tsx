@@ -1,11 +1,9 @@
 import { 
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Box,
     Typography
 } from "@material-ui/core";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChallengeListItem from 'src/pages/challenges/ChallengeListItem';
+import challenges from 'src/pages/challenges/ChallengeData.json';
 
 export default function Challenges() {
   return (
@@ -14,20 +12,11 @@ export default function Challenges() {
           <Typography variant="h3">Challenges</Typography>
       </Box>
       <Box m={2}>
-          <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                  <Typography>Challenge 1</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                  <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-                  </Typography>
-              </AccordionDetails>
-          </Accordion>
+          {
+              challenges.map((challenge) => (
+                  <ChallengeListItem name={challenge.name} description={challenge.description} />
+              ))
+          }
       </Box>
     </>
   );
