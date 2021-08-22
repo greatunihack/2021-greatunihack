@@ -34,7 +34,7 @@ export default function SponsorCard(props: SponsorCardProps) {
                 <CardActionArea disableRipple>
                     <CardMedia
                         image={sponsor.image}
-                        title="Contemplative Reptile"
+                        title={sponsor.name}
                         className={classes.cardImage}
                     />
                     <CardContent>
