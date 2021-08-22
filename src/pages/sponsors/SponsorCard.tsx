@@ -8,6 +8,7 @@ import {
     CardMedia,
     Typography
 } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
 
 interface SponsorCardProps {
     sponsor: {
@@ -18,8 +19,15 @@ interface SponsorCardProps {
     }
 }
 
+const useStyles = makeStyles({
+    cardImage: {
+        height: 140,
+    },
+});
+
 export default function SponsorCard(props: SponsorCardProps) {
     const { sponsor } = props;
+    const classes = useStyles(props);
     return (
         <Box m={2}>
             <Card>
@@ -27,7 +35,7 @@ export default function SponsorCard(props: SponsorCardProps) {
                     <CardMedia
                         image={sponsor.image}
                         title="Contemplative Reptile"
-                        style={{height: 140}}
+                        className={classes.cardImage}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
