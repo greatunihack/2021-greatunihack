@@ -38,6 +38,9 @@ export default function Landing() {
         <Route exact path="/dashboard/challenges">
           <Challenges />
         </Route>
+        <Route path="*">
+          <Redirect push to="/404" />
+        </Route>
       </Switch>
       <Typography>Footer</Typography>
     </Router>

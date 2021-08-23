@@ -18,16 +18,19 @@ export default function App() {
           <Route exact path="/">
             <Landing />
           </Route>
+          <Route exact path="/404">
+            <Error />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/apply">
+            <Apply />
+          </Route>
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/apply">
-            <Apply />
-          </Route>
-          <Route>
+          <Route path="*">
             <Error />
           </Route>
         </Switch>
