@@ -8,6 +8,7 @@ import Landing from "src/pages/landing";
 import Dashboard from "src/components/dashboard";
 import Apply from "src/pages/apply";
 import Login from "src/pages/login";
+import Error from "src/pages/error";
 
 export default function App() {
   return (
@@ -25,6 +26,9 @@ export default function App() {
           </Route>
           <Route path="/apply">
             <Apply />
+          </Route>
+          <Route>
+            <Error />
           </Route>
         </Switch>
       </Router>
