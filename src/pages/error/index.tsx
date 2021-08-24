@@ -1,5 +1,19 @@
-import { Typography } from "@material-ui/core";
+import { 
+    Box,
+    Typography
+} from "@material-ui/core";
 
-export default function Error() {
-  return <Typography>Error</Typography>;
+interface ErrorProps {
+    code?: number;
+    message?: string;
+}
+
+export default function Error(props: ErrorProps) {
+    const { code, message } = props;
+    return (
+        <Box m={2}>
+            <Typography variant="h1">{code ?? 400}</Typography>
+            <Typography variant="h4">{message ?? "Something Went Wrong"}</Typography>
+        </Box>
+    );
 }

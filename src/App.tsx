@@ -19,7 +19,7 @@ export default function App() {
             <Landing />
           </Route>
           <Route exact path="/404">
-            <Error />
+            <Error code={404} message="Page Not Found" />
           </Route>
           <Route exact path="/login">
             <Login />
@@ -31,7 +31,7 @@ export default function App() {
             <Dashboard />
           </Route>
           <Route path="*">
-            <Error />
+            <Error code={404} message="Page Not Found" />
           </Route>
         </Switch>
       </Router>
