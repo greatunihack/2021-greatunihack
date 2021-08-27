@@ -18,13 +18,16 @@ interface SponsorCategoryProps {
 
 const useStyles = makeStyles({
   categoryName: {
-    color: (colour: string) => colour,
+    color: (props: SponsorCategoryProps) => {
+      const { colour } = props;
+      return colour;
+    },
   },
 });
 
 export default function SponsorCategory(props: SponsorCategoryProps) {
-  const { category, colour, sponsors } = props;
-  const classes = useStyles(colour);
+  const { category, sponsors } = props;
+  const classes = useStyles(props);
   return (
     <Grid item xs={12} lg={4}>
       <Typography variant="h4" align="center" className={classes.categoryName}>{category}</Typography>
