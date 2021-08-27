@@ -14,7 +14,7 @@ export default function Challenges() {
       <Box m={2}>
           {
               challenges.map((challenge) => (
-                  <ChallengeListItem name={challenge.name} description={challenge.description} />
+                  <ChallengeListItem challenge={challenge} />
               ))
           }
       </Box>
