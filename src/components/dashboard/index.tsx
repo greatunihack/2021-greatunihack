@@ -1,16 +1,16 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
-import Submissions from "src/pages/submissions";
-import Home from "src/pages/home";
-import Profile from "src/pages/profile";
-import Contact from "src/pages/contact";
-import Sponsors from "src/pages/sponsors";
-import Challenges from "src/pages/challenges";
+} from 'react-router-dom';
+import Submissions from 'src/pages/submissions';
+import Home from 'src/pages/home';
+import Profile from 'src/pages/profile';
+import Contact from 'src/pages/contact';
+import Sponsors from 'src/pages/sponsors';
+import Challenges from 'src/pages/challenges';
 
 export default function Landing() {
   return (
