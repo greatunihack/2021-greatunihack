@@ -18,17 +18,18 @@ interface SponsorCategoryProps {
 
 const useStyles = makeStyles({
   categoryName: {
-    color: (props: SponsorCategoryProps) => props.colour,
+    color: (colour: string) => colour,
   },
 });
 
 export default function SponsorCategory(props: SponsorCategoryProps) {
-  const classes = useStyles(props);
+  const { category, colour, sponsors } = props;
+  const classes = useStyles(colour);
   return (
     <Grid item xs={12} lg={4}>
-      <Typography variant="h4" align="center" className={classes.categoryName}>{props.category}</Typography>
+      <Typography variant="h4" align="center" className={classes.categoryName}>{category}</Typography>
       {
-            props.sponsors.map((sponsor) => (
+            sponsors.map((sponsor) => (
               <SponsorCard sponsor={sponsor} />
             ))
           }
