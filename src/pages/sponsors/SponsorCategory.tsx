@@ -7,6 +7,7 @@ import SponsorCard from 'src/pages/sponsors/SponsorCard';
 
 interface SponsorCategoryProps {
     category: string;
+    /* eslint-disable-next-line react/no-unused-prop-types */
     colour: string;
     sponsors: {
         name: string;
