@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 
 export default function Login() {
   return <Typography>Login</Typography>;

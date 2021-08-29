@@ -1,5 +1,5 @@
-import { Button, Grid, Box } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Button, Grid, Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 export default function landing() {
   return (
