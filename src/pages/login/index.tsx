@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import firebase from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function Copyright() {
   return (
@@ -143,17 +143,20 @@ export default function SignIn() {
     </Container>
   );
   function checkUser(email: string, password: string){
-    firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Signed in
-      var user = userCredential.user;
-      console.log(user)
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorMessage);
-      console.log(errorCode)
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        alert(errorMessage)
     });
   }
+
 }

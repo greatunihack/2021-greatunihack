@@ -12,10 +12,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
-import firebase from "firebase/app";
-
-require('firebase/auth')
-
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -27,8 +27,8 @@ const firebaseConfig = {
   appId: "1:393678004919:web:8bbb46c9751adc9e90e332"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 
 function Copyright() {
@@ -71,6 +71,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+
   const [firstNameError,setfirstNameError] = useState(false)
   const [lastNameError, setlastNameError] = useState(false)
   const [emailError, setEmailError] = useState(false)
@@ -96,6 +97,8 @@ export default function SignUp() {
     if (password === ''){
       setPasswordError(true)
     }
+
+
     if (firstName && lastName && email && password){
       createUser(firstName,lastName,email,password)
     }
@@ -169,7 +172,7 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="GDPR" color="primary" />}
+                control={<Checkbox required value="GDPR" color="primary" />}
                 label="I agree for my data to be stored when necessary."
               />
             </Grid>
@@ -199,18 +202,31 @@ export default function SignUp() {
   );
 
   function createUser(firstName:string, lastName:string, email: string,password: string) {
-    firebase.auth().createUserWithEmailAndPassword(email,password)
-    .then((userCredential) => {
-      // Signed in 
-      var user = userCredential.user;
-      console.log(user)
-      // ...
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorMessage);
-      console.log(errorCode)
-    });
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user)
+
+        try {
+          const docRef =  addDoc(collection(db, "users"), {
+            firstName: firstName,
+            lastName: lastName,
+          });
+          console.log("Document written", docRef);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        alert(errorMessage)
+        // ..
+      });
   }
 }
+
