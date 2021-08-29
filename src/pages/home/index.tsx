@@ -3,7 +3,6 @@ import PageButton from 'src/pages/home/PageButton';
 import StatusCard from 'src/pages/home/StatusCard';
 import pages from 'src/pages/home/PageButtonData.json';
 
-
 export default function Home() {
   return (
     <Box mt={2}>
@@ -13,12 +12,13 @@ export default function Home() {
         </Grid>
         <Grid container item xs={12} justifyContent="center">
           <PageButton pageDetails={pages.pageItems[0]} />
-          <PageButton pageDetails={pages.pageItems[1]} />
+          <PageButton pageDetails={pages.pageItems[2]} />
           <PageButton pageDetails={pages.pageItems[4]} />
         </Grid>
         <Grid container item xs={12} justifyContent="center">
-          <PageButton pageDetails={pages.pageItems[2]} />
+          <PageButton pageDetails={pages.pageItems[1]} />
           <PageButton pageDetails={pages.pageItems[3]} />
+          <PageButton pageDetails={pages.pageItems[5]} />
         </Grid>
       </Grid>
     </Box>

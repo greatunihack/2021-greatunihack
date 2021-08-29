@@ -6,7 +6,7 @@
       "description": "View and edit your profile, or create/join a team"
     },
     {
-      "link": "/dashboard/submissions",
+      "link": "https://devpost.com/",
       "name": "Submissions",
       "description": "Submit your project or view other teams' submissions"
     },
@@ -24,6 +24,11 @@
       "link": "/dashboard/challenges",
       "name": "Challenges",
       "description": "Complete the sponsor challenges for extra points"
+    },
+    {
+      "link": "https://discord.com/",
+      "name": "Discord",
+      "description": "Talk to your teammates and meet the sponsors"
     }
   ]
 }
