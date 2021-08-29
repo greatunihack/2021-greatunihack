@@ -1,0 +1,29 @@
+{
+  "pageItems": [
+    {
+      "link": "/dashboard/profile",
+      "name": "Profile",
+      "description": "View and edit your profile, or create/join a team"
+    },
+    {
+      "link": "/dashboard/submissions",
+      "name": "Submissions",
+      "description": "Submit your project or view other teams' submissions"
+    },
+    {
+      "link": "/dashboard/sponsors",
+      "name": "Sponsors",
+      "description": "View the amazing companies that sponsored this event"
+    },
+    {
+      "link": "/dashboard/contact",
+      "name": "Contact",
+      "description": "Contact us in case you have any issues/urgent queries"
+    },
+    {
+      "link": "/dashboard/challenges",
+      "name": "Challenges",
+      "description": "Complete the sponsor challenges for extra points"
+    }
+  ]
+}
