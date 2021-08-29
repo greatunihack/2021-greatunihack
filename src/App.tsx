@@ -8,6 +8,7 @@ import Landing from "src/pages/landing";
 import Dashboard from "src/components/dashboard";
 import Apply from "src/pages/apply";
 import Login from "src/pages/login";
+import Error from "src/pages/error";
 
 export default function App() {
   return (
@@ -17,14 +18,20 @@ export default function App() {
           <Route exact path="/">
             <Landing />
           </Route>
+          <Route exact path="/404">
+            <Error code={404} message="Page Not Found" />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/apply">
+            <Apply />
+          </Route>
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/apply">
-            <Apply />
+          <Route path="*">
+            <Error code={404} message="Page Not Found" />
           </Route>
         </Switch>
       </Router>
