@@ -1,7 +1,7 @@
 import { 
     Box,
     Typography
-} from "@material-ui/core";
+} from '@material-ui/core';
 import ChallengeListItem from 'src/pages/challenges/ChallengeListItem';
 import challenges from 'src/pages/challenges/ChallengeData.json';
 
