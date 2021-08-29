@@ -7,16 +7,16 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface SponsorCardProps {
-    sponsor: {
-        name: string;
-        image: string;
-        website: string;
-        description: string;
-    }
+  sponsor: {
+    name: string;
+    image: string;
+    website: string;
+    description: string;
+  };
 }
 
 const useStyles = makeStyles({
