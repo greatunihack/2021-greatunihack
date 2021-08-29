@@ -1,10 +1,5 @@
 import { Typography } from "@material-ui/core";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Submissions from "src/pages/submissions";
 import Home from "src/pages/home";
 import Profile from "src/pages/profile";
@@ -14,7 +9,7 @@ import Challenges from "src/pages/challenges";
 
 export default function Landing() {
   return (
-    <Router>
+    <>
       <Typography>Header</Typography>
       <Switch>
         <Route exact path="/dashboard">
@@ -39,10 +34,10 @@ export default function Landing() {
           <Challenges />
         </Route>
         <Route path="*">
-          <Redirect push to="/404" />
+          <Redirect to="/404" />
         </Route>
       </Switch>
       <Typography>Footer</Typography>
-    </Router>
+    </>
   );
 }
