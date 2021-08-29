@@ -30,7 +30,6 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-;
 
 function Copyright() {
   return (
