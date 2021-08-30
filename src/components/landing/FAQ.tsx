@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#e8e8e6",
+    paddingBottom: "30px",
   },
 
   cardGrid: {
