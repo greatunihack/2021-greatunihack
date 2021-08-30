@@ -56,6 +56,7 @@ export default function SignIn() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
+  // eslint-disable-next-line
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setEmailError(false);

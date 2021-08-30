@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
@@ -15,6 +16,9 @@ import Grid from "@material-ui/core/Grid";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -60,6 +64,16 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
 export default function SignUp() {
@@ -68,18 +82,27 @@ export default function SignUp() {
   const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [gender, setGender] = useState("");
+  const [ethnicity, setEthnicity] = useState("");
 
   const [firstNameError, setfirstNameError] = useState(false);
   const [lastNameError, setlastNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [discordError, setDiscordError] = useState(false);
 
+  const [GDPRaccept, setGDPR] = useState(false);
+  const [GDPRError, setGDPRError] = useState(false);
+
+  // eslint-disable-next-line
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setfirstNameError(false);
     setlastNameError(false);
     setEmailError(false);
     setPasswordError(false);
+    setGDPRError(false);
 
     if (firstName === "") {
       setfirstNameError(true);
@@ -94,9 +117,25 @@ export default function SignUp() {
     if (password === "") {
       setPasswordError(true);
     }
+    if (discord === "") {
+      setDiscordError(true);
+    }
 
-    if (firstName && lastName && email && password) {
-      createUser(firstName, lastName, email, password);
+    if (GDPRaccept === false) {
+      setGDPRError(true);
+      alert("The check box must be checked");
+    }
+
+    if (firstName && lastName && email && password && discord && GDPRaccept) {
+      createUser(
+        firstName,
+        lastName,
+        email,
+        password,
+        discord,
+        ethnicity,
+        gender
+      );
     }
   };
   return (
@@ -166,10 +205,66 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox required value="GDPR" color="primary" />}
-                label="I agree for my data to be stored when necessary."
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="Discord"
+                label="Discord"
+                type="Discord"
+                id="Discord"
+                autoComplete="Discord-username"
+                onChange={(e) => setDiscord(e.target.value)}
+                error={discordError}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                name="ethnicity"
+                label="Ethnicity"
+                type="ethnicity"
+                id="ethnicity"
+                autoComplete="ethnicity"
+                onChange={(e) => setEthnicity(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel
+                id="demo-simple-select-label"
+                className={classes.formControl}
+              >
+                Gender
+              </InputLabel>
+              <Select
+                variant="outlined"
+                fullWidth
+                name="gender"
+                label="gender"
+                type="gender"
+                id="gender"
+                autoComplete="Gender"
+                onChange={(e) => setGender(e.target.value as string)}
+              >
+                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl required error={GDPRError}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="GDPR"
+                      color="primary"
+                      onChange={(e) => setGDPR(e.target.checked)}
+                    />
+                  }
+                  label="I agree for my data to be stored when necessary."
+                />
+              </FormControl>
             </Grid>
           </Grid>
           <Button
@@ -200,32 +295,35 @@ export default function SignUp() {
     firstName: string,
     lastName: string,
     email: string,
-    password: string
+    password: string,
+    discord: string,
+    ethnicity: string,
+    gender: string
   ) {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
+        // eslint-disable-next-line
         const user = userCredential.user;
-        console.log(user);
 
         try {
           const docRef = addDoc(collection(db, "users"), {
             firstName: firstName,
             lastName: lastName,
+            email: email,
+            discord: discord,
+            ethnicity: ethnicity,
+            gender: gender,
           });
           console.log("Document written", docRef);
         } catch (e) {
           console.error("Error adding document: ", e);
         }
-        // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
         alert(errorMessage);
-        // ..
       });
   }
 }
