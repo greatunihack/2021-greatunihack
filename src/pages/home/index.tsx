@@ -14,6 +14,7 @@ export default function Home() {
           <PageButton pageDetails={pages.pageItems[0]} />
           <PageButton pageDetails={pages.pageItems[2]} />
           <PageButton pageDetails={pages.pageItems[4]} />
+          <PageButton pageDetails={pages.pageItems[6]} />
         </Grid>
         <Grid container xs={12} justifyContent="center">
           <PageButton pageDetails={pages.pageItems[1]} />

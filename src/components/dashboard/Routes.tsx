@@ -9,6 +9,7 @@ import Profile from "src/pages/profile";
 import Contact from "src/pages/contact";
 import Sponsors from "src/pages/sponsors";
 import Challenges from "src/pages/challenges";
+import Twitch from "src/pages/twitch";
 
 export default function Routes() {
   return (
@@ -28,6 +29,9 @@ export default function Routes() {
         </Route>
         <Route exact path="/dashboard/challenges">
           <Challenges />
+        </Route>
+        <Route exact path="/dashboard/twitch">
+          <Twitch />
         </Route>
         <Route path="/dashboard">
           <Redirect push to="/dashboard/home" />
