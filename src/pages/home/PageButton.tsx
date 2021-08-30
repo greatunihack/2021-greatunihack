@@ -14,6 +14,13 @@ const useStyles = makeStyles(() => ({
     height: "100%",
     width: "20em",
   },
+  cardAction: {
+    height: "100%",
+    width: "100%",
+    flexGrow: 1,
+    flexDirection: "column",
+    alignItems: "stretch",
+  },
 }));
 
 interface HomeButtonProps {
@@ -39,7 +46,7 @@ export default function HomeButton(props: HomeButtonProps) {
   return (
     <Box m={4}>
       <Card className={classes.root}>
-        <CardActionArea onClick={handleOnClick}>
+        <CardActionArea className={classes.cardAction} onClick={handleOnClick}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {pageDetails.name}
