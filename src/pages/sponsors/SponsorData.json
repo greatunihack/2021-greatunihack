@@ -1,32 +1,32 @@
 {
-    "gold": [
-        {
-            "name": "Scarfolk Tech Company Ltd.",
-            "website": "https://unicsmcr.com/",
-            "image": "https://picsum.photos/700/400",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
-        },
-        {
-            "name": "Harchester Printing Solutions",
-            "website": "https://unicsmcr.com/",
-            "image": "https://picsum.photos/700/400",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
-        }
-    ],
-    "silver": [
-        {
-            "name": "Walford Development Services",
-            "website": "https://unicsmcr.com/",
-            "image": "https://picsum.photos/700/400",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
-        }
-    ],
-    "bronze": [
-        {
-            "name": "Akenfield Networking",
-            "website": "https://unicsmcr.com/",
-            "image": "https://picsum.photos/700/400",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
-        }
-    ]
+  "gold": [
+    {
+      "name": "Scarfolk Tech Company Ltd.",
+      "website": "https://unicsmcr.com/",
+      "image": "https://picsum.photos/700/400",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+    },
+    {
+      "name": "Harchester Printing Solutions",
+      "website": "https://unicsmcr.com/",
+      "image": "https://picsum.photos/700/400",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+    }
+  ],
+  "silver": [
+    {
+      "name": "Walford Development Services",
+      "website": "https://unicsmcr.com/",
+      "image": "https://picsum.photos/700/400",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+    }
+  ],
+  "bronze": [
+    {
+      "name": "Akenfield Networking",
+      "website": "https://unicsmcr.com/",
+      "image": "https://picsum.photos/700/400",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+    }
+  ]
 }
