@@ -7,9 +7,15 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: "90vh",
+    height: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "60em",
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "20em",
+    },
   },
   title: {
     fontWeight: 600,
@@ -37,7 +43,7 @@ export default function HomeButton() {
             <Box width="100%" mr={2}>
               <LinearProgress variant="determinate" value={20} />
             </Box>
-            <Box minWidth={35}>
+            <Box>
               <Typography variant="body2" color="textSecondary">{`${Math.round(
                 20
               )}%`}</Typography>
