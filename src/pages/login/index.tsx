@@ -1,4 +1,4 @@
-import React , { useState} from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -50,29 +50,28 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    setEmailError(false)
-    setPasswordError(false)
+    e.preventDefault();
+    setEmailError(false);
+    setPasswordError(false);
 
-    if (email === ''){
-      setEmailError(true)
+    if (email === "") {
+      setEmailError(true);
     }
 
-    if (password === ''){
-      setPasswordError(true)
+    if (password === "") {
+      setPasswordError(true);
     }
-    if (email && password){
-      checkUser(email,password)
+    if (email && password) {
+      checkUser(email, password);
     }
-  }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -94,7 +93,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange= {(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             error={emailError}
           />
           <TextField
@@ -107,7 +106,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange= {(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             error={passwordError}
           />
           <FormControlLabel
@@ -142,21 +141,20 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-  function checkUser(email: string, password: string){
+  function checkUser(email: string, password: string) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in 
+        // Signed in
         const user = userCredential.user;
-        console.log(user)
+        console.log(user);
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode)
-        alert(errorMessage)
-    });
+        console.log(errorCode);
+        alert(errorMessage);
+      });
   }
-
 }

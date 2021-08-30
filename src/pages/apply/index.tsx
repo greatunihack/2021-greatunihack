@@ -9,13 +9,12 @@ import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,22 +23,21 @@ const firebaseConfig = {
   projectId: "greatunihack21",
   storageBucket: "greatunihack21.appspot.com",
   messagingSenderId: "393678004919",
-  appId: "1:393678004919:web:8bbb46c9751adc9e90e332"
+  appId: "1:393678004919:web:8bbb46c9751adc9e90e332",
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         GreatUniHacks2021
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -47,16 +45,16 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -66,43 +64,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [firstName,setfirstName] = useState('')
-  const [lastName, setlastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-
-  const [firstNameError,setfirstNameError] = useState(false)
-  const [lastNameError, setlastNameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  const [firstNameError, setfirstNameError] = useState(false);
+  const [lastNameError, setlastNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    setfirstNameError(false)
-    setlastNameError(false)
-    setEmailError(false)
-    setPasswordError(false)
+    e.preventDefault();
+    setfirstNameError(false);
+    setlastNameError(false);
+    setEmailError(false);
+    setPasswordError(false);
 
-    if (firstName === ''){
-      setfirstNameError(true)
+    if (firstName === "") {
+      setfirstNameError(true);
     }
-    if (lastName === ''){
-      setlastNameError(true)
+    if (lastName === "") {
+      setlastNameError(true);
     }
-    if (email === ''){
-      setEmailError(true)
-    }
-
-    if (password === ''){
-      setPasswordError(true)
+    if (email === "") {
+      setEmailError(true);
     }
 
-
-    if (firstName && lastName && email && password){
-      createUser(firstName,lastName,email,password)
+    if (password === "") {
+      setPasswordError(true);
     }
-  }
+
+    if (firstName && lastName && email && password) {
+      createUser(firstName, lastName, email, password);
+    }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -125,9 +121,8 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                onChange= {(e) => setfirstName(e.target.value)}
+                onChange={(e) => setfirstName(e.target.value)}
                 error={firstNameError}
-
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -139,7 +134,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                onChange= {(e) => setlastName(e.target.value)}
+                onChange={(e) => setlastName(e.target.value)}
                 error={lastNameError}
               />
             </Grid>
@@ -152,7 +147,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange= {(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 error={emailError}
               />
             </Grid>
@@ -166,7 +161,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange= {(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 error={passwordError}
               />
             </Grid>
@@ -201,16 +196,21 @@ export default function SignUp() {
     </Container>
   );
 
-  function createUser(firstName:string, lastName:string, email: string,password: string) {
+  function createUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in 
+        // Signed in
         const user = userCredential.user;
-        console.log(user)
+        console.log(user);
 
         try {
-          const docRef =  addDoc(collection(db, "users"), {
+          const docRef = addDoc(collection(db, "users"), {
             firstName: firstName,
             lastName: lastName,
           });
@@ -223,10 +223,9 @@ export default function SignUp() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode)
-        alert(errorMessage)
+        console.log(errorCode);
+        alert(errorMessage);
         // ..
       });
   }
 }
-
