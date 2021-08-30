@@ -5,11 +5,7 @@
 !["Version"](https://img.shields.io/github/package-json/v/greatunihack/2021-greatunihack)
 !["Bulid"](https://img.shields.io/github/workflow/status/greatunihack/2021-greatunihack/Build/master)
 
-
-[]()
-
 The online platform for GreatUniHack 2021, allowing participants to sign up to the hackathon, create or join a team, view sponsors & challenges, and submit their projects.
-
 
 ## Getting Started
 
@@ -35,11 +31,13 @@ cd 2021-greatunihack
 Duplicate the `.env.example` file to create a `.env` file.
 
 Windows
+
 ```cmd
 copy .env.example .env
 ```
 
 MacOS/Linux
+
 ```bash
 cp .env.example .env
 ```
