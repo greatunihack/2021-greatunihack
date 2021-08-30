@@ -4,7 +4,6 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Submissions from "src/pages/submissions";
 import Home from "src/pages/home";
 import Profile from "src/pages/profile";
 import Contact from "src/pages/contact";
@@ -12,7 +11,6 @@ import Sponsors from "src/pages/sponsors";
 import Challenges from "src/pages/challenges";
 
 export default function Routes() {
-
   return (
     <Router>
       <Switch>
@@ -25,9 +23,23 @@ export default function Routes() {
         <Route exact path="/dashboard/profile">
           <Profile />
         </Route>
-        <Route exact path="/dashboard/submissions">
-          <Submissions />
-        </Route>
+        <Route
+          exact
+          path="/dashboard/submissions"
+          component={() => {
+            window.location.href = "https://devpost.com";
+            return null;
+          }}
+        />
+        <Route
+          exact
+          path="/dashboard/discord"
+          component={() => {
+            window.location.href = "https://discord.com";
+            return null;
+          }}
+        />
+
         <Route exact path="/dashboard/sponsors">
           <Sponsors />
         </Route>

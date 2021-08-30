@@ -1,7 +1,7 @@
-import { Box, Grid } from '@material-ui/core';
-import PageButton from 'src/pages/home/PageButton';
-import StatusCard from 'src/pages/home/StatusCard';
-import pages from 'src/pages/home/PageButtonData.json';
+import { Box, Grid } from "@material-ui/core";
+import PageButton from "src/pages/home/PageButton";
+import StatusCard from "src/pages/home/StatusCard";
+import pages from "src/pages/home/PageButtonData.json";
 
 export default function Home() {
   return (

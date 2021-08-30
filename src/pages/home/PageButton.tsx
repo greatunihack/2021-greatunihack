@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "40vh",
   },

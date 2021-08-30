@@ -1,9 +1,4 @@
-import {
-  AppBar,
-  Link,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { AppBar, Link, Typography, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   footer: {

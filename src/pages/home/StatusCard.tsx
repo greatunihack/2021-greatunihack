@@ -7,7 +7,7 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "90vh",
   },
