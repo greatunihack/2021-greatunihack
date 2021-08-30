@@ -1,0 +1,41 @@
+{
+  "pageItems": [
+    {
+      "link": "/dashboard/profile",
+      "name": "Profile",
+      "description": "View and edit your profile, or create/join a team"
+    },
+    {
+      "link": "https://devpost.com",
+      "name": "Submissions",
+      "description": "Submit your project or view other teams' submissions",
+      "external": true
+    },
+    {
+      "link": "/dashboard/sponsors",
+      "name": "Sponsors",
+      "description": "View the amazing companies that sponsored this event"
+    },
+    {
+      "link": "/dashboard/contact",
+      "name": "Contact",
+      "description": "Contact us in case you have any issues/urgent queries"
+    },
+    {
+      "link": "/dashboard/challenges",
+      "name": "Challenges",
+      "description": "Complete the sponsor challenges for extra points"
+    },
+    {
+      "link": "https://discord.com",
+      "name": "Discord",
+      "description": "Talk to your teammates and meet the sponsors",
+      "external": true
+    },
+    {
+      "link": "/dashboard/twitch",
+      "name": "Twitch",
+      "description": "View the twitch stream"
+    }
+  ]
+}

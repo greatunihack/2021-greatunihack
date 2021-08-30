@@ -28,7 +28,7 @@ Please observe the following coding conventions when contributing to this repo.
 - Commit often
 - Don’t commit partially working code
 - Don't commit package.json and package-lock.json
-- Commit code that is directly related to your issue 
+- Commit code that is directly related to your issue
 - Don’t change irrelevant files, make a different issue + branch for them if you need
 - Don’t rebase master (it will mess up things for everyone else)
 - Pull changes before starting to code (every time)
