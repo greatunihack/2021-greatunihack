@@ -1,20 +1,17 @@
-import {
-  Grid,
-  Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SponsorCard from 'src/pages/sponsors/SponsorCard';
+import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import SponsorCard from "src/pages/sponsors/SponsorCard";
 
 interface SponsorCategoryProps {
-    category: string;
-    /* eslint-disable-next-line react/no-unused-prop-types */
-    colour: string;
-    sponsors: {
-        name: string;
-        image: string;
-        website: string;
-        description: string;
-    }[];
+  category: string;
+  /* eslint-disable-next-line react/no-unused-prop-types */
+  colour: string;
+  sponsors: {
+    name: string;
+    image: string;
+    website: string;
+    description: string;
+  }[];
 }
 
 const useStyles = makeStyles({
@@ -31,12 +28,12 @@ export default function SponsorCategory(props: SponsorCategoryProps) {
   const classes = useStyles(props);
   return (
     <Grid item xs={12} lg={4}>
-      <Typography variant="h4" align="center" className={classes.categoryName}>{category}</Typography>
-      {
-            sponsors.map((sponsor) => (
-              <SponsorCard sponsor={sponsor} />
-            ))
-          }
+      <Typography variant="h4" align="center" className={classes.categoryName}>
+        {category}
+      </Typography>
+      {sponsors.map((sponsor, index) => (
+        <SponsorCard key={index} sponsor={sponsor} />
+      ))}
     </Grid>
   );
 }

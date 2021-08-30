@@ -1,5 +1,5 @@
-import { Button, Grid, Box } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Button, Grid, Box } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -11,7 +11,11 @@ export default function Home() {
           </Button>
         </Box>
         <Box m={4}>
-          <Button variant="contained" component={Link} to="/dashboard/submissions">
+          <Button
+            variant="contained"
+            component={Link}
+            to="/dashboard/submissions"
+          >
             Submissions
           </Button>
         </Box>
@@ -26,7 +30,11 @@ export default function Home() {
           </Button>
         </Box>
         <Box m={4}>
-          <Button variant="contained" component={Link} to="/dashboard/challenges">
+          <Button
+            variant="contained"
+            component={Link}
+            to="/dashboard/challenges"
+          >
             Challenges
           </Button>
         </Box>
