@@ -26,6 +26,14 @@ export default function App() {
           <Route exact path="/apply">
             <Apply />
           </Route>
+          <Route
+            exact
+            path="/discord"
+            component={() => {
+              window.location.href = "https://discord.com";
+              return null;
+            }}
+          />
           <Route path="/dashboard">
             <Dashboard />
           </Route>

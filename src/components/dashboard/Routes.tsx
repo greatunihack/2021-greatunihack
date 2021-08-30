@@ -14,32 +14,12 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/dashboard">
-          <Redirect push to="/dashboard/home" />
-        </Route>
         <Route exact path="/dashboard/home">
           <Home />
         </Route>
         <Route exact path="/dashboard/profile">
           <Profile />
         </Route>
-        <Route
-          exact
-          path="/dashboard/submissions"
-          component={() => {
-            window.location.href = "https://devpost.com";
-            return null;
-          }}
-        />
-        <Route
-          exact
-          path="/dashboard/discord"
-          component={() => {
-            window.location.href = "https://discord.com";
-            return null;
-          }}
-        />
-
         <Route exact path="/dashboard/sponsors">
           <Sponsors />
         </Route>
@@ -48,6 +28,9 @@ export default function Routes() {
         </Route>
         <Route exact path="/dashboard/challenges">
           <Challenges />
+        </Route>
+        <Route path="/dashboard">
+          <Redirect push to="/dashboard/home" />
         </Route>
       </Switch>
     </Router>
