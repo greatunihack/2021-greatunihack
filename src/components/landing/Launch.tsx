@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
     padding: "30px",
   },
 }));
