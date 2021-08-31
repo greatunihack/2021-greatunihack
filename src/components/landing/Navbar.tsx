@@ -28,7 +28,9 @@ export default function Navbar() {
 
           <Grid item>
             <div>
-              <Button color="inherit">Home</Button>
+              <Button color="inherit" component={Link} to="/">
+                Home
+              </Button>
               <Button color="inherit" component={Link} to="/login">
                 Login
               </Button>
