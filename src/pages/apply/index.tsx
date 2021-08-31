@@ -37,8 +37,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        GreatUniHacks2021
+      <Link color="inherit" href="https://unicsmcr.com/">
+        process.env.REACT_APP_HACKATHON_NAME
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -64,12 +64,6 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  root: {
-    width: "100%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -78,13 +72,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [discord, setDiscord] = useState("");
-  const [gender, setGender] = useState("");
-  const [ethnicity, setEthnicity] = useState("");
+  const [state, setState] = React.useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    discord: "",
+    gender: "",
+    ethnicity: "",
+    GDPRaccept: false,
+  });
+
+  // eslint-disable-next-line
+  function handleChange(evt: any) {
+    const value =
+      evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
+    setState({
+      ...state,
+      [evt.target.name]: value,
+    });
+  }
 
   const [firstNameError, setfirstNameError] = useState(false);
   const [lastNameError, setlastNameError] = useState(false);
@@ -92,7 +99,6 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState(false);
   const [discordError, setDiscordError] = useState(false);
 
-  const [GDPRaccept, setGDPR] = useState(false);
   const [GDPRError, setGDPRError] = useState(false);
 
   // eslint-disable-next-line
@@ -104,37 +110,44 @@ export default function SignUp() {
     setPasswordError(false);
     setGDPRError(false);
 
-    if (firstName === "") {
+    if (state.firstName === "") {
       setfirstNameError(true);
     }
-    if (lastName === "") {
+    if (state.lastName === "") {
       setlastNameError(true);
     }
-    if (email === "") {
+    if (state.email === "") {
       setEmailError(true);
     }
 
-    if (password === "") {
+    if (state.password === "") {
       setPasswordError(true);
     }
-    if (discord === "") {
+    if (state.discord === "") {
       setDiscordError(true);
     }
 
-    if (GDPRaccept === false) {
+    if (state.GDPRaccept === false) {
       setGDPRError(true);
       alert("The check box must be checked");
     }
 
-    if (firstName && lastName && email && password && discord && GDPRaccept) {
+    if (
+      state.firstName &&
+      state.lastName &&
+      state.email &&
+      state.password &&
+      state.discord &&
+      state.GDPRaccept
+    ) {
       createUser(
-        firstName,
-        lastName,
-        email,
-        password,
-        discord,
-        ethnicity,
-        gender
+        state.firstName,
+        state.lastName,
+        state.email,
+        state.password,
+        state.discord,
+        state.ethnicity,
+        state.gender
       );
     }
   };
@@ -159,8 +172,9 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                value={state.firstName}
                 autoFocus
-                onChange={(e) => setfirstName(e.target.value)}
+                onChange={handleChange}
                 error={firstNameError}
               />
             </Grid>
@@ -173,7 +187,8 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                onChange={(e) => setlastName(e.target.value)}
+                value={state.lastName}
+                onChange={handleChange}
                 error={lastNameError}
               />
             </Grid>
@@ -186,7 +201,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
+                value={state.email}
+                onChange={handleChange}
                 error={emailError}
               />
             </Grid>
@@ -200,7 +216,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
+                value={state.password}
+                onChange={handleChange}
                 error={passwordError}
               />
             </Grid>
@@ -209,12 +226,13 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="Discord"
+                name="discord"
                 label="Discord"
                 type="Discord"
                 id="Discord"
                 autoComplete="Discord-username"
-                onChange={(e) => setDiscord(e.target.value)}
+                value={state.discord}
+                onChange={handleChange}
                 error={discordError}
               />
             </Grid>
@@ -227,7 +245,8 @@ export default function SignUp() {
                 type="ethnicity"
                 id="ethnicity"
                 autoComplete="ethnicity"
-                onChange={(e) => setEthnicity(e.target.value)}
+                value={state.ethnicity}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -245,7 +264,8 @@ export default function SignUp() {
                 type="gender"
                 id="gender"
                 autoComplete="Gender"
-                onChange={(e) => setGender(e.target.value as string)}
+                value={state.gender}
+                onChange={handleChange}
               >
                 <MenuItem value={"Female"}>Female</MenuItem>
                 <MenuItem value={"Male"}>Male</MenuItem>
@@ -257,9 +277,10 @@ export default function SignUp() {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      value="GDPR"
                       color="primary"
-                      onChange={(e) => setGDPR(e.target.checked)}
+                      name="GDPRaccept"
+                      checked={state.GDPRaccept}
+                      onChange={handleChange}
                     />
                   }
                   label="I agree for my data to be stored when necessary."
