@@ -1,12 +1,4 @@
-import {
-  Button,
-  Grid,
-  Toolbar,
-  Container,
-  Box,
-  AppBar,
-  Typography,
-} from "@material-ui/core";
+import { Button, Toolbar, AppBar, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 
@@ -37,6 +29,9 @@ export default function Navbar() {
             </Button>
             <Button color="inherit" component={Link} to="/dashboard/home">
               Dashboard
+            </Button>
+            <Button color="inherit" component={Link} to="/dashboard/sponsors">
+              Sponsors
             </Button>
           </Toolbar>
         </AppBar>
