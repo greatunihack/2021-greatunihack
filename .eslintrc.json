@@ -9,7 +9,6 @@
     "plugin:react/recommended",
     "plugin:import/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -20,8 +19,9 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": [],
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "warn",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "import/no-unresolved": 0

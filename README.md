@@ -1,9 +1,10 @@
 # GreatUniHack 2021
 
 !["License"](https://img.shields.io/github/license/greatunihack/2021-greatunihack)
-!["Repository size"](https://img.shields.io/github/repo-size/greatunihack/2021-greatunihack)
+!["Repository Size"](https://img.shields.io/github/repo-size/greatunihack/2021-greatunihack)
+!["Vulnerabilities"](https://img.shields.io/snyk/vulnerabilities/github/greatunihack/2021-greatunihack)
 !["Version"](https://img.shields.io/github/package-json/v/greatunihack/2021-greatunihack)
-!["Bulid"](https://img.shields.io/github/workflow/status/greatunihack/2021-greatunihack/Build/master)
+!["Build"](https://img.shields.io/github/workflow/status/greatunihack/2021-greatunihack/Build/master)
 
 The online platform for GreatUniHack 2021, allowing participants to sign up to the hackathon, create or join a team, view sponsors & challenges, and submit their projects.
 
