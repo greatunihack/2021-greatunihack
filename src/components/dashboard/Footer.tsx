@@ -32,13 +32,13 @@ export default function Footer() {
           <div>
             <InstagramIcon
               className={classes.icons}
-              onClick={(event) =>
+              onClick={() =>
                 (window.location.href = "https://www.instagram.com/unicsmcr/")
               }
             />
             <FacebookIcon
               className={classes.icons}
-              onClick={(event) =>
+              onClick={() =>
                 (window.location.href = "https://www.facebook.com/")
               }
             />
