@@ -1,7 +1,5 @@
-import { Typography, Grid, Container } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-
-const useStyle = makeStyles((theme) => ({
+import { Typography, Grid, Container, makeStyles } from "@material-ui/core";
+const useStyle = makeStyles(() => ({
   root: {
     padding: "10px",
   },
