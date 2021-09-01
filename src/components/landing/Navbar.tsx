@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   title: {
     flewGrow: 1,
+    marginLeft: "10px",
   },
 
   toolbar: theme.mixins.toolbar,
@@ -34,8 +35,12 @@ export default function Navbar() {
               <Button color="inherit" component={Link} to="/login">
                 Login
               </Button>
-              <Button color="inherit">About</Button>
-              <Button color="inherit">FAQ</Button>
+              <Button color="inherit" href="#about">
+                About
+              </Button>
+              <Button color="inherit" href="#faq">
+                FAQ
+              </Button>
               <Button color="inherit" component={Link} to="/dashboard/sponsors">
                 Sponsors
               </Button>

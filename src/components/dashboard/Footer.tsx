@@ -19,7 +19,7 @@ export default function Footer() {
     <AppBar position="static" className={classes.footer}>
       <Grid justifyContent="space-between" container spacing={10}>
         <Grid item>
-          <Typography variant="body2">
+          <Typography variant="body2" style={{ marginLeft: "10px" }}>
             {"Copyright © "}
             <Link color="inherit" href="https://unicsmcr.com/">
               UniCS

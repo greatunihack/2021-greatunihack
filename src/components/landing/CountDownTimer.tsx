@@ -7,7 +7,7 @@ export default function CountDownTimer() {
   const [mins, setMins] = useState(0);
   const [secs, setSecs] = useState(0);
 
-  const countDownDate = new Date("Nov 25, 2021 00:00:00").getTime();
+  const countDownDate = new Date("Oct 15, 2021 00:00:00").getTime();
 
   const myFunc = setInterval(function () {
     const now = new Date().getTime();
@@ -28,7 +28,7 @@ export default function CountDownTimer() {
     }
   }, 1000);
 
-  const countDown = `${days}:${hours}:${mins}:${secs}`;
+  const countDown = `${days} days ${hours} hours ${mins} mins ${secs} secs`;
 
-  return <Typography variant="h4">{countDown}</Typography>;
+  return <Typography variant="h5">{countDown}</Typography>;
 }

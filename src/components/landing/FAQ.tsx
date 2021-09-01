@@ -31,7 +31,7 @@ export default function FAQ() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="faq">
       <Typography variant="h4" align="center" style={{ padding: "20px" }}>
         FAQ
       </Typography>

@@ -36,7 +36,7 @@ export default function Sponsors() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="sponsors">
       <Typography variant="h4" align="center" style={{ padding: "20px" }}>
         Sponsors
       </Typography>
