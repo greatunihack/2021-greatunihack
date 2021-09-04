@@ -1,11 +1,8 @@
 import { Typography, Box, Container, makeStyles } from "@material-ui/core";
 const useStyle = makeStyles(() => ({
-  box: {
-    padding: "10px",
-  },
   title: {
     fontSize: "20px",
-    padding: "20px",
+    padding: "40px",
   },
 }));
 
@@ -17,12 +14,7 @@ export default function About() {
         <Typography variant="h4" align="center">
           About Us
         </Typography>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          className={classes.box}
-        >
+        <Box display="flex" flexDirection="row" alignItems="center">
           <Typography className={classes.title}>
             We are GreatUniHack, an annual 24-hour student-oriented hackathon
             organised by the University of Manchester tech society, UniCS. Since

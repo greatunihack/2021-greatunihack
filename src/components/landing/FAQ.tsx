@@ -9,8 +9,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import FAQData from "./FAQData";
 const useStyles = makeStyles((theme) => ({
   root: {
+    margin: "0",
     backgroundColor: "#e8e8e6",
     paddingBottom: "30px",
+    display: "block",
+  },
+
+  title: {
+    padding: "10px",
   },
 
   cardGrid: {
@@ -19,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
   card: {
     height: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
   },
@@ -32,7 +39,7 @@ export default function FAQ() {
 
   return (
     <div className={classes.root} id="faq">
-      <Typography variant="h4" align="center" style={{ padding: "20px" }}>
+      <Typography variant="h4" align="center" className={classes.title}>
         FAQ
       </Typography>
       <Container className={classes.cardGrid} maxWidth="md">
