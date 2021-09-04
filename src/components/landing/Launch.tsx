@@ -1,4 +1,4 @@
-import { Container, Button, Grid, Typography } from "@material-ui/core";
+import { Container, Button, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import CountDownTimer from "./CountDownTimer";
@@ -9,39 +9,50 @@ const useStyles = makeStyles(() => ({
     padding: "10px",
   },
   media: {
-    width: "70%",
+    width: "30%",
     marginLeft: "10px",
     marginTop: "10px",
   },
+  title: {
+    marginBottom: "20px",
+  },
+  box: {
+    padding: "10px",
+  },
   info: {
-    padding: "30px",
-    marginTop: "20px",
+    padding: "40px",
+    marginLeft: "40px",
   },
 }));
 
 export default function Launch() {
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
-      <Grid container>
-        <Grid item>
+    <div className={classes.root}>
+      <Container>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          className={classes.box}
+        >
           <img src={Logo} className={classes.media}></img>
-        </Grid>
-        <Grid item className={classes.info} alignItems="center">
-          <Typography variant="h4" style={{ paddingBottom: "20px" }}>
-            15th - 16th October at Manchester
-          </Typography>
-          <CountDownTimer />
-          <Button
-            variant="contained"
-            component={Link}
-            to="/apply"
-            style={{ marginTop: "30px" }}
-          >
-            Register Now!
-          </Button>
-        </Grid>
-      </Grid>
-    </Container>
+          <div className={classes.info}>
+            <Typography variant="h4" className={classes.title}>
+              15th - 16th October at Manchester
+            </Typography>
+            <CountDownTimer />
+            <Button
+              variant="contained"
+              component={Link}
+              to="/apply"
+              style={{ marginTop: "30px" }}
+            >
+              Register Now!
+            </Button>
+          </div>
+        </Box>
+      </Container>
+    </div>
   );
 }
