@@ -1,0 +1,20 @@
+{
+  "users": {
+    "userId1": {
+      "email": "",
+      "firstName": "",
+      "lastName": "",
+      "gender": "",
+      "ethnicity": "",
+      "teamId": ""
+    }
+  },
+  "teams": {
+    "teamId": {
+      "teamMemberDiscordId": {
+        "firstName": "",
+        "lastName": ""
+      }
+    }
+  }
+}
