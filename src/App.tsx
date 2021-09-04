@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/styles";

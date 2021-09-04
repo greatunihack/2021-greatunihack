@@ -5,9 +5,6 @@ import CountDownTimer from "./CountDownTimer";
 import Logo from "./logo512.png";
 
 const useStyles = makeStyles(() => ({
-  root: {
-    padding: "10px",
-  },
   media: {
     width: "30%",
     marginLeft: "10px",
@@ -28,7 +25,7 @@ const useStyles = makeStyles(() => ({
 export default function Launch() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div>
       <Container>
         <Box
           display="flex"
