@@ -38,7 +38,7 @@ export default function Routes() {
           <Team />
         </Route>
         <Route path="/dashboard">
-          <Redirect push to="/dashboard/home" />
+          <Redirect to="/dashboard/home" />
         </Route>
       </Switch>
     </Router>
