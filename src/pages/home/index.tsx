@@ -12,14 +12,15 @@ export default function Home() {
         </Grid>
         <Grid container xs={12} justifyContent="center">
           <PageButton pageDetails={pages.pageItems[0]} />
-          <PageButton pageDetails={pages.pageItems[2]} />
+          <PageButton pageDetails={pages.pageItems[1]} />
           <PageButton pageDetails={pages.pageItems[4]} />
-          <PageButton pageDetails={pages.pageItems[6]} />
+          <PageButton pageDetails={pages.pageItems[7]} />
         </Grid>
         <Grid container xs={12} justifyContent="center">
-          <PageButton pageDetails={pages.pageItems[1]} />
-          <PageButton pageDetails={pages.pageItems[3]} />
+          <PageButton pageDetails={pages.pageItems[2]} />
           <PageButton pageDetails={pages.pageItems[5]} />
+          <PageButton pageDetails={pages.pageItems[6]} />
+          <PageButton pageDetails={pages.pageItems[3]} />
         </Grid>
       </Grid>
     </Box>
