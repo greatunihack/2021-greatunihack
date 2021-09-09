@@ -184,6 +184,14 @@ export default function Profile() {
           >
             Save
           </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Link Discord Account
+          </Button>
         </form>
       </Box>
     </Container>
