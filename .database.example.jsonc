@@ -12,10 +12,13 @@
   },
   "teams": {
     "teamId": {
-      "teamMemberUserId": {
-        "firstName": "",
-        "lastName": "",
-        "teamMemberDiscordId": "" // Only allow Discord linked users to create/join team
+      "teamName": "",
+      "teamMembers": {
+        "teamMemberUserId": {
+          "firstName": "",
+          "lastName": "",
+          "teamMemberDiscordId": "" // Only allow Discord linked users to create/join team
+        }
       }
     }
   }
