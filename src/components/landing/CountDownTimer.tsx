@@ -2,7 +2,7 @@
 import { Typography } from "@material-ui/core";
 import Countdown from "react-countdown";
 
-export default function CountDownTimer() {
+export default function CountdownTimer() {
   const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
     return (
       <Typography variant="h5">

@@ -10,7 +10,7 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import Theme from "src/components/theme/index";
 import Landing from "src/pages/landing";
-import Dashboard from "src/components/dashboard";
+import DashboardLayout from "src/components/dashboard-layout";
 import Apply from "src/pages/apply";
 import Login from "src/pages/login";
 import Error from "src/pages/error";
@@ -54,7 +54,7 @@ export default function App() {
             {user == "loading" ? (
               <Loading />
             ) : user ? (
-              <Dashboard />
+              <DashboardLayout />
             ) : (
               <Redirect to="/login" />
             )}

@@ -1,8 +1,8 @@
 import { Container, Button, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import CountDownTimer from "./CountdownTimer";
-import Logo from "./logo512.png";
+import CountdownTimer from "src/components/landing/CountdownTimer";
+import Logo from "src/images/logo512.png";
 
 const useStyles = makeStyles(() => ({
   media: {
@@ -36,11 +36,11 @@ export default function Launch() {
         className={classes.box}
       >
         <img src={Logo} className={classes.media}></img>
-        <div className={classes.info}>
+        <Box className={classes.info}>
           <Typography variant="h4" className={classes.title}>
             15th - 16th October at Manchester
           </Typography>
-          <CountDownTimer />
+          <CountdownTimer />
           <Box m={1}>
             <Button
               variant="contained"
@@ -61,7 +61,7 @@ export default function Launch() {
               Log In
             </Button>
           </Box>
-        </div>
+        </Box>
       </Box>
     </Container>
   );

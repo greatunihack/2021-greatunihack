@@ -1,6 +1,6 @@
 import { Box, makeStyles, CssBaseline } from "@material-ui/core";
-import Header from "src/components/dashboard/Header";
-import Routes from "src/components/dashboard/Routes";
+import Header from "src/components/dashboard-layout/Header";
+import Routes from "src/components/dashboard-layout/Routes";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Landing() {
+export default function DashboardLayout() {
   const classes = useStyles();
 
   return (

@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["src", "netlify/functions/email.js"]
+  "include": ["public", "src", "netlify/functions/email.js"]
 }

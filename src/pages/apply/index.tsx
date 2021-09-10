@@ -167,7 +167,7 @@ export default function Apply() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
+      <Box className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -318,7 +318,7 @@ export default function Apply() {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </Box>
       <Box p={5}>
         <Copyright variant="body2" color="textSecondary" />
       </Box>

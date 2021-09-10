@@ -9,7 +9,7 @@ const useStyle = makeStyles(() => ({
 export default function About() {
   const classes = useStyle();
   return (
-    <div id="about">
+    <Box id="about">
       <Container>
         <Typography variant="h4" align="center">
           About Us
@@ -26,6 +26,6 @@ export default function About() {
           </Typography>
         </Box>
       </Container>
-    </div>
+    </Box>
   );
 }

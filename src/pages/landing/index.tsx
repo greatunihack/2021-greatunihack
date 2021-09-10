@@ -1,4 +1,4 @@
-import Navbar from "src/components/landing/Navbar";
+import Header from "src/components/landing/Header";
 import Launch from "src/components/landing/Hero";
 import About from "src/components/landing/About";
 import FAQ from "src/components/landing/FAQ";
@@ -19,7 +19,7 @@ export default function Landing() {
   return (
     <Box className={classes.root}>
       <CssBaseline />
-      <Navbar />
+      <Header />
       <Launch />
       <About />
       <FAQ />

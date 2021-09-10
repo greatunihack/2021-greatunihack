@@ -71,11 +71,11 @@ export default function Error(props: ErrorProps) {
         </Hidden>
       </Grid>
       <Hidden smDown>
-        <div className={classes.footer}>
+        <Box className={classes.footer}>
           <Typography className={classes.tip}>
             <strong>Hackathon Tip {index + 1}:</strong> {tip}
           </Typography>
-        </div>
+        </Box>
       </Hidden>
     </Box>
   );

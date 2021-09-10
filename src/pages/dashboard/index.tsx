@@ -3,7 +3,7 @@ import Button from "src/pages/dashboard/Button";
 import StatusCard from "src/pages/dashboard/StatusCard";
 import pages from "src/data/DashboardButtonData.json";
 
-export default function Home() {
+export default function Dashboard() {
   return (
     <Box mt={2}>
       <Grid container>

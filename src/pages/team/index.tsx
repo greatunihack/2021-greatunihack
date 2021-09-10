@@ -35,7 +35,7 @@ export default function Team() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <Box className={classes.paper}>
         <Box m={4}>
           <Card className={classes.root}>
             <CardContent>
@@ -80,7 +80,7 @@ export default function Team() {
             </CardContent>
           </Card>
         </Box>
-      </div>
+      </Box>
     </Container>
   );
 }

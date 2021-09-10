@@ -9,8 +9,11 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  btns: {
+  link: {
     fontSize: "14px",
+  },
+  icon: {
+    fill: "white",
   },
   header: {
     padding: theme.spacing(1, 2),
@@ -22,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Header() {
   const classes = useStyles();
   return (
     <AppBar position="static" className={classes.header}>
@@ -34,20 +37,20 @@ export default function Navbar() {
           color="inherit"
           component={Link}
           to="/"
-          className={classes.btns}
+          className={classes.link}
         >
           Home
         </Button>
-        <Button color="inherit" href="#about" className={classes.btns}>
+        <Button color="inherit" href="#about" className={classes.link}>
           About Us
         </Button>
-        <Button color="inherit" href="#faq" className={classes.btns}>
+        <Button color="inherit" href="#faq" className={classes.link}>
           FAQ
         </Button>
-        <Button color="inherit" className={classes.btns}>
+        <Button color="inherit" className={classes.link}>
           Last Year
         </Button>
-        <Button color="inherit" className={classes.btns}>
+        <Button color="inherit" className={classes.link}>
           Sponsors
         </Button>
         <IconButton
@@ -55,14 +58,14 @@ export default function Navbar() {
             (window.location.href = "https://www.facebook.com/unicsmcr/")
           }
         >
-          <FacebookIcon />
+          <FacebookIcon className={classes.icon} />
         </IconButton>
         <IconButton
           onClick={() =>
             (window.location.href = "https://www.instagram.com/unicsmcr/")
           }
         >
-          <InstagramIcon />
+          <InstagramIcon className={classes.icon} />
         </IconButton>
       </Toolbar>
     </AppBar>

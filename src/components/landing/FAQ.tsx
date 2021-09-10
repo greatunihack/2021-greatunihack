@@ -4,8 +4,9 @@ import {
   Grid,
   Typography,
   Container,
+  Box,
+  makeStyles,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import FAQData from "src/data/FAQData";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +38,7 @@ export default function FAQ() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root} id="faq">
+    <Box className={classes.root} id="faq">
       <Typography variant="h4" align="center" className={classes.title}>
         FAQ
       </Typography>
@@ -57,6 +58,6 @@ export default function FAQ() {
           ))}
         </Grid>
       </Container>
-    </div>
+    </Box>
   );
 }
