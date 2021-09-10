@@ -35,6 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "netlify": "netlify dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "npx eslint src/**/*.{ts,tsx}",
