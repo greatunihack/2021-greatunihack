@@ -1,7 +1,7 @@
 import { Box, Grid } from "@material-ui/core";
-import PageButton from "src/pages/home/PageButton";
+import Button from "src/pages/home/Button";
 import StatusCard from "src/pages/home/StatusCard";
-import pages from "src/pages/home/PageButtonData.json";
+import pages from "src/pages/home/ButtonData.json";
 
 export default function Home() {
   return (
@@ -11,15 +11,16 @@ export default function Home() {
           <StatusCard />
         </Grid>
         <Grid container xs={12} justifyContent="center">
-          <PageButton pageDetails={pages.pageItems[0]} />
-          <PageButton pageDetails={pages.pageItems[2]} />
-          <PageButton pageDetails={pages.pageItems[4]} />
-          <PageButton pageDetails={pages.pageItems[6]} />
+          <Button pageDetails={pages.pageItems[0]} />
+          <Button pageDetails={pages.pageItems[1]} />
+          <Button pageDetails={pages.pageItems[4]} />
+          <Button pageDetails={pages.pageItems[7]} />
         </Grid>
         <Grid container xs={12} justifyContent="center">
-          <PageButton pageDetails={pages.pageItems[1]} />
-          <PageButton pageDetails={pages.pageItems[3]} />
-          <PageButton pageDetails={pages.pageItems[5]} />
+          <Button pageDetails={pages.pageItems[2]} />
+          <Button pageDetails={pages.pageItems[5]} />
+          <Button pageDetails={pages.pageItems[6]} />
+          <Button pageDetails={pages.pageItems[3]} />
         </Grid>
       </Grid>
     </Box>
