@@ -48,12 +48,12 @@ const useStyles = makeStyles({
   },
 });
 
+const index = Math.floor(Math.random() * suggestions.length); // Generates random number between 0 and one less than the number of suggestions
+const tip = suggestions[index];
+
 export default function Error(props: ErrorProps) {
   const { code, message } = props;
   const classes = useStyles();
-
-  const index = Math.floor(Math.random() * suggestions.length); // Generates random number between 0 and one less than the number of suggestions
-  const tip = suggestions[index];
 
   return (
     <Box className={classes.outerWrapper}>

@@ -60,7 +60,7 @@ export default function App() {
             )}
           </Route>
           <Route path="*">
-            <Error code={404} message="Page Not Found" />
+            <Redirect to="/404" />
           </Route>
         </Switch>
       </Router>
