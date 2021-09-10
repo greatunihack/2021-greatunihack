@@ -18,7 +18,9 @@ const firebaseApp = initializeApp({
   messagingSenderId: "393678004919",
   appId: "1:393678004919:web:8bbb46c9751adc9e90e332",
 });
+
 const auth = getAuth(firebaseApp);
+
 setPersistence(auth, browserLocalPersistence);
 
 interface Props {

@@ -15,19 +15,7 @@ import Container from "@material-ui/core/Container";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        GreatUniHacks2021
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Copyright } from "src/components/copyright";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
   const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -75,7 +63,7 @@ export default function SignIn() {
       checkUser(email, password);
     }
   };
-  
+
   function checkUser(email: string, password: string) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
@@ -150,14 +138,14 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link href="/apply" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Don't have an account? Apply"}
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
+      <Box p={5}>
+        <Copyright variant="body2" color="textSecondary" />
       </Box>
     </Container>
   );
