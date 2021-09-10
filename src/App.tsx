@@ -1,6 +1,10 @@
-import React from "react";
-import "./styles.css";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import React, { useContext } from "react";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/styles";
 import Theme from "src/components/theme/index";
@@ -9,8 +13,11 @@ import Dashboard from "src/components/dashboard";
 import Apply from "src/pages/apply";
 import Login from "src/pages/login";
 import Error from "src/pages/error";
+import { AuthContext } from "src/components/auth/AuthContext";
 
 export default function App() {
+  const { user } = useContext(AuthContext);
+
   return (
     <ThemeProvider theme={Theme}>
       <Router>
@@ -22,7 +29,7 @@ export default function App() {
             <Error code={404} message="Page Not Found" />
           </Route>
           <Route exact path="/login">
-            <Login />
+            {user ? <Redirect to="/dashboard/home" /> : <Login />}
           </Route>
           <Route exact path="/apply">
             <Apply />
@@ -36,7 +43,7 @@ export default function App() {
             }}
           />
           <Route path="/dashboard">
-            <Dashboard />
+            {user ? <Dashboard /> : <Redirect to="/login" />}
           </Route>
           <Route path="*">
             <Error code={404} message="Page Not Found" />

@@ -3,7 +3,7 @@
     {
       "link": "/dashboard/profile",
       "name": "Profile",
-      "description": "View and edit your profile, or create/join a team"
+      "description": "View and edit your profile"
     },
     {
       "link": "https://devpost.com",
@@ -36,6 +36,11 @@
       "link": "/dashboard/twitch",
       "name": "Twitch",
       "description": "View the twitch stream"
+    },
+    {
+      "link": "/dashboard/team",
+      "name": "Team",
+      "description": "Create/join a team"
     }
   ]
 }
