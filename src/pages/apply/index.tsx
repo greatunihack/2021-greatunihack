@@ -151,6 +151,43 @@ export default function SignUp() {
       );
     }
   };
+
+  function createUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    discord: string,
+    ethnicity: string,
+    gender: string
+  ) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        // eslint-disable-next-line
+        const user = userCredential.user;
+
+        try {
+          const docRef = addDoc(collection(db, "users"), {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            discord: discord,
+            ethnicity: ethnicity,
+            gender: gender,
+          });
+          console.log("Document written", docRef);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -311,40 +348,4 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-
-  function createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    discord: string,
-    ethnicity: string,
-    gender: string
-  ) {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        // eslint-disable-next-line
-        const user = userCredential.user;
-
-        try {
-          const docRef = addDoc(collection(db, "users"), {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            discord: discord,
-            ethnicity: ethnicity,
-            gender: gender,
-          });
-          console.log("Document written", docRef);
-        } catch (e) {
-          console.error("Error adding document: ", e);
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
-  }
 }
