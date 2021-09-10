@@ -1,5 +1,11 @@
-import React from "react";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+/* eslint-disable import/named */
+import React, { useContext } from "react";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 import { ThemeProvider } from "@material-ui/styles";
 import Theme from "src/components/theme/index";
@@ -8,8 +14,12 @@ import Dashboard from "src/components/dashboard";
 import Apply from "src/pages/apply";
 import Login from "src/pages/login";
 import Error from "src/pages/error";
+import { AuthContext } from "src/components/auth/AuthContext";
+import { Loading } from "src/components/loading";
 
 export default function App() {
+  const { user } = useContext(AuthContext);
+
   return (
     <ThemeProvider theme={Theme}>
       <Router>
@@ -21,7 +31,13 @@ export default function App() {
             <Error code={404} message="Page Not Found" />
           </Route>
           <Route exact path="/login">
-            <Login />
+            {user == "loading" ? (
+              <Loading />
+            ) : user ? (
+              <Redirect to="/dashboard/home" />
+            ) : (
+              <Login />
+            )}
           </Route>
           <Route exact path="/apply">
             <Apply />
@@ -35,7 +51,13 @@ export default function App() {
             }}
           />
           <Route path="/dashboard">
-            <Dashboard />
+            {user == "loading" ? (
+              <Loading />
+            ) : user ? (
+              <Dashboard />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
           <Route path="*">
             <Error code={404} message="Page Not Found" />

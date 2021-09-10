@@ -1,9 +1,16 @@
-import { AppBar, Link, Typography, makeStyles } from "@material-ui/core";
+import { AppBar, makeStyles, Box } from "@material-ui/core";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import FacebookIcon from "@material-ui/icons/Facebook";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
     padding: theme.spacing(3, 2),
-    marginTop: "auto",
+  },
+  container: {
+    justifyContent: "center",
+  },
+  icons: {
+    padding: "3px",
   },
 }));
 
@@ -11,14 +18,21 @@ export default function Footer() {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" className={classes.footer}>
-      <Typography variant="body2">
-        {"Copyright © "}
-        <Link color="inherit" href="https://unicsmcr.com/">
-          UniCS
-        </Link>{" "}
-        {new Date().getFullYear()}
-      </Typography>
-    </AppBar>
+    <div>
+      <AppBar position="static" className={classes.footer}>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <InstagramIcon
+            className={classes.icons}
+            onClick={() =>
+              (window.location.href = "https://www.instagram.com/unicsmcr/")
+            }
+          />
+          <FacebookIcon
+            className={classes.icons}
+            onClick={() => (window.location.href = "https://www.facebook.com/")}
+          />
+        </Box>
+      </AppBar>
+    </div>
   );
 }
