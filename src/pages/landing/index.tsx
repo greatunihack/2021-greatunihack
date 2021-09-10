@@ -1,26 +1,22 @@
-import { Button, Grid, Box } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import Navbar from "../../components/landing/Navbar";
+import Launch from "../../components/landing/Launch";
+import About from "../../components/landing/About";
+import FAQ from "../../components/landing/FAQ";
+import Sponsors from "../../components/landing/Sponsors";
+import Footer from "../../components/dashboard/Footer";
+import { CssBaseline } from "@material-ui/core";
 
 export default function Landing() {
   return (
-    <Grid container direction="row" justifyContent="center" alignItems="center">
-      <Box m={2}>
-        <Box m={4}>
-          <Button variant="contained" component={Link} to="/login">
-            Login
-          </Button>
-        </Box>
-        <Box m={4}>
-          <Button variant="contained" component={Link} to="/apply">
-            Apply
-          </Button>
-        </Box>
-        <Box m={4}>
-          <Button variant="contained" component={Link} to="/dashboard/home">
-            Dashboard
-          </Button>
-        </Box>
-      </Box>
-    </Grid>
+    <div>
+      <CssBaseline>
+        <Navbar />
+        <Launch />
+        <About />
+        <FAQ />
+        <Sponsors />
+        <Footer />
+      </CssBaseline>
+    </div>
   );
 }
