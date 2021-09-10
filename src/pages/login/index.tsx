@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,19 +13,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        GreatUniHacks2021
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { AuthContext } from "src/components/auth/AuthContext";
+import { useHistory } from "react-router-dom";
+import { Copyright } from "src/components/copyright";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,12 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
-
+  const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const history = useHistory();
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -73,6 +63,23 @@ export default function SignIn() {
       checkUser(email, password);
     }
   };
+
+  function checkUser(email: string, password: string) {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setUser(user);
+        history.push("/dashboard/home");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        alert(errorMessage);
+      });
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -131,31 +138,15 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link href="/apply" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Don't have an account? Apply"}
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
+      <Box p={5}>
+        <Copyright variant="body2" color="textSecondary" />
       </Box>
     </Container>
   );
-  function checkUser(email: string, password: string) {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        alert(errorMessage);
-      });
-  }
 }

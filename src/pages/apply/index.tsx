@@ -13,38 +13,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import { initializeApp } from "firebase/app";
+import { getApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDiAu-TMx91OZd3yRuwThXJN0srD2dbaQ4",
-  authDomain: "greatunihack21.firebaseapp.com",
-  projectId: "greatunihack21",
-  storageBucket: "greatunihack21.appspot.com",
-  messagingSenderId: "393678004919",
-  appId: "1:393678004919:web:8bbb46c9751adc9e90e332",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://unicsmcr.com/">
-        process.env.REACT_APP_HACKATHON_NAME
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Copyright } from "src/components/copyright";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function Apply() {
   const classes = useStyles();
+  const app = getApp();
+  const db = getFirestore(app);
   const [state, setState] = React.useState({
     firstName: "",
     lastName: "",
@@ -84,12 +61,12 @@ export default function SignUp() {
   });
 
   // eslint-disable-next-line
-  function handleChange(evt: any) {
+  function handleChange(e: any) {
     const value =
-      evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setState({
       ...state,
-      [evt.target.name]: value,
+      [e.target.name]: value,
     });
   }
 
@@ -151,6 +128,42 @@ export default function SignUp() {
       );
     }
   };
+
+  function createUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    discord: string,
+    ethnicity: string,
+    gender: string
+  ) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // eslint-disable-next-line
+        const user = userCredential.user;
+
+        try {
+          const docRef = addDoc(collection(db, "users"), {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            discord: discord,
+            ethnicity: ethnicity,
+            gender: gender,
+          });
+          console.log("Document written", docRef);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -159,7 +172,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Apply
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -295,7 +308,7 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Apply
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
@@ -306,45 +319,9 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
+      <Box p={5}>
+        <Copyright variant="body2" color="textSecondary" />
       </Box>
     </Container>
   );
-
-  function createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    discord: string,
-    ethnicity: string,
-    gender: string
-  ) {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        // eslint-disable-next-line
-        const user = userCredential.user;
-
-        try {
-          const docRef = addDoc(collection(db, "users"), {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            discord: discord,
-            ethnicity: ethnicity,
-            gender: gender,
-          });
-          console.log("Document written", docRef);
-        } catch (e) {
-          console.error("Error adding document: ", e);
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
-  }
 }

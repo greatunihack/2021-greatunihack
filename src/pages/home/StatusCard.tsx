@@ -6,6 +6,7 @@ import {
   makeStyles,
   LinearProgress,
 } from "@material-ui/core";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomeButton() {
   const classes = useStyles();
+  const [userStatus] = useState<number>(() => {
+    return 20;
+  });
 
   return (
     <Box m={4}>
@@ -44,9 +48,10 @@ export default function HomeButton() {
               <LinearProgress variant="determinate" value={20} />
             </Box>
             <Box>
-              <Typography variant="body2" color="textSecondary">{`${Math.round(
-                20
-              )}%`}</Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >{`${userStatus}%`}</Typography>
             </Box>
           </Box>
           {/* TODO: Get status from Firebase, set according text and progressbar values */}

@@ -1,7 +1,7 @@
 import { Button, Grid, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-export default function landing() {
+export default function Landing() {
   return (
     <Grid container direction="row" justifyContent="center" alignItems="center">
       <Box m={2}>
