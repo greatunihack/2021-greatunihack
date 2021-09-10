@@ -1,6 +1,6 @@
 import { Box, makeStyles, CssBaseline } from "@material-ui/core";
 import Header from "src/components/dashboard-layout/Header";
-import Routes from "src/components/dashboard-layout/Routes";
+import Routes from "src/components/routes/Routes";
 
 const useStyles = makeStyles(() => ({
   root: {
