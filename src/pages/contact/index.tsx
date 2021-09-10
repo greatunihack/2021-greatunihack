@@ -12,13 +12,10 @@ const useStyles = makeStyles(() => ({
     padding: "20px",
   },
   root: {
-    padding: "10px",
-  },
-  subhead: {
-    marginTop: "10px",
+    padding: "30px",
   },
   fields: {
-    marginTop: "10px",
+    marginTop: "20px",
   },
   button: {
     padding: "20px",
@@ -56,7 +53,7 @@ export default function Contact() {
     });
 
     axios
-      .post("/api/sendmail", data)
+      .post("/functions/sendmail", data)
       .then((res: { data: { result: string } }) => {
         if (res.data.result !== "success") {
           setData({
@@ -104,45 +101,37 @@ export default function Contact() {
 
   return (
     <div>
-      <Typography variant="h4" align="center" className={classes.title}>
+      <Typography variant="h3" align="center" className={classes.title}>
         Contact Us
       </Typography>
       <Container className={classes.root}>
         <FormControl fullWidth={true}>
-          <Typography variant="h6" className={classes.subhead}>
-            Name
-          </Typography>
           <TextField
             required
-            id="full-name"
             name="name"
-            variant="filled"
+            label="Name"
+            variant="outlined"
             className={classes.fields}
             value={data.name}
             onChange={handleChange}
           />
         </FormControl>
         <FormControl fullWidth={true}>
-          <Typography variant="h6" className={classes.subhead}>
-            Email
-          </Typography>
           <TextField
             required
-            id="email"
             name="email"
-            variant="filled"
+            label="Email"
+            variant="outlined"
             className={classes.fields}
             value={data.email}
             onChange={handleChange}
           />
         </FormControl>
         <FormControl fullWidth={true}>
-          <Typography variant="h6" className={classes.subhead}>
-            Message
-          </Typography>
           <TextField
             required
-            variant="filled"
+            label="Message"
+            variant="outlined"
             name="message"
             multiline={true}
             rows="10"
