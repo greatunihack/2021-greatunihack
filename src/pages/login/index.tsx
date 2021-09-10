@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { AuthContext } from "src/components/auth/AuthContext";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -49,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-
+  const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const history = useHistory();
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -142,14 +144,14 @@ export default function SignIn() {
       </Box>
     </Container>
   );
+
   function checkUser(email: string, password: string) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(user);
-        // ...
+        setUser(user);
+        history.push("/dashboard/home");
       })
       .catch((error) => {
         const errorCode = error.code;

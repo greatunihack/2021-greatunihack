@@ -16,7 +16,7 @@ import Error from "src/pages/error";
 import { AuthContext } from "src/components/auth/AuthContext";
 
 export default function App() {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <ThemeProvider theme={Theme}>
@@ -29,7 +29,7 @@ export default function App() {
             <Error code={404} message="Page Not Found" />
           </Route>
           <Route exact path="/login">
-            <Login />
+            {user ? <Redirect to="/dashboard/home" /> : <Login />}
           </Route>
           <Route exact path="/apply">
             <Apply />
