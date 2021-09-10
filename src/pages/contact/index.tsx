@@ -57,18 +57,32 @@ export default function Contact() {
 
     axios
       .post("/api/sendmail", data)
-      .then(() => {
-        setData({
-          ...data,
-          sent: true,
-          buttonText: "Sent",
-          err: "success",
-        });
-        setTimeout(() => {
-          resetForm();
-        }, 6000);
+      .then((res: { data: { result: string } }) => {
+        if (res.data.result !== "success") {
+          setData({
+            ...data,
+            buttonText: "Failed to send",
+            sent: false,
+            err: "fail",
+          });
+          setTimeout(() => {
+            resetForm();
+          }, 6000);
+        } else {
+          setData({
+            ...data,
+            sent: true,
+            buttonText: "Sent",
+            err: "success",
+          });
+          setTimeout(() => {
+            resetForm();
+          }, 6000);
+        }
       })
-      .catch(() => {
+      // eslint-disable-next-line
+      .catch((err: any) => {
+        console.log(err.response.status);
         setData({
           ...data,
           buttonText: "Failed to send",

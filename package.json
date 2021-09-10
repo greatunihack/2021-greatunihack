@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/styles": "^4.11.4",
+    "@sendgrid/mail": "^7.4.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -19,9 +20,10 @@
     "@types/react-router": "^5.1.16",
     "@types/react-router-dom": "^5.1.8",
     "@types/testing-library__jest-dom": "^5.14.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "firebase": "^9.0.0",
     "formik": "^2.2.9",
+    "netlify-lambda": "^2.0.14",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^3.0.4",
@@ -38,7 +40,8 @@
     "test": "react-scripts test",
     "lint": "npx eslint src/**/*.{ts,tsx}",
     "lint:fix": "npx eslint src/**/*.{ts,tsx} --fix",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "postinstall": "netlify-lambda install"
   },
   "browserslist": {
     "production": [
