@@ -51,6 +51,7 @@ Replace the placeholder values with the credentials for your Firebase project.
 
 ```cmd
 npm install
+npm install netlify-cli -g
 ```
 
 ---
