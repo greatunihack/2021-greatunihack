@@ -1,0 +1,25 @@
+{
+  "users": {
+    "userId": {
+      "email": "",
+      "firstName": "",
+      "lastName": "",
+      "gender": "", // Optional, default to null
+      "ethnicity": "", // Optional, default to null
+      "teamId": "", // Initially null, assign when team created/joined
+      "cvUrl": "" // Optional, default to null
+    }
+  },
+  "teams": {
+    "teamId": {
+      "teamName": "",
+      "teamMembers": {
+        "teamMemberUserId": {
+          "firstName": "",
+          "lastName": "",
+          "teamMemberDiscordId": "" // Only allow Discord linked users to create/join team
+        }
+      }
+    }
+  }
+}
