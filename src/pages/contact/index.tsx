@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Container } from "@material-ui/core";
+import { Typography, Container, Box } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -26,81 +26,34 @@ const useStyles = makeStyles(() => ({
 export default function Contact() {
   const classes = useStyles();
 
-  const [data, setData] = useState({
+  const [form, setForm] = useState({
     name: "",
     email: "",
     message: "",
-    sent: false,
-    buttonText: "Submit",
-    err: "",
   });
 
-  // eslint-disable-next-line
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: value,
+  const handleChange = (e: any) => {
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value,
     });
   };
 
-  const formSubmit = (e: { preventDefault: () => void }) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    setData({
-      ...data,
-      buttonText: "Sending",
-    });
-
     axios
-      .post("/functions/sendmail", data)
+      .post("/.netlify/functions/email", form)
       .then((res: { data: { result: string } }) => {
-        if (res.data.result !== "success") {
-          setData({
-            ...data,
-            buttonText: "Failed to send",
-            sent: false,
-            err: "fail",
-          });
-          setTimeout(() => {
-            resetForm();
-          }, 6000);
-        } else {
-          setData({
-            ...data,
-            sent: true,
-            buttonText: "Sent",
-            err: "success",
-          });
-          setTimeout(() => {
-            resetForm();
-          }, 6000);
-        }
+        console.log(res.data);
       })
-      // eslint-disable-next-line
       .catch((err: any) => {
         console.log(err.response.status);
-        setData({
-          ...data,
-          buttonText: "Failed to send",
-          err: "fail",
-        });
       });
   };
 
-  const resetForm = () => {
-    setData({
-      name: "",
-      email: "",
-      message: "",
-      sent: false,
-      buttonText: "Submit",
-      err: "",
-    });
-  };
-
   return (
-    <div>
+    <Box>
       <Typography variant="h3" align="center" className={classes.title}>
         Contact Us
       </Typography>
@@ -109,10 +62,11 @@ export default function Contact() {
           <TextField
             required
             name="name"
+            id="name"
             label="Name"
             variant="outlined"
             className={classes.fields}
-            value={data.name}
+            value={form.name}
             onChange={handleChange}
           />
         </FormControl>
@@ -120,10 +74,11 @@ export default function Contact() {
           <TextField
             required
             name="email"
+            id="email"
             label="Email"
             variant="outlined"
             className={classes.fields}
-            value={data.email}
+            value={form.email}
             onChange={handleChange}
           />
         </FormControl>
@@ -133,30 +88,31 @@ export default function Contact() {
             label="Message"
             variant="outlined"
             name="message"
+            id="message"
             multiline={true}
             rows="10"
             className={classes.fields}
-            value={data.message}
+            value={form.message}
             onChange={handleChange}
           />
         </FormControl>
         <FormControl>
-          <div className={classes.button}>
+          <Box className={classes.button}>
             <Grid container spacing={2}>
-              <div className="form-submit">
+              <Box className="form-submit">
                 <Button
                   variant="contained"
                   color="primary"
                   size="large"
                   onClick={formSubmit}
                 >
-                  {data.buttonText}
+                  Send
                 </Button>
-              </div>
+              </Box>
             </Grid>
-          </div>
+          </Box>
         </FormControl>
       </Container>
-    </div>
+    </Box>
   );
 }
