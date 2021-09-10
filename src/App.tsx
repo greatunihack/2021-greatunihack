@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import React, { useContext } from "react";
 import {
   Route,
@@ -14,6 +15,7 @@ import Apply from "src/pages/apply";
 import Login from "src/pages/login";
 import Error from "src/pages/error";
 import { AuthContext } from "src/components/auth/AuthContext";
+import { Loading } from "src/components/loading";
 
 export default function App() {
   const { user } = useContext(AuthContext);
@@ -29,7 +31,13 @@ export default function App() {
             <Error code={404} message="Page Not Found" />
           </Route>
           <Route exact path="/login">
-            {user ? <Redirect to="/dashboard/home" /> : <Login />}
+            {user == "loading" ? (
+              <Loading />
+            ) : user ? (
+              <Redirect to="/dashboard/home" />
+            ) : (
+              <Login />
+            )}
           </Route>
           <Route exact path="/apply">
             <Apply />
@@ -43,7 +51,13 @@ export default function App() {
             }}
           />
           <Route path="/dashboard">
-            {user ? <Dashboard /> : <Redirect to="/login" />}
+            {user == "loading" ? (
+              <Loading />
+            ) : user ? (
+              <Dashboard />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
           <Route path="*">
             <Error code={404} message="Page Not Found" />

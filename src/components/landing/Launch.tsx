@@ -20,6 +20,9 @@ const useStyles = makeStyles(() => ({
     padding: "40px",
     marginLeft: "40px",
   },
+  button: {
+    marginTop: "30px",
+  },
 }));
 
 export default function Launch() {
@@ -39,14 +42,26 @@ export default function Launch() {
               15th - 16th October at Manchester
             </Typography>
             <CountDownTimer />
-            <Button
-              variant="contained"
-              component={Link}
-              to="/apply"
-              style={{ marginTop: "30px" }}
-            >
-              Register Now!
-            </Button>
+            <Box m={1}>
+              <Button
+                variant="contained"
+                component={Link}
+                to="/apply"
+                className={classes.button}
+              >
+                Apply Now!
+              </Button>
+            </Box>
+            <Box m={1}>
+              <Button
+                variant="contained"
+                component={Link}
+                to="/login"
+                className={classes.button}
+              >
+                Log In
+              </Button>
+            </Box>
           </div>
         </Box>
       </Container>

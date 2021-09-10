@@ -8,6 +8,7 @@ import {
   setPersistence,
   User,
   browserLocalPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 
 const firebaseApp = initializeApp({
@@ -21,14 +22,20 @@ const firebaseApp = initializeApp({
 
 const auth = getAuth(firebaseApp);
 
-setPersistence(auth, browserLocalPersistence);
+export function setUserPersistence(persist: boolean) {
+  if (persist) {
+    setPersistence(auth, browserLocalPersistence);
+  } else {
+    setPersistence(auth, browserSessionPersistence);
+  }
+}
 
 interface Props {
   children?: React.ReactElement;
 }
 
 export const AuthProvider = (props: Props) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null | "loading">("loading");
 
   useEffect(() => {
     onAuthStateChanged(auth, (firebaseUser) => {
