@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import ChallengeListItem from "src/pages/challenges/ChallengeListItem";
-import challenges from "src/pages/challenges/ChallengeData.json";
+import challenges from "src/data/ChallengeData.json";
 
 export default function Challenges() {
   return (

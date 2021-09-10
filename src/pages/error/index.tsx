@@ -1,7 +1,7 @@
 import { Box, Grid, Hidden, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
-import suggestions from "src/pages/error/Suggestions.json";
+import suggestions from "src/data/ErrorSuggestionData.json";
 
 interface ErrorProps {
   code?: number;

@@ -1,22 +1,30 @@
-import Navbar from "../../components/landing/Navbar";
-import Launch from "../../components/landing/Launch";
-import About from "../../components/landing/About";
-import FAQ from "../../components/landing/FAQ";
-import Sponsors from "../../components/landing/Sponsors";
-import Footer from "../../components/dashboard/Footer";
-import { CssBaseline } from "@material-ui/core";
+import Navbar from "src/components/landing/Navbar";
+import Launch from "src/components/landing/Hero";
+import About from "src/components/landing/About";
+import FAQ from "src/components/landing/FAQ";
+import Sponsors from "src/components/landing/Sponsors";
+import Footer from "src/components/landing/Footer";
+import { Box, CssBaseline, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+}));
 
 export default function Landing() {
+  const classes = useStyles();
   return (
-    <div>
-      <CssBaseline>
-        <Navbar />
-        <Launch />
-        <About />
-        <FAQ />
-        <Sponsors />
-        <Footer />
-      </CssBaseline>
-    </div>
+    <Box className={classes.root}>
+      <CssBaseline />
+      <Navbar />
+      <Launch />
+      <About />
+      <FAQ />
+      <Sponsors />
+      <Footer />
+    </Box>
   );
 }

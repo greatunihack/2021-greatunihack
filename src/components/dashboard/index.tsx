@@ -1,5 +1,4 @@
 import { Box, makeStyles, CssBaseline } from "@material-ui/core";
-// import Footer from 'src/components/dashboard/Footer';
 import Header from "src/components/dashboard/Header";
 import Routes from "src/components/dashboard/Routes";
 
@@ -19,7 +18,6 @@ export default function Landing() {
       <CssBaseline />
       <Header />
       <Routes />
-      {/* <Footer /> */}
     </Box>
   );
 }

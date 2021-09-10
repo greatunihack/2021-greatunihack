@@ -6,10 +6,9 @@ import {
   Container,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import FAQData from "./FAQData";
+import FAQData from "src/data/FAQData";
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: "0",
     backgroundColor: "#e8e8e6",
     paddingBottom: "30px",
     display: "block",

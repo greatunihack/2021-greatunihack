@@ -4,7 +4,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Home from "src/pages/home";
+import Home from "src/pages/dashboard";
 import Profile from "src/pages/profile";
 import Contact from "src/pages/contact";
 import Sponsors from "src/pages/sponsors";

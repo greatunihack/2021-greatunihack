@@ -39,7 +39,7 @@ export default function Header() {
     <AppBar position="static" className={classes.header}>
       <Toolbar>
         <Typography className={classes.title}>
-          {process.env.REACT_APP_HACKATHON_NAME}
+          &#60;{process.env.REACT_APP_HACKATHON_NAME} /&#62;
         </Typography>
         <IconButton onClick={logOut}>
           <ExitToAppIcon />

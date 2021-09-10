@@ -1,4 +1,4 @@
-import { Gold, Silver, Bronze } from "./SponsorsData";
+import { Gold, Silver, Bronze } from "../../data/SponsorsData";
 import {
   Card,
   CardContent,
@@ -8,11 +8,11 @@ import {
   Typography,
   Container,
   Button,
+  Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
   root: {
-    margin: "0",
     paddingBottom: "30px",
   },
 
@@ -37,7 +37,7 @@ export default function Sponsors() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root} id="sponsors">
+    <Box className={classes.root} id="sponsors">
       <Typography variant="h4" align="center" style={{ padding: "20px" }}>
         Sponsors
       </Typography>
@@ -113,6 +113,6 @@ export default function Sponsors() {
           ))}
         </Grid>
       </Container>
-    </div>
+    </Box>
   );
 }
