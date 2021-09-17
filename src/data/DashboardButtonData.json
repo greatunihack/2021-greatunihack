@@ -10,7 +10,7 @@
       "name": "Submissions",
       "description": "Submit your project or view other teams' submissions",
       "external": true,
-      "restricted": true
+      "restricted": false
     },
     {
       "link": "/dashboard/sponsors",
@@ -26,7 +26,7 @@
       "link": "/dashboard/challenges",
       "name": "Challenges",
       "description": "Complete the sponsor challenges to win cool prizes",
-      "restricted": true
+      "restricted": false
     },
     {
       "link": "https://discord.com",
