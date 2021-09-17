@@ -18,7 +18,7 @@ export default function Dashboard() {
         </Grid>
         <Grid container xs={12} justifyContent="center">
           <Button pageDetails={pages.pageItems[2]} />
-          <Button pageDetails={pages.pageItems[5]} />
+          {/* <Button pageDetails={pages.pageItems[5]} /> */}
           <Button pageDetails={pages.pageItems[6]} />
           <Button pageDetails={pages.pageItems[3]} />
         </Grid>
