@@ -1,5 +1,5 @@
 import Header from "src/components/landing/Header";
-import Launch from "src/components/landing/Hero";
+import Hero from "src/components/landing/Hero";
 import About from "src/components/landing/About";
 import FAQ from "src/components/landing/FAQ";
 import Sponsors from "src/components/landing/Sponsors";
@@ -20,7 +20,7 @@ export default function Landing() {
     <Box className={classes.root}>
       <CssBaseline />
       <Header />
-      <Launch />
+      <Hero />
       <About />
       <FAQ />
       <Sponsors />

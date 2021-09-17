@@ -1,13 +1,16 @@
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import SponsorCategory from "src/pages/sponsors/SponsorCategory";
 import sponsors from "src/pages/sponsors/SponsorData.json";
+import Title from "src/components/title";
+import pages from "src/data/DashboardButtonData.json";
 
 export default function Sponsors() {
   return (
     <>
-      <Box m={2}>
-        <Typography variant="h3">Sponsors</Typography>
-      </Box>
+      <Title
+        title={pages.pageItems[2].name}
+        description={pages.pageItems[2].description}
+      ></Title>
       <Grid container>
         <SponsorCategory
           category="Gold"

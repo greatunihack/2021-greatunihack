@@ -6,10 +6,11 @@
       "description": "View and edit your profile"
     },
     {
-      "link": "https://devpost.com",
+      "link": "https://greatunihack-2021.devpost.com/",
       "name": "Submissions",
       "description": "Submit your project or view other teams' submissions",
-      "external": true
+      "external": true,
+      "restricted": false
     },
     {
       "link": "/dashboard/sponsors",
@@ -19,12 +20,13 @@
     {
       "link": "/dashboard/contact",
       "name": "Contact",
-      "description": "Contact us in case you have any issues/urgent queries"
+      "description": "Contact us in case you have any issues or urgent queries"
     },
     {
       "link": "/dashboard/challenges",
       "name": "Challenges",
-      "description": "Complete the sponsor challenges for extra points"
+      "description": "Complete the sponsor challenges to win cool prizes",
+      "restricted": false
     },
     {
       "link": "https://discord.com",
@@ -40,7 +42,7 @@
     {
       "link": "/dashboard/team",
       "name": "Team",
-      "description": "Create/join a team"
+      "description": "Create or join a team"
     }
   ]
 }

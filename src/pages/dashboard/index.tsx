@@ -12,13 +12,13 @@ export default function Dashboard() {
         </Grid>
         <Grid container xs={12} justifyContent="center">
           <Button pageDetails={pages.pageItems[0]} />
-          <Button pageDetails={pages.pageItems[1]} />
           <Button pageDetails={pages.pageItems[4]} />
+          <Button pageDetails={pages.pageItems[1]} />
           <Button pageDetails={pages.pageItems[7]} />
         </Grid>
         <Grid container xs={12} justifyContent="center">
           <Button pageDetails={pages.pageItems[2]} />
-          <Button pageDetails={pages.pageItems[5]} />
+          {/* <Button pageDetails={pages.pageItems[5]} /> */}
           <Button pageDetails={pages.pageItems[6]} />
           <Button pageDetails={pages.pageItems[3]} />
         </Grid>
