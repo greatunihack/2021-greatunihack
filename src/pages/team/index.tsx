@@ -1,38 +1,8 @@
-import {
-  Box,
-  makeStyles,
-  Card,
-  CardContent,
-  Grid,
-  Button,
-} from "@material-ui/core";
+import { Box, Card, CardContent, Grid, Button } from "@material-ui/core";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  root: {
-    height: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "60em",
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: "20em",
-    },
-  },
-  title: {
-    fontWeight: 600,
-  },
-}));
-
 export default function Team() {
-  const classes = useStyles();
-
   return (
     <>
       <Title

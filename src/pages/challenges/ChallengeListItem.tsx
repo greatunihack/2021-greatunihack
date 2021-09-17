@@ -44,7 +44,7 @@ export default function ChallengeListItem(props: ChallengeListItemProps) {
       ))}
       <AccordionDetails>
         <Link variant="overline" href={download}>
-          Click here to download as a PDF.
+          Download as a PDF
         </Link>
       </AccordionDetails>
     </Accordion>
