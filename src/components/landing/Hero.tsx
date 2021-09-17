@@ -38,7 +38,7 @@ export default function Launch() {
         <img src={Logo} className={classes.media}></img>
         <Box className={classes.info}>
           <Typography variant="h4" className={classes.title}>
-            15th - 16th October at Manchester
+            15th - 16th October
           </Typography>
           <CountdownTimer />
           <Box m={1}>
