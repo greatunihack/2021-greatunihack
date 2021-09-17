@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import SponsorCategory from "src/pages/sponsors/SponsorCategory";
 import sponsors from "src/pages/sponsors/SponsorData.json";
 import Title from "src/components/title";

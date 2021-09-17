@@ -1,11 +1,9 @@
 import {
   Box,
-  Container,
   Grid,
   MenuItem,
   makeStyles,
   TextField,
-  CssBaseline,
   Button,
   Card,
 } from "@material-ui/core";
@@ -15,7 +13,7 @@ import * as yup from "yup";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   form: {
     width: "100%", // Fix IE 11 issue.
   },

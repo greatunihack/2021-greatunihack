@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-} from "@material-ui/core";
+import { Box, Card, CardContent, Typography } from "@material-ui/core";
 
 interface TitleProps {
   title: string;
