@@ -250,7 +250,13 @@ export default function Apply() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <InputLabel
+                id="demo-simple-select-label"
+                className={classes.formControl}
+              >
+                Ethnicity
+              </InputLabel>
+              <Select
                 variant="outlined"
                 fullWidth
                 name="ethnicity"
@@ -260,7 +266,33 @@ export default function Apply() {
                 autoComplete="ethnicity"
                 value={state.ethnicity}
                 onChange={handleChange}
-              />
+              >
+                <MenuItem value={"1"}>
+                  English, Welsh, Scottish, Northern Irish or British
+                </MenuItem>
+                <MenuItem value={"2"}>Irish</MenuItem>
+                <MenuItem value={"3"}>Any other White background</MenuItem>
+                <MenuItem value={"4"}>White and Black Caribbean</MenuItem>
+                <MenuItem value={"5"}>White and Black African</MenuItem>
+                <MenuItem value={"6"}>White and Asian</MenuItem>
+                <MenuItem value={"7"}>
+                  Any other Mixed or Multiple ethnic background
+                </MenuItem>
+                <MenuItem value={"8"}>Indian</MenuItem>
+                <MenuItem value={"9"}>Pakistani</MenuItem>
+                <MenuItem value={"10"}>Bangladeshi</MenuItem>
+                <MenuItem value={"11"}>Pakistani</MenuItem>
+                <MenuItem value={"12"}>Chinese</MenuItem>
+                <MenuItem value={"13"}>Any other Asian background</MenuItem>
+                <MenuItem value={"14"}>African</MenuItem>
+                <MenuItem value={"15"}>Caribbean</MenuItem>
+                <MenuItem value={"16"}>Any other Asian background</MenuItem>
+                <MenuItem value={"17"}>
+                  Any other Black, African or Caribbean background
+                </MenuItem>
+                <MenuItem value={"18"}>Arab</MenuItem>
+                <MenuItem value={"19"}>Any other ethnic group</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12}>
               <InputLabel
