@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,12 +14,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { getApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
+import { AuthContext } from "src/components/auth/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Apply() {
+  const { user } = useContext(AuthContext);
+
   const classes = useStyles();
   const app = getApp();
   const db = getFirestore(app);
@@ -143,9 +150,9 @@ export default function Apply() {
       .then((userCredential) => {
         // eslint-disable-next-line
         const user = userCredential.user;
-
         try {
           const docRef = addDoc(collection(db, "users"), {
+            userId: user.uid,
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -154,6 +161,11 @@ export default function Apply() {
             gender: gender,
           });
           console.log("Document written", docRef);
+          if (auth.currentUser) {
+            updateProfile(auth.currentUser, {
+              displayName: `${firstName} ${lastName}`,
+            });
+          }
         } catch (e) {
           console.error("Error adding document: ", e);
         }
