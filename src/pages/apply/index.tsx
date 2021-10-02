@@ -152,7 +152,6 @@ export default function Apply() {
         const user = userCredential.user;
         try {
           const docRef = addDoc(collection(db, "users"), {
-            userId: user.uid,
             firstName: firstName,
             lastName: lastName,
             email: email,
