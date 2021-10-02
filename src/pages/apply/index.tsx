@@ -15,11 +15,13 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { getApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
+import { GestureSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -58,12 +60,22 @@ export default function Apply() {
     gender: "",
     ethnicity: "",
     GDPRaccept: false,
+    image: null,
   });
 
   // eslint-disable-next-line
   function handleChange(e: any) {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    if (e.target.type === "file") {
+      const file = e.target.files[0];
+      const storage = getStorage();
+      const location = "CVs/" + file;
+      const storageRef = ref(storage, location);
+      uploadBytes(storageRef, file).then((snapshot) => {
+        console.log("Uploaded file!");
+      });
+    }
     setState({
       ...state,
       [e.target.name]: value,
@@ -143,7 +155,6 @@ export default function Apply() {
       .then((userCredential) => {
         // eslint-disable-next-line
         const user = userCredential.user;
-
         try {
           const docRef = addDoc(collection(db, "users"), {
             firstName: firstName,
@@ -152,6 +163,7 @@ export default function Apply() {
             discord: discord,
             ethnicity: ethnicity,
             gender: gender,
+            status: 1,
           });
           console.log("Document written", docRef);
         } catch (e) {
@@ -316,6 +328,10 @@ export default function Apply() {
                 <MenuItem value={"Male"}>Male</MenuItem>
                 <MenuItem value={"Other"}>Other</MenuItem>
               </Select>
+              <InputLabel style={{ padding: "10px" }}>Upload CV</InputLabel>
+              <Button variant="contained" component="label">
+                <input type="file" onChange={handleChange} />
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <FormControl required error={GDPRError}>
