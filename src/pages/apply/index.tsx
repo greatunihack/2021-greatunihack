@@ -25,6 +25,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
 import { AuthContext } from "src/components/auth/AuthContext";
+import { Dialog } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,6 +85,9 @@ export default function Apply() {
   const [discordError, setDiscordError] = useState(false);
 
   const [GDPRError, setGDPRError] = useState(false);
+
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [messageText, setMessageText] = useState("");
 
   // eslint-disable-next-line
   const handleSubmit = (e: any) => {
@@ -165,6 +169,8 @@ export default function Apply() {
               displayName: `${firstName} ${lastName}`,
             });
           }
+          setMessageText("Thank you for applying!");
+          setMessageOpen(true);
         } catch (e) {
           console.error("Error adding document: ", e);
         }
@@ -176,163 +182,175 @@ export default function Apply() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Apply
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                value={state.firstName}
-                autoFocus
-                onChange={handleChange}
-                error={firstNameError}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={state.lastName}
-                onChange={handleChange}
-                error={lastNameError}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={state.email}
-                onChange={handleChange}
-                error={emailError}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={state.password}
-                onChange={handleChange}
-                error={passwordError}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="discord"
-                label="Discord"
-                type="Discord"
-                id="Discord"
-                autoComplete="Discord-username"
-                value={state.discord}
-                onChange={handleChange}
-                error={discordError}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                name="ethnicity"
-                label="Ethnicity"
-                type="ethnicity"
-                id="ethnicity"
-                autoComplete="ethnicity"
-                value={state.ethnicity}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel
-                id="demo-simple-select-label"
-                className={classes.formControl}
-              >
-                Gender
-              </InputLabel>
-              <Select
-                variant="outlined"
-                fullWidth
-                name="gender"
-                label="gender"
-                type="gender"
-                id="gender"
-                autoComplete="Gender"
-                value={state.gender}
-                onChange={handleChange}
-              >
-                <MenuItem value={"Female"}>Female</MenuItem>
-                <MenuItem value={"Male"}>Male</MenuItem>
-                <MenuItem value={"Other"}>Other</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl required error={GDPRError}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      name="GDPRaccept"
-                      checked={state.GDPRaccept}
-                      onChange={handleChange}
-                    />
-                  }
-                  label="I agree for my data to be stored when necessary."
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+    <>
+      <Dialog
+        open={messageOpen}
+        onClose={() => {
+          window.location.href = "/dashboard/home";
+        }}
+      >
+        <Box m={3}>
+          <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Apply
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  value={state.firstName}
+                  autoFocus
+                  onChange={handleChange}
+                  error={firstNameError}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  value={state.lastName}
+                  onChange={handleChange}
+                  error={lastNameError}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={state.email}
+                  onChange={handleChange}
+                  error={emailError}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={state.password}
+                  onChange={handleChange}
+                  error={passwordError}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="discord"
+                  label="Discord"
+                  type="Discord"
+                  id="Discord"
+                  autoComplete="Discord-username"
+                  value={state.discord}
+                  onChange={handleChange}
+                  error={discordError}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  name="ethnicity"
+                  label="Ethnicity"
+                  type="ethnicity"
+                  id="ethnicity"
+                  autoComplete="ethnicity"
+                  value={state.ethnicity}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  className={classes.formControl}
+                >
+                  Gender
+                </InputLabel>
+                <Select
+                  variant="outlined"
+                  fullWidth
+                  name="gender"
+                  label="gender"
+                  type="gender"
+                  id="gender"
+                  autoComplete="Gender"
+                  value={state.gender}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"Female"}>Female</MenuItem>
+                  <MenuItem value={"Male"}>Male</MenuItem>
+                  <MenuItem value={"Other"}>Other</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl required error={GDPRError}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        name="GDPRaccept"
+                        checked={state.GDPRaccept}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="I agree for my data to be stored when necessary."
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </Box>
-      <Box p={5}>
-        <Copyright variant="body2" color="textSecondary" />
-      </Box>
-    </Container>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Apply
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+        <Box p={5}>
+          <Copyright variant="body2" color="textSecondary" />
+        </Box>
+      </Container>
+    </>
   );
 }

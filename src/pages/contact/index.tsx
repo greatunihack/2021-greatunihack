@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
-import { Box, Card, Grid } from "@material-ui/core";
+import { Box, Card, Dialog, Grid, Typography } from "@material-ui/core";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 
@@ -14,6 +14,9 @@ export default function Contact() {
     email: "",
     message: "",
   });
+
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [messageText, setMessageText] = useState("");
 
   const handleChange = (e: any) => {
     setForm({
@@ -27,11 +30,13 @@ export default function Contact() {
 
     axios
       .post("/.netlify/functions/email", form)
-      .then((res: { data: { result: string } }) => {
-        console.log(res.data);
+      .then((res: any) => {
+        setMessageText("Submitted successfully!");
+        setMessageOpen(true);
       })
       .catch((err: any) => {
-        console.log(err.response.status);
+        setMessageText("Error: please contact dev@unicsmcr.com");
+        setMessageOpen(true);
       });
   };
 
@@ -105,6 +110,16 @@ export default function Contact() {
           </Box>
         </Card>
       </Box>
+      <Dialog
+        open={messageOpen}
+        onClose={() => {
+          window.location.reload();
+        }}
+      >
+        <Box m={3}>
+          <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
     </>
   );
 }
