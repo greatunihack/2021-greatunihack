@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
   },
   button: {
     marginTop: "30px",
+    marginLeft: "20px",
   },
 }));
 
@@ -38,10 +39,10 @@ export default function Launch() {
         <img src={Logo} className={classes.media}></img>
         <Box className={classes.info}>
           <Typography variant="h4" className={classes.title}>
-            15th - 16th October
+            14th - 15th November
           </Typography>
           <CountdownTimer />
-          <Box m={1}>
+          <Box>
             <Button
               variant="contained"
               component={Link}
@@ -50,8 +51,6 @@ export default function Launch() {
             >
               Apply Now!
             </Button>
-          </Box>
-          <Box m={1}>
             <Button
               variant="contained"
               component={Link}
