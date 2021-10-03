@@ -40,7 +40,6 @@ export default function Header() {
           component={Link}
           to="/"
           className={classes.link}
-          href="#hero"
         >
           Home
         </Button>

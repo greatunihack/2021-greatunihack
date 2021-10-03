@@ -5,6 +5,7 @@ import FAQ from "src/components/landing/FAQ";
 import Sponsors from "src/components/landing/Sponsors";
 import Footer from "src/components/landing/Footer";
 import { Box, CssBaseline, makeStyles } from "@material-ui/core";
+import "./styles.css";
 
 const useStyles = makeStyles(() => ({
   root: {

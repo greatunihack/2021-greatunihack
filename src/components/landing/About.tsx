@@ -23,12 +23,12 @@ export default function About() {
             <Typography className={classes.info}>
               We are GreatUniHack, an annual 24-hour student-oriented hackathon
               organised by the University of Manchester tech society, UniCS.
-              Since 2014, we have brought together 2500 students from 88
-              universities across Europe to work and develop innovative ideas in
-              a competitive environment. This year&apos;s edition aims to
-              introduce a new generation of developers with great potential for
-              improving the technology industry and community through our online
-              hackathon.
+              Since 2014, we have brought together students from 88 universities
+              across Europe to work and develop innovative ideas in a
+              competitive environment. The hackathon this year will again be
+              online to keep us all safe whilst Covid is still with us, but we
+              have worked very hard to ensure the hackathon is as amazing as
+              ever!
             </Typography>
           </Box>
         </Container>

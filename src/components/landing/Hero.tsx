@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 export default function Launch() {
   const classes = useStyles();
   return (
-    <div className={classes.hero} id="hero">
+    <div className={classes.hero}>
       <Container>
         <Box
           display="flex"
