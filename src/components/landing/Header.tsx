@@ -11,6 +11,7 @@ import { IconButton } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   link: {
     fontSize: "16px",
+    textTransform: "none",
   },
   icon: {
     fill: "white",
@@ -39,17 +40,15 @@ export default function Header() {
           component={Link}
           to="/"
           className={classes.link}
+          href="#hero"
         >
           Home
         </Button>
         <Button color="inherit" href="#about" className={classes.link}>
-          About Us
+          About
         </Button>
         <Button color="inherit" href="#faq" className={classes.link}>
           FAQ
-        </Button>
-        <Button color="inherit" className={classes.link}>
-          Last Year
         </Button>
         <Button color="inherit" href="#sponsors" className={classes.link}>
           Sponsors
