@@ -10,8 +10,11 @@ import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    fontSize: "16px",
+    fontSize: "20px",
     textTransform: "none",
+    "&:hover": {
+      borderBottom: "1px solid #fafdf6",
+    },
   },
   icon: {
     fill: "white",
@@ -19,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     padding: theme.spacing(1, 2),
+    backgroundColor: "#30362f",
   },
   title: {
     fontSize: "25px",
@@ -33,7 +37,7 @@ export default function Header() {
     <AppBar position="static" className={classes.header}>
       <Toolbar>
         <Typography className={classes.title}>
-          &#60;{process.env.REACT_APP_HACKATHON_NAME} /&#62;
+          {process.env.REACT_APP_HACKATHON_NAME}
         </Typography>
         <Button
           color="inherit"

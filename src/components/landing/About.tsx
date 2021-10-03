@@ -4,6 +4,10 @@ const useStyle = makeStyles(() => ({
     backgroundColor: "#a59132",
     color: "#fafdf6",
   },
+  title: {
+    borderBottomStyle: "solid",
+    paddingBottom: "5px",
+  },
   info: {
     fontSize: "20px",
     padding: "40px",
@@ -17,7 +21,7 @@ export default function About() {
       <Box id="about">
         <Container>
           <Typography variant="h4" align="center">
-            About Us
+            <a className={classes.title}>About Us</a>
           </Typography>
           <Box display="flex" flexDirection="row" alignItems="center">
             <Typography className={classes.info}>

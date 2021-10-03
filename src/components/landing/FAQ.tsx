@@ -10,13 +10,16 @@ import {
 import FAQData from "src/data/FAQData";
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#e8e8e6",
+    backgroundColor: "#a59132",
+    color: "#fafdf6",
     paddingBottom: "30px",
     display: "block",
   },
 
   title: {
     padding: "10px",
+    borderBottomStyle: "solid",
+    paddingBottom: "5px",
   },
 
   cardGrid: {
@@ -28,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    background: "#30362f",
+    color: "#fafdf6",
   },
   CardContent: {
     flexGrow: 1,
@@ -39,8 +44,8 @@ export default function FAQ() {
 
   return (
     <Box className={classes.root} id="faq">
-      <Typography variant="h4" align="center" className={classes.title}>
-        FAQ
+      <Typography variant="h4" align="center">
+        <a className={classes.title}>FAQ</a>
       </Typography>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
