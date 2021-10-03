@@ -17,12 +17,11 @@ const useStyles = makeStyles(() => ({
     padding: "10px",
   },
   info: {
-    padding: "40px",
-    marginLeft: "40px",
+    padding: "30px",
   },
   button: {
     marginTop: "30px",
-    marginLeft: "20px",
+    marginLeft: "5px",
   },
 }));
 

@@ -51,7 +51,7 @@ export default function Header() {
         <Button color="inherit" className={classes.link}>
           Last Year
         </Button>
-        <Button color="inherit" className={classes.link}>
+        <Button color="inherit" href="#sponsors" className={classes.link}>
           Sponsors
         </Button>
         <IconButton
