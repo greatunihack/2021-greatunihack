@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   icons: {
-    padding: "5px",
-    fontSize: "1.7em",
+    padding: "2px",
+    fontSize: "1.4em",
     color: "white",
   },
   boxes: {
-    margin: "2px",
+    margin: "1px",
   },
 }));
 
@@ -31,17 +31,19 @@ export default function Footer() {
     <AppBar position="static" className={classes.footer}>
       <Box className={classes.boxes}>
         <IconButton>
+          <FacebookIcon
+            className={classes.icons}
+            onClick={() =>
+              (window.location.href = "https://www.facebook.com/unicsmcr/")
+            }
+          />
+        </IconButton>
+        <IconButton>
           <InstagramIcon
             className={classes.icons}
             onClick={() =>
               (window.location.href = "https://www.instagram.com/unicsmcr/")
             }
-          />
-        </IconButton>
-        <IconButton>
-          <FacebookIcon
-            className={classes.icons}
-            onClick={() => (window.location.href = "https://www.facebook.com/")}
           />
         </IconButton>
       </Box>

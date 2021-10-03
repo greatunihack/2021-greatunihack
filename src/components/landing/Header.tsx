@@ -10,16 +10,17 @@ import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    fontSize: "14px",
+    fontSize: "16px",
   },
   icon: {
     fill: "white",
+    margin: "2px",
   },
   header: {
     padding: theme.spacing(1, 2),
   },
   title: {
-    fontSize: "1.5em",
+    fontSize: "25px",
     fontWeight: 400,
     flex: 1,
   },
