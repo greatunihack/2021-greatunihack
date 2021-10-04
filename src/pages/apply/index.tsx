@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { getApp } from "firebase/app";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -63,12 +64,22 @@ export default function Apply() {
     gender: "",
     ethnicity: "",
     GDPRaccept: false,
+    image: null,
   });
 
   // eslint-disable-next-line
   function handleChange(e: any) {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    if (e.target.type === "file") {
+      const file = e.target.files[0];
+      const storage = getStorage();
+      const location = "CVs/" + file;
+      const storageRef = ref(storage, location);
+      uploadBytes(storageRef, file).then(() => {
+        console.log("Uploaded file!");
+      });
+    }
     setState({
       ...state,
       [e.target.name]: value,
@@ -159,6 +170,7 @@ export default function Apply() {
             discord: discord,
             ethnicity: ethnicity,
             gender: gender,
+            status: 1,
           });
           console.log("Document written", docRef);
           if (auth.currentUser) {
@@ -275,7 +287,13 @@ export default function Apply() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <InputLabel
+                  id="demo-simple-select-label"
+                  className={classes.formControl}
+                >
+                  Ethnicity
+                </InputLabel>
+                <Select
                   variant="outlined"
                   fullWidth
                   name="ethnicity"
@@ -285,7 +303,33 @@ export default function Apply() {
                   autoComplete="ethnicity"
                   value={state.ethnicity}
                   onChange={handleChange}
-                />
+                >
+                  <MenuItem value={"1"}>
+                    English, Welsh, Scottish, Northern Irish or British
+                  </MenuItem>
+                  <MenuItem value={"2"}>Irish</MenuItem>
+                  <MenuItem value={"3"}>Any other White background</MenuItem>
+                  <MenuItem value={"4"}>White and Black Caribbean</MenuItem>
+                  <MenuItem value={"5"}>White and Black African</MenuItem>
+                  <MenuItem value={"6"}>White and Asian</MenuItem>
+                  <MenuItem value={"7"}>
+                    Any other Mixed or Multiple ethnic background
+                  </MenuItem>
+                  <MenuItem value={"8"}>Indian</MenuItem>
+                  <MenuItem value={"9"}>Pakistani</MenuItem>
+                  <MenuItem value={"10"}>Bangladeshi</MenuItem>
+                  <MenuItem value={"11"}>Pakistani</MenuItem>
+                  <MenuItem value={"12"}>Chinese</MenuItem>
+                  <MenuItem value={"13"}>Any other Asian background</MenuItem>
+                  <MenuItem value={"14"}>African</MenuItem>
+                  <MenuItem value={"15"}>Caribbean</MenuItem>
+                  <MenuItem value={"16"}>Any other Asian background</MenuItem>
+                  <MenuItem value={"17"}>
+                    Any other Black, African or Caribbean background
+                  </MenuItem>
+                  <MenuItem value={"18"}>Arab</MenuItem>
+                  <MenuItem value={"19"}>Any other ethnic group</MenuItem>
+                </Select>
               </Grid>
               <Grid item xs={12}>
                 <InputLabel
@@ -309,6 +353,10 @@ export default function Apply() {
                   <MenuItem value={"Male"}>Male</MenuItem>
                   <MenuItem value={"Other"}>Other</MenuItem>
                 </Select>
+                <InputLabel style={{ padding: "10px" }}>Upload CV</InputLabel>
+                <Button variant="contained" component="label">
+                  <input type="file" onChange={handleChange} />
+                </Button>
               </Grid>
               <Grid item xs={12}>
                 <FormControl required error={GDPRError}>
