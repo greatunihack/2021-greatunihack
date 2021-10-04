@@ -23,7 +23,7 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
-import { Dialog } from "@material-ui/core";
+import { Dialog, FormHelperText } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -103,7 +103,7 @@ export default function Apply() {
             ethnicity: "",
             gender: "",
             resume: null,
-            GDPR: true,
+            GDPR: false,
           }}
           validationSchema={Yup.object().shape({
             firstName: Yup.string().required("First name required"),
@@ -117,6 +117,9 @@ export default function Apply() {
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*£"'])(?=.{8,})/,
                 "Must contain 8 characters (one uppercase, one lowercase, one number and one special character)"
               ),
+            GDPR: Yup.boolean()
+              .required("Please accept the terms & conditions")
+              .oneOf([true], "Please accept the terms & conditions"),
           })}
         >
           {({ errors, handleBlur, handleChange, touched, values }) => (
@@ -187,8 +190,6 @@ export default function Apply() {
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        error={touched.password && Boolean(errors.password)}
-                        helperText={touched.password && errors.password}
                         type="password"
                       />
                     </Grid>
@@ -312,6 +313,9 @@ export default function Apply() {
                           label="I agree to the terms and conditions."
                         />
                       </FormControl>
+                    {touched.GDPR && Boolean(errors.GDPR) && (
+                      <FormHelperText error>{errors.GDPR}</FormHelperText>
+                    )}
                     </Grid>
                   </Grid>
                   <Button
