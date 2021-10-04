@@ -30,11 +30,11 @@ export default function Contact() {
 
     axios
       .post("/.netlify/functions/email", form)
-      .then((res: any) => {
+      .then(() => {
         setMessageText("Submitted successfully!");
         setMessageOpen(true);
       })
-      .catch((err: any) => {
+      .catch(() => {
         setMessageText("Error: please contact dev@unicsmcr.com");
         setMessageOpen(true);
       });

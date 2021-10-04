@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -24,7 +24,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
-import { AuthContext } from "src/components/auth/AuthContext";
 import { Dialog } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,8 +51,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Apply() {
-  const { user } = useContext(AuthContext);
-
   const classes = useStyles();
   const app = getApp();
   const db = getFirestore(app);
