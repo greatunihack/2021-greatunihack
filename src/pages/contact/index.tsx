@@ -1,39 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
-import { Box, Card, Grid } from "@material-ui/core";
+import { Box, Card, Dialog, Grid, Typography } from "@material-ui/core";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+
+const ValidationSchema = Yup.object().shape({
+  name: Yup.string().required("Name required"),
+  email: Yup.string().email("Invalid email").required("Email required"),
+  message: Yup.string()
+    .required("Message required")
+    .min(30, "Message too short!"),
+});
 
 export default function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const handleChange = (e: any) => {
-    setForm({
-      ...form,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const formSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    axios
-      .post("/.netlify/functions/email", form)
-      .then((res: { data: { result: string } }) => {
-        console.log(res.data);
-      })
-      .catch((err: any) => {
-        console.log(err.response.status);
-      });
-  };
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [messageText, setMessageText] = useState("");
 
   return (
     <>
@@ -44,67 +31,111 @@ export default function Contact() {
       <Box m={2}>
         <Card>
           <Box p={2}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth={true}>
-                  <TextField
-                    required
-                    name="name"
-                    id="name"
-                    label="Name"
-                    variant="outlined"
-                    value={form.name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth={true}>
-                  <TextField
-                    required
-                    name="email"
-                    id="email"
-                    label="Email"
-                    variant="outlined"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth={true}>
-                  <TextField
-                    required
-                    label="Message"
-                    fullWidth
-                    variant="outlined"
-                    name="message"
-                    id="message"
-                    multiline={true}
-                    rows="10"
-                    value={form.message}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl>
-                  <Box mt={2} className="form-submit">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={formSubmit}
-                    >
-                      Send
-                    </Button>
-                  </Box>
-                </FormControl>
-              </Grid>
-            </Grid>
+            <Formik
+              onSubmit={(values) => {
+                axios
+                  .post("/.netlify/functions/email", {
+                    name: values.name,
+                    email: values.email,
+                    message: values.message,
+                  })
+                  .then(() => {
+                    setMessageText("Submitted successfully!");
+                    setMessageOpen(true);
+                  })
+                  .catch(() => {
+                    setMessageText("Error: please contact dev@unicsmcr.com");
+                    setMessageOpen(true);
+                  });
+              }}
+              initialValues={{ name: "", email: "", message: "" }}
+              validationSchema={ValidationSchema}
+            >
+              {({ errors, handleBlur, handleChange, touched, values }) => (
+                <Form>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth={true}>
+                        <TextField
+                          required
+                          name="name"
+                          id="name"
+                          label="Name"
+                          variant="outlined"
+                          error={touched.name && Boolean(errors.name)}
+                          helperText={touched.name && errors.name}
+                          value={values.name}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth={true}>
+                        <TextField
+                          required
+                          name="email"
+                          id="email"
+                          label="Email"
+                          variant="outlined"
+                          error={touched.email && Boolean(errors.email)}
+                          helperText={touched.email && errors.email}
+                          value={values.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth={true}>
+                        <TextField
+                          required
+                          name="message"
+                          id="message"
+                          label="Message"
+                          variant="outlined"
+                          error={touched.message && Boolean(errors.message)}
+                          helperText={touched.message && errors.message}
+                          value={values.message}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          multiline={true}
+                          rows="10"
+                          fullWidth
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl>
+                        <Box mt={2} className="form-submit">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            type="submit"
+                          >
+                            Send
+                          </Button>
+                        </Box>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>
           </Box>
         </Card>
       </Box>
+      <Dialog
+        open={messageOpen}
+        onClose={() => {
+          window.location.reload();
+        }}
+      >
+        <Box m={3}>
+          <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
     </>
   );
 }

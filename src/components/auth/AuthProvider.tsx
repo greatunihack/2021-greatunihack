@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 import {
   getAuth,
   onAuthStateChanged,
@@ -21,6 +22,8 @@ const firebaseApp = initializeApp({
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
+
+const storage = getStorage(firebaseApp);
 
 if (process.env.REACT_APP_FIREBASE_APP_CHECK_PUBLIC_KEY) {
   const appCheck = initializeAppCheck(firebaseApp, {
