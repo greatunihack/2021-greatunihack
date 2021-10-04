@@ -15,6 +15,7 @@ const useStyles = makeStyles({
   },
   innerWrapper: {
     height: "calc(100% - 100px)",
+    position: "fixed",
   },
   root: {
     height: "100%",
