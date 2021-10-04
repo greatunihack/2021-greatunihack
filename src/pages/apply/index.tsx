@@ -6,7 +6,6 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -22,18 +21,12 @@ import {
 } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
-import { Dialog, Input } from "@material-ui/core";
+import { Dialog } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-
-const ValidationSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name required"),
-  lastName: Yup.string().required("Last name required"),
-  email: Yup.string().email("Invalid email").required("Email required"),
-});
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -75,9 +68,7 @@ export default function Apply() {
           onSubmit={(values) => {
             const auth = getAuth();
             createUserWithEmailAndPassword(auth, values.email, values.password)
-              .then((userCredential) => {
-                // eslint-disable-next-line
-                const user = userCredential.user;
+              .then(() => {
                 try {
                   const docRef = addDoc(collection(db, "users"), {
                     firstName: values.firstName,
@@ -114,16 +105,21 @@ export default function Apply() {
             resume: null,
             GDPR: true,
           }}
-          validationSchema={ValidationSchema}
+          validationSchema={Yup.object().shape({
+            firstName: Yup.string().required("First name required"),
+            lastName: Yup.string().required("Last name required"),
+            email: Yup.string()
+              .email("Invalid email")
+              .required("Email required"),
+            password: Yup.string()
+              .required("Password required")
+              .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*£"'])(?=.{8,})/,
+                "Must contain 8 characters (one uppercase, one lowercase, one number and one special character)"
+              ),
+          })}
         >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            touched,
-            values,
-            setFieldValue,
-          }) => (
+          {({ errors, handleBlur, handleChange, touched, values }) => (
             <Form>
               <Box className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -145,6 +141,7 @@ export default function Apply() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.firstName && Boolean(errors.firstName)}
+                      helperText={touched.firstName && errors.firstName}
                       autoFocus
                     />
                   </Grid>
@@ -160,6 +157,7 @@ export default function Apply() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.lastName && Boolean(errors.lastName)}
+                      helperText={touched.lastName && errors.lastName}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -174,6 +172,7 @@ export default function Apply() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.email && Boolean(errors.email)}
+                      helperText={touched.email && errors.email}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -188,7 +187,8 @@ export default function Apply() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       error={touched.password && Boolean(errors.password)}
-                      type="password"
+                      helperText={touched.password && errors.password}
+                      // type="password"
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -201,7 +201,6 @@ export default function Apply() {
                       value={values.ethnicity}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={touched.ethnicity && Boolean(errors.ethnicity)}
                       select
                     >
                       <MenuItem value={"Indian"}>Indian</MenuItem>
@@ -252,7 +251,6 @@ export default function Apply() {
                       value={values.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      error={touched.ethnicity && Boolean(errors.ethnicity)}
                       select
                     >
                       <MenuItem value={"Female"}>Female</MenuItem>
@@ -294,10 +292,7 @@ export default function Apply() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <FormControl
-                      required
-                      error={touched.GDPR && Boolean(errors.GDPR)}
-                    >
+                    <FormControl required>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -325,9 +320,11 @@ export default function Apply() {
                 </Button>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="/login" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
+                    <Button component={Link} to="/login">
+                      <Typography variant="caption">
+                        Already have an account? Sign in
+                      </Typography>
+                    </Button>
                   </Grid>
                 </Grid>
               </Box>
