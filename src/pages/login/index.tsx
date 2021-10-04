@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const { setUser } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
   const [resetPassword, setResetPassword] = useState(false);
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
@@ -65,97 +64,107 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Formik
-          onSubmit={(values) => {
-            const auth = getAuth();
-            signInWithEmailAndPassword(auth, values.email, values.email)
-              .then((userCredential) => {
-                const user = userCredential.user;
-                setUser(user);
-                history.push("/dashboard/home");
-              })
-              .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode);
-                alert(errorMessage);
-              });
-          }}
-          initialValues={{
-            email: "",
-            password: "",
-          }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string()
-              .email("Invalid email")
-              .required("Email required"),
-            password: Yup.string().required("Password required"),
-          })}
-        >
-          {({ errors, handleBlur, handleChange, touched, values }) => (
-            <Form>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.email && Boolean(errors.email)}
-                helperText={touched.email && errors.email}
-                value={values.email}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.password && Boolean(errors.password)}
-                helperText={touched.password && errors.password}
-                value={values.password}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Button
-                    onClick={() => {
-                      setResetPassword(true);
-                    }}
-                  >
-                    <Typography variant="caption">Forgot password?</Typography>
-                  </Button>
+        <Box m={2}>
+          <Formik
+            onSubmit={(values) => {
+              const auth = getAuth();
+              signInWithEmailAndPassword(auth, values.email, values.email)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  setUser(user);
+                  history.push("/dashboard/home");
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.log(errorCode);
+                  alert(errorMessage);
+                });
+            }}
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email("Invalid email")
+                .required("Email required"),
+              password: Yup.string().required("Password required"),
+            })}
+          >
+            {({ errors, handleBlur, handleChange, touched, values }) => (
+              <Form>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  value={values.email}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                  value={values.password}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Button
+                      onClick={() => {
+                        setResetPassword(true);
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        style={{ fontSize: "0.8em" }}
+                      >
+                        Forgot password?
+                      </Typography>
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button component={Link} to="/apply">
+                      <Typography
+                        variant="caption"
+                        style={{ fontSize: "0.8em" }}
+                      >
+                        {"Don't have an account? Apply"}
+                      </Typography>
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Button component={Link} to="/apply">
-                    <Typography variant="caption">
-                      {"Don't have an account? Apply"}
-                    </Typography>
-                  </Button>
-                </Grid>
-              </Grid>
-            </Form>
-          )}
-        </Formik>
+              </Form>
+            )}
+          </Formik>
+        </Box>
       </Box>
       <Box p={5}>
         <Copyright variant="body2" color="textSecondary" />

@@ -128,205 +128,214 @@ export default function Apply() {
                 <Typography component="h1" variant="h5">
                   Apply
                 </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="First Name"
-                      id="firstName"
-                      name="firstName"
-                      value={values.firstName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.firstName && Boolean(errors.firstName)}
-                      helperText={touched.firstName && errors.firstName}
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Last Name"
-                      id="lastName"
-                      name="lastName"
-                      value={values.lastName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.lastName && Boolean(errors.lastName)}
-                      helperText={touched.lastName && errors.lastName}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Email Address"
-                      id="email"
-                      name="email"
-                      value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.email && Boolean(errors.email)}
-                      helperText={touched.email && errors.email}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Password"
-                      id="password"
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.password && Boolean(errors.password)}
-                      helperText={touched.password && errors.password}
-                      // type="password"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Ethnicity (Optional)"
-                      id="ethnicity"
-                      name="ethnicity"
-                      value={values.ethnicity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      select
-                    >
-                      <MenuItem value={"Indian"}>Indian</MenuItem>
-                      <MenuItem value={"Pakistani"}>Pakistani</MenuItem>
-                      <MenuItem value={"Bangladeshi"}>Bangladeshi</MenuItem>
-                      <MenuItem value={"Chinese"}>Chinese</MenuItem>
-                      <MenuItem divider={true} value={"Asian - Other"}>
-                        Asian - Other
-                      </MenuItem>
-                      <MenuItem value={"Black African"}>Black African</MenuItem>
-                      <MenuItem value={"Black Caribbean"}>
-                        Black Caribbean
-                      </MenuItem>
-                      <MenuItem divider={true} value={"Black - Other"}>
-                        Black - Other
-                      </MenuItem>
-                      <MenuItem value={"Mixed White/Asian"}>
-                        Mixed White/Asian
-                      </MenuItem>
-                      <MenuItem value={"Mixed White/Black African	"}>
-                        Mixed White/Black African
-                      </MenuItem>
-                      <MenuItem value={"Mixed White/Black Caribbean"}>
-                        Mixed White/Black Caribbean
-                      </MenuItem>
-                      <MenuItem divider={true} value={"Mixed - Other"}>
-                        Mixed - Other
-                      </MenuItem>
-                      <MenuItem value={"White British"}>White British</MenuItem>
-                      <MenuItem value={"White Irish	"}>White Irish </MenuItem>
-                      <MenuItem value={"White Gypsy/Traveller"}>
-                        White Gypsy/Traveller
-                      </MenuItem>
-                      <MenuItem divider={true} value={"White - Other"}>
-                        White - Other
-                      </MenuItem>
-                      <MenuItem value={"Arab"}>Arab</MenuItem>
-                      <MenuItem value={"Other"}>Other </MenuItem>
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Gender (Optional)"
-                      id="gender"
-                      name="gender"
-                      value={values.gender}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      select
-                    >
-                      <MenuItem value={"Female"}>Female</MenuItem>
-                      <MenuItem value={"Male"}>Male</MenuItem>
-                      <MenuItem value={"Other"}>Other</MenuItem>
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <InputLabel
-                      style={{ paddingTop: "6px", paddingBottom: "2px" }}
-                    >
-                      CV Upload (Optional)
-                    </InputLabel>
-                    <Box mt={1} mb={2}>
-                      <Typography variant="caption">
-                        Upload your CV for our sponsors to see!
-                      </Typography>
-                    </Box>
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      id="resume"
-                      name="resume"
-                      onChange={(e) => {
-                        if (e.target.type === "file" && e.target.files) {
-                          const file = e.target.files[0];
-                          const t = new Date().toLocaleTimeString();
-                          const storageRef = ref(
-                            getStorage(),
-                            "CVs/" +
-                              `${values.firstName}${values.lastName} - ` +
-                              t
-                          );
-                          uploadBytes(storageRef, file).then(() => {
-                            console.log("Uploaded file!");
-                          });
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl required>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="GDPR"
-                            id="GDPR"
-                            checked={values.GDPR}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        }
-                        label="I agree to the terms and conditions."
+                <Box m={2}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="First Name"
+                        id="firstName"
+                        name="firstName"
+                        value={values.firstName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.firstName && Boolean(errors.firstName)}
+                        helperText={touched.firstName && errors.firstName}
+                        autoFocus
                       />
-                    </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Last Name"
+                        id="lastName"
+                        name="lastName"
+                        value={values.lastName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.lastName && Boolean(errors.lastName)}
+                        helperText={touched.lastName && errors.lastName}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Email Address"
+                        id="email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Password"
+                        id="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.password && Boolean(errors.password)}
+                        helperText={touched.password && errors.password}
+                        type="password"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Ethnicity (Optional)"
+                        id="ethnicity"
+                        name="ethnicity"
+                        value={values.ethnicity}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        <MenuItem value={"Indian"}>Indian</MenuItem>
+                        <MenuItem value={"Pakistani"}>Pakistani</MenuItem>
+                        <MenuItem value={"Bangladeshi"}>Bangladeshi</MenuItem>
+                        <MenuItem value={"Chinese"}>Chinese</MenuItem>
+                        <MenuItem divider={true} value={"Asian - Other"}>
+                          Asian - Other
+                        </MenuItem>
+                        <MenuItem value={"Black African"}>
+                          Black African
+                        </MenuItem>
+                        <MenuItem value={"Black Caribbean"}>
+                          Black Caribbean
+                        </MenuItem>
+                        <MenuItem divider={true} value={"Black - Other"}>
+                          Black - Other
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Asian"}>
+                          Mixed White/Asian
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Black African	"}>
+                          Mixed White/Black African
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Black Caribbean"}>
+                          Mixed White/Black Caribbean
+                        </MenuItem>
+                        <MenuItem divider={true} value={"Mixed - Other"}>
+                          Mixed - Other
+                        </MenuItem>
+                        <MenuItem value={"White British"}>
+                          White British
+                        </MenuItem>
+                        <MenuItem value={"White Irish	"}>White Irish </MenuItem>
+                        <MenuItem value={"White Gypsy/Traveller"}>
+                          White Gypsy/Traveller
+                        </MenuItem>
+                        <MenuItem divider={true} value={"White - Other"}>
+                          White - Other
+                        </MenuItem>
+                        <MenuItem value={"Arab"}>Arab</MenuItem>
+                        <MenuItem value={"Other"}>Other </MenuItem>
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Gender (Optional)"
+                        id="gender"
+                        name="gender"
+                        value={values.gender}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        <MenuItem value={"Female"}>Female</MenuItem>
+                        <MenuItem value={"Male"}>Male</MenuItem>
+                        <MenuItem value={"Other"}>Other</MenuItem>
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel
+                        style={{ paddingTop: "6px", paddingBottom: "2px" }}
+                      >
+                        CV Upload (Optional)
+                      </InputLabel>
+                      <Box mt={1} mb={2}>
+                        <Typography variant="caption">
+                          Upload your CV for our sponsors to see!
+                        </Typography>
+                      </Box>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        id="resume"
+                        name="resume"
+                        onChange={(e) => {
+                          if (e.target.type === "file" && e.target.files) {
+                            const file = e.target.files[0];
+                            const t = new Date().toLocaleTimeString();
+                            const storageRef = ref(
+                              getStorage(),
+                              "CVs/" +
+                                `${values.firstName}${values.lastName} - ` +
+                                t
+                            );
+                            uploadBytes(storageRef, file).then(() => {
+                              console.log("Uploaded file!");
+                            });
+                          }
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl required>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              color="primary"
+                              name="GDPR"
+                              id="GDPR"
+                              checked={values.GDPR}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          }
+                          label="I agree to the terms and conditions."
+                        />
+                      </FormControl>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Apply
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Button component={Link} to="/login">
-                      <Typography variant="caption">
-                        Already have an account? Sign in
-                      </Typography>
-                    </Button>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Apply
+                  </Button>
+                  <Grid container justifyContent="flex-end">
+                    <Grid item>
+                      <Button component={Link} to="/login">
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          Already have an account? Sign in
+                        </Typography>
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
+                </Box>
               </Box>
             </Form>
           )}
