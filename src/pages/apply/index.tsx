@@ -334,7 +334,7 @@ export default function Apply() {
                           variant="caption"
                           style={{ fontSize: "0.8em" }}
                         >
-                          Already have an account? Sign in
+                          Already have an account? Log in
                         </Typography>
                       </Button>
                     </Grid>
