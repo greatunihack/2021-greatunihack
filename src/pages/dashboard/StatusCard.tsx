@@ -6,7 +6,10 @@ import {
   makeStyles,
   LinearProgress,
 } from "@material-ui/core";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "src/components/auth/AuthContext";
+import { getApp } from "firebase/app";
+import { getFirestore, collection, query, getDocs } from "firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,9 +28,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomeButton() {
   const classes = useStyles();
-  const [userStatus] = useState<number>(() => {
-    return 20;
+  const { user } = useContext(AuthContext);
+
+  const [userStatus, setUserStatus] = useState<[number, string]>(() => {
+    return [0, ""];
   });
+
+  if (userStatus[0] === 0) {
+    // TODO: This is very inefficient
+    const app = getApp();
+    const db = getFirestore(app);
+    if (user && user != "loading") {
+      const q = query(collection(db, "users"));
+      // eslint-disable-next-line
+      const usersData: any[] = [];
+      getDocs(q).then((users) => {
+        users.forEach((user) => usersData.push(user.data()));
+        const userData = usersData.filter(
+          (x) => x.email.toLowerCase() == user.email?.toLowerCase()
+        )[0];
+
+        if (userData.team) {
+          setUserStatus([100, "Joined Team"]);
+        } else if (userData.discord) {
+          setUserStatus([75, "Linked Discord Account"]);
+        } else {
+          setUserStatus([50, "Registered"]);
+        }
+      });
+    }
+  }
 
   return (
     <Box m={4}>
@@ -45,19 +75,19 @@ export default function HomeButton() {
           </Box>
           <Box display="flex" alignItems="center">
             <Box width="100%" mr={2}>
-              <LinearProgress variant="determinate" value={20} />
+              <LinearProgress variant="determinate" value={userStatus[0]} />
             </Box>
             <Box>
               <Typography
                 variant="body2"
                 color="textSecondary"
-              >{`${userStatus}%`}</Typography>
+              >{`${userStatus[0]}%`}</Typography>
             </Box>
           </Box>
           {/* TODO: Get status from Firebase, set according text and progressbar values */}
           <Box mt={3}>
             <Typography variant="body2" component="p" align="center">
-              Registered
+              {`${userStatus[1]}`}
             </Typography>
           </Box>
         </CardContent>
