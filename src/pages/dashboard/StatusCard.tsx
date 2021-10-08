@@ -50,7 +50,7 @@ export default function HomeButton() {
         querySnapshot.forEach((document) => {
           if (document.data().team) {
             setUserStatus([100, "Joined a team"]);
-          } else if (document.data().discordToken) {
+          } else if (document.data().discordAccessToken) {
             setUserStatus([66, "Linked Discord account"]);
           } else {
             setUserStatus([33, "Registered"]);

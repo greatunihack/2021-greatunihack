@@ -76,7 +76,6 @@ export default function Apply() {
                     email: values.email,
                     ethnicity: values.ethnicity,
                     gender: values.gender,
-                    status: 1,
                   });
                   console.log("Document written", docRef);
                   if (auth.currentUser) {
