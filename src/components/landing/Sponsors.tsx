@@ -1,119 +1,47 @@
-import { Gold, Silver, Bronze } from "src/data/SponsorsData";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-  Grid,
-  Typography,
-  Container,
-  Button,
-  Box,
-} from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
+import SponsorCategory from "src/pages/sponsors/SponsorCategory";
+import sponsors from "src/pages/sponsors/SponsorData.json";
 import { makeStyles } from "@material-ui/core/styles";
-const useStyles = makeStyles(() => ({
+
+const useStyle = makeStyles(() => ({
   root: {
-    margin: "0",
-    paddingBottom: "30px",
+    backgroundColor: "#a59132",
+    color: "#fafdf6",
+    padding: "30px",
   },
-
-  cardGrid: {
-    // paddingTop: theme.spacing(8),
+  title: {
+    borderBottomStyle: "solid",
+    paddingBottom: "5px",
   },
-
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardMedia: {
-    paddingTop: "56.25%",
-  },
-  CardContent: {
-    flexGrow: 1,
+  container: {
+    marginTop: "20px",
   },
 }));
 
 export default function Sponsors() {
-  const classes = useStyles();
-
+  const classes = useStyle();
   return (
-    <Box className={classes.root} id="sponsors">
-      <Typography variant="h4" align="center" style={{ padding: "20px" }}>
-        Sponsors
+    <div id="sponsors" className={classes.root}>
+      <Typography variant="h4" align="center">
+        <a className={classes.title}>Meet our Sponsors</a>
       </Typography>
-      <Container className={classes.cardGrid} maxWidth="md">
-        <Typography variant="h5" align="center" style={{ padding: "20px" }}>
-          Gold
-        </Typography>
-        <Grid container spacing={4}>
-          {Gold.map((data, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia className={classes.cardMedia} image={data.logo} />
-                <CardContent className={classes.CardContent}>
-                  <Typography gutterBottom variant="h6">
-                    {data.name}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary" href={data.website}>
-                    Visit website
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      <Container className={classes.cardGrid} maxWidth="md">
-        <Typography variant="h5" align="center" style={{ padding: "20px" }}>
-          Silver
-        </Typography>
-        <Grid container spacing={4}>
-          {Silver.map((data, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia className={classes.cardMedia} image={data.logo} />
-                <CardContent className={classes.CardContent}>
-                  <Typography gutterBottom variant="h6">
-                    {data.name}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary" href={data.website}>
-                    Visit website
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      <Container className={classes.cardGrid} maxWidth="md">
-        <Typography variant="h5" align="center" style={{ padding: "20px" }}>
-          Bronze
-        </Typography>
-        <Grid container spacing={4}>
-          {Bronze.map((data, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia className={classes.cardMedia} image={data.logo} />
-                <CardContent className={classes.CardContent}>
-                  <Typography gutterBottom variant="h6">
-                    {data.name}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary" href={data.website}>
-                    Visit website
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+      <Grid container className={classes.container}>
+        <SponsorCategory
+          category="Gold"
+          colour="#AF9500"
+          sponsors={sponsors.gold}
+        />
+        <SponsorCategory
+          category="Silver"
+          colour="#B4B4B4"
+          sponsors={sponsors.silver}
+        />
+        <SponsorCategory
+          category="Bronze"
+          colour="#6A3805"
+          sponsors={sponsors.bronze}
+        />
+      </Grid>
+    </div>
   );
 }
