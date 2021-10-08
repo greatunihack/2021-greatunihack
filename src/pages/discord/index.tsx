@@ -89,9 +89,7 @@ export default function Discord() {
             <Box p={2} pl={0}>
               <Box display="flex" alignItems="center" justifyContent="center">
                 {discordLinked ? (
-                  <Typography>
-                    You have linked your Discord account!
-                  </Typography>
+                  <Typography>You have linked your Discord account!</Typography>
                 ) : (
                   <Button
                     variant="contained"
