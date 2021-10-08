@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -77,7 +78,6 @@ export default function Apply() {
                     ethnicity: values.ethnicity,
                     gender: values.gender,
                   });
-                  console.log("Document written", docRef);
                   if (auth.currentUser) {
                     updateProfile(auth.currentUser, {
                       displayName: `${values.firstName} ${values.lastName}`,
@@ -192,6 +192,8 @@ export default function Apply() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         type="password"
+                        error={touched.password && Boolean(errors.password)}
+                        helperText={touched.password && errors.password}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -291,9 +293,7 @@ export default function Apply() {
                                 `${values.firstName}${values.lastName} - ` +
                                 t
                             );
-                            uploadBytes(storageRef, file).then(() => {
-                              console.log("Uploaded file!");
-                            });
+                            uploadBytes(storageRef, file);
                           }
                         }}
                       />

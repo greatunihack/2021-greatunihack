@@ -30,9 +30,7 @@ export default function Header() {
       .then(() => {
         history.push("/");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch();
   }
 
   return (

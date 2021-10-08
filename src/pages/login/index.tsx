@@ -75,9 +75,7 @@ export default function Login() {
                   history.push("/dashboard/home");
                 })
                 .catch((error) => {
-                  const errorCode = error.code;
                   const errorMessage = error.message;
-                  console.log(errorCode);
                   alert(errorMessage);
                 });
             }}

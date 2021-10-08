@@ -68,9 +68,7 @@ export default function Discord() {
                   });
                 });
               })
-              .catch((error: any) => {
-                console.log(error);
-              });
+              .catch();
           }
         });
       });

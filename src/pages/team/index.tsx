@@ -55,8 +55,6 @@ export default function Team() {
       getDocs(
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((querySnapshot) => {
-        console.log(querySnapshot.size);
-
         querySnapshot.forEach((document) => {
           if (!document.data().discordAccessToken) {
             setDiscordNotLinked(true);
@@ -74,7 +72,6 @@ export default function Team() {
                     teamName: document.data().teamName,
                     teamId: document.data().teamId,
                   });
-
                   getDocs(
                     collection(db, "teams", document.id, "teamMembers")
                   ).then((querySnapshot) => {
@@ -84,7 +81,6 @@ export default function Team() {
                         [document.data().name]: document.data().email,
                       });
                     });
-                    console.log(teamMembers);
                   });
                 });
               });

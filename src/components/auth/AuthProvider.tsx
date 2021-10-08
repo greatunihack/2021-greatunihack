@@ -32,8 +32,6 @@ if (process.env.REACT_APP_FIREBASE_APP_CHECK_PUBLIC_KEY) {
     ),
     isTokenAutoRefreshEnabled: true,
   });
-} else {
-  console.log("APP CHECK IS DISABLED. PLEASE SET THE ENVIRONMENT VARIABLE!");
 }
 
 const auth = getAuth(firebaseApp);
