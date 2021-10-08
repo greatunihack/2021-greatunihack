@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400,
     flex: 1,
   },
+  icon: {
+    fill: "white",
+  },
 }));
 
 export default function Header() {
@@ -40,7 +43,7 @@ export default function Header() {
           &#60;{process.env.REACT_APP_HACKATHON_NAME} /&#62;
         </Typography>
         <IconButton onClick={logOut}>
-          <ExitToAppIcon />
+          <ExitToAppIcon className={classes.icon} />
         </IconButton>
       </Toolbar>
     </AppBar>

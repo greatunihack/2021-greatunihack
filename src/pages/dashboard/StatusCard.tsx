@@ -48,7 +48,7 @@ export default function HomeButton() {
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((querySnapshot) => {
         querySnapshot.forEach((document) => {
-          if (document.data().team) {
+          if (document.data().teamId) {
             setUserStatus([100, "Joined a team"]);
           } else if (document.data().discordAccessToken) {
             setUserStatus([66, "Linked Discord account"]);
