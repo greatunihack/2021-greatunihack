@@ -3,6 +3,7 @@ const useStyle = makeStyles(() => ({
   body: {
     backgroundColor: "#a59132",
     color: "#fafdf6",
+    paddingTop: "30px",
   },
   title: {
     borderBottomStyle: "solid",

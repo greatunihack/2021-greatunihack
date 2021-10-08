@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import { IconButton } from "@material-ui/core";
+import { Hidden, IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -37,39 +37,41 @@ export default function Header() {
     <AppBar position="static" className={classes.header}>
       <Toolbar>
         <Typography className={classes.title}>
-          {process.env.REACT_APP_HACKATHON_NAME}
+          &#60;{process.env.REACT_APP_HACKATHON_NAME} /&#62;
         </Typography>
-        <Button
-          color="inherit"
-          component={Link}
-          to="/"
-          className={classes.link}
-        >
-          Home
-        </Button>
-        <Button color="inherit" href="#about" className={classes.link}>
-          About
-        </Button>
-        <Button color="inherit" href="#faq" className={classes.link}>
-          FAQ
-        </Button>
-        <Button color="inherit" href="#sponsors" className={classes.link}>
-          Sponsors
-        </Button>
-        <IconButton
-          onClick={() =>
-            (window.location.href = "https://www.facebook.com/unicsmcr/")
-          }
-        >
-          <FacebookIcon className={classes.icon} />
-        </IconButton>
-        <IconButton
-          onClick={() =>
-            (window.location.href = "https://www.instagram.com/unicsmcr/")
-          }
-        >
-          <InstagramIcon className={classes.icon} />
-        </IconButton>
+        <Hidden mdDown>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/"
+            className={classes.link}
+          >
+            Home
+          </Button>
+          <Button color="inherit" href="#about" className={classes.link}>
+            About
+          </Button>
+          <Button color="inherit" href="#faq" className={classes.link}>
+            FAQ
+          </Button>
+          <Button color="inherit" href="#sponsors" className={classes.link}>
+            Sponsors
+          </Button>
+          <IconButton
+            onClick={() =>
+              (window.location.href = "https://www.facebook.com/unicsmcr/")
+            }
+          >
+            <FacebookIcon className={classes.icon} />
+          </IconButton>
+          <IconButton
+            onClick={() =>
+              (window.location.href = "https://www.instagram.com/unicsmcr/")
+            }
+          >
+            <InstagramIcon className={classes.icon} />
+          </IconButton>
+        </Hidden>
       </Toolbar>
     </AppBar>
   );

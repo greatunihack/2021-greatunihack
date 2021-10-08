@@ -47,8 +47,8 @@ export default function Footer() {
           />
         </IconButton>
       </Box>
-      <Box className={classes.boxes}>
-        <Typography>hackathons@unicsmcr.com</Typography>
+      <Box className={classes.boxes} pb={2}>
+        <Typography>Contact: hackathons@unicsmcr.com</Typography>
       </Box>
       <Box className={classes.boxes}>
         <Copyright />

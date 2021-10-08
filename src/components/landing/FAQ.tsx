@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fafdf6",
     paddingBottom: "30px",
     display: "block",
+    paddingTop: "30px",
   },
 
   title: {
