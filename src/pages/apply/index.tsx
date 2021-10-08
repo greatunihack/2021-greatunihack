@@ -84,7 +84,9 @@ export default function Apply() {
                       displayName: `${values.firstName} ${values.lastName}`,
                     });
                   }
-                  setMessageText("Thank you for applying!");
+                  setMessageText(
+                    "Thank you for applying! You can log into the hub 5 days before the hackathon begins."
+                  );
                   setMessageOpen(true);
                 } catch (e) {
                   console.error("Error adding document: ", e);
@@ -351,7 +353,7 @@ export default function Apply() {
       <Dialog
         open={messageOpen}
         onClose={() => {
-          window.location.href = "/dashboard/home";
+          window.location.href = "/";
         }}
       >
         <Box m={3}>
