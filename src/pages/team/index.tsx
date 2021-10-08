@@ -34,6 +34,7 @@ import {
 } from "@firebase/firestore";
 import { getApp } from "@firebase/app";
 import { AuthContext } from "src/components/auth/AuthContext";
+import { useHistory } from "react-router-dom";
 
 export default function Team() {
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
@@ -41,11 +42,13 @@ export default function Team() {
   const [joinTeamOpen, setJoinTeamOpen] = useState(false);
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
+  const [discordNotLinked, setDiscordNotLinked] = useState(false);
   const [form, setForm] = useState({ teamName: null, teamId: null });
   const [teamMembers, setTeamMembers] = useState({});
   const app = getApp();
   const db = getFirestore(app);
   const { user } = useContext(AuthContext);
+  const history = useHistory();
 
   useEffect(() => {
     if (user && user != "loading") {
@@ -55,33 +58,37 @@ export default function Team() {
         console.log(querySnapshot.size);
 
         querySnapshot.forEach((document) => {
-          if (document.data().teamId) {
-            getDocs(
-              query(
-                collection(db, "teams"),
-                where("teamId", "==", document.data().teamId)
-              )
-            ).then((querySnapshot) => {
-              querySnapshot.forEach((document) => {
-                setOnATeam(true);
-                setForm({
-                  teamName: document.data().teamName,
-                  teamId: document.data().teamId,
-                });
-
-                getDocs(
-                  collection(db, "teams", document.id, "teamMembers")
-                ).then((querySnapshot) => {
-                  querySnapshot.forEach((document) => {
-                    setTeamMembers({
-                      ...teamMembers,
-                      [document.data().name]: document.data().email,
-                    });
+          if (!document.data().discordAccessToken) {
+            setDiscordNotLinked(true);
+          } else {
+            if (document.data().teamId) {
+              getDocs(
+                query(
+                  collection(db, "teams"),
+                  where("teamId", "==", document.data().teamId)
+                )
+              ).then((querySnapshot) => {
+                querySnapshot.forEach((document) => {
+                  setOnATeam(true);
+                  setForm({
+                    teamName: document.data().teamName,
+                    teamId: document.data().teamId,
                   });
-                  console.log(teamMembers);
+
+                  getDocs(
+                    collection(db, "teams", document.id, "teamMembers")
+                  ).then((querySnapshot) => {
+                    querySnapshot.forEach((document) => {
+                      setTeamMembers({
+                        ...teamMembers,
+                        [document.data().name]: document.data().email,
+                      });
+                    });
+                    console.log(teamMembers);
+                  });
                 });
               });
-            });
+            }
           }
         });
       });
@@ -365,6 +372,18 @@ export default function Team() {
       >
         <Box m={3}>
           <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
+      <Dialog
+        open={discordNotLinked}
+        onClose={() => {
+          history.push("/dashboard/home");
+        }}
+      >
+        <Box m={3}>
+          <Typography>
+            Please link your Discord account before joining a team!
+          </Typography>
         </Box>
       </Dialog>
     </>
