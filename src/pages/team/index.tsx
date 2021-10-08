@@ -48,7 +48,7 @@ export default function Team() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!(user == "loading" || user == null)) {
+    if (user && user != "loading") {
       getDocs(
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((querySnapshot) => {
@@ -101,7 +101,7 @@ export default function Team() {
   };
 
   function leaveTeam() {
-    if (!(user == "loading" || user == null)) {
+    if (user && user != "loading") {
       getDocs(
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((querySnapshot) => {

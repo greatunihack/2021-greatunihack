@@ -6,7 +6,6 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -22,10 +21,12 @@ import {
 } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Copyright } from "src/components/copyright";
-import { Dialog } from "@material-ui/core";
+import { Dialog, FormHelperText } from "@material-ui/core";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,143 +56,298 @@ export default function Apply() {
   const classes = useStyles();
   const app = getApp();
   const db = getFirestore(app);
-  const [state, setState] = React.useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    discord: "",
-    gender: "",
-    ethnicity: "",
-    GDPRaccept: false,
-    image: null,
-  });
-
-  // eslint-disable-next-line
-  function handleChange(e: any) {
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    if (e.target.type === "file") {
-      const file = e.target.files[0];
-      const storage = getStorage();
-      const location = "CVs/" + file;
-      const storageRef = ref(storage, location);
-      uploadBytes(storageRef, file).then(() => {
-        console.log("Uploaded file!");
-      });
-    }
-    setState({
-      ...state,
-      [e.target.name]: value,
-    });
-  }
-
-  const [firstNameError, setfirstNameError] = useState(false);
-  const [lastNameError, setlastNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [discordError, setDiscordError] = useState(false);
-
-  const [GDPRError, setGDPRError] = useState(false);
 
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
 
-  // eslint-disable-next-line
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setfirstNameError(false);
-    setlastNameError(false);
-    setEmailError(false);
-    setPasswordError(false);
-    setGDPRError(false);
-
-    if (state.firstName === "") {
-      setfirstNameError(true);
-    }
-    if (state.lastName === "") {
-      setlastNameError(true);
-    }
-    if (state.email === "") {
-      setEmailError(true);
-    }
-
-    if (state.password === "") {
-      setPasswordError(true);
-    }
-    if (state.discord === "") {
-      setDiscordError(true);
-    }
-
-    if (state.GDPRaccept === false) {
-      setGDPRError(true);
-      alert("The check box must be checked");
-    }
-
-    if (
-      state.firstName &&
-      state.lastName &&
-      state.email &&
-      state.password &&
-      state.discord &&
-      state.GDPRaccept
-    ) {
-      createUser(
-        state.firstName,
-        state.lastName,
-        state.email,
-        state.password,
-        state.discord,
-        state.ethnicity,
-        state.gender
-      );
-    }
-  };
-
-  function createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    discord: string,
-    ethnicity: string,
-    gender: string
-  ) {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // eslint-disable-next-line
-        const user = userCredential.user;
-        try {
-          const docRef = addDoc(collection(db, "users"), {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            discord: discord,
-            ethnicity: ethnicity,
-            gender: gender,
-            status: 1,
-          });
-          console.log("Document written", docRef);
-          if (auth.currentUser) {
-            updateProfile(auth.currentUser, {
-              displayName: `${firstName} ${lastName}`,
-            });
-          }
-          setMessageText("Thank you for applying!");
-          setMessageOpen(true);
-        } catch (e) {
-          console.error("Error adding document: ", e);
-        }
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
-  }
-
   return (
     <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Formik
+          onSubmit={(values) => {
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, values.email, values.password)
+              .then(() => {
+                try {
+                  const docRef = addDoc(collection(db, "users"), {
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    email: values.email,
+                    ethnicity: values.ethnicity,
+                    gender: values.gender,
+                    status: 1,
+                  });
+                  console.log("Document written", docRef);
+                  if (auth.currentUser) {
+                    updateProfile(auth.currentUser, {
+                      displayName: `${values.firstName} ${values.lastName}`,
+                    });
+                  }
+                  setMessageText("Thank you for applying!");
+                  setMessageOpen(true);
+                } catch (e) {
+                  console.error("Error adding document: ", e);
+                }
+              })
+              .catch((error) => {
+                const errorMessage = error.message;
+                alert(errorMessage);
+              });
+          }}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            ethnicity: "",
+            gender: "",
+            resume: null,
+            GDPR: false,
+          }}
+          validationSchema={Yup.object().shape({
+            firstName: Yup.string().required("First name required"),
+            lastName: Yup.string().required("Last name required"),
+            email: Yup.string()
+              .email("Invalid email")
+              .required("Email required"),
+            password: Yup.string()
+              .required("Password required")
+              .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*£"'])(?=.{8,})/,
+                "Must contain 8 characters (one uppercase, one lowercase, one number and one special character)"
+              ),
+            GDPR: Yup.boolean()
+              .required("Please accept the terms & conditions")
+              .oneOf([true], "Please accept the terms & conditions"),
+          })}
+        >
+          {({ errors, handleBlur, handleChange, touched, values }) => (
+            <Form>
+              <Box className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Apply
+                </Typography>
+                <Box m={2}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="First Name"
+                        id="firstName"
+                        name="firstName"
+                        value={values.firstName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.firstName && Boolean(errors.firstName)}
+                        helperText={touched.firstName && errors.firstName}
+                        autoFocus
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Last Name"
+                        id="lastName"
+                        name="lastName"
+                        value={values.lastName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.lastName && Boolean(errors.lastName)}
+                        helperText={touched.lastName && errors.lastName}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Email Address"
+                        id="email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Password"
+                        id="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        type="password"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Ethnicity (Optional)"
+                        id="ethnicity"
+                        name="ethnicity"
+                        value={values.ethnicity}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        <MenuItem value={"Indian"}>Indian</MenuItem>
+                        <MenuItem value={"Pakistani"}>Pakistani</MenuItem>
+                        <MenuItem value={"Bangladeshi"}>Bangladeshi</MenuItem>
+                        <MenuItem value={"Chinese"}>Chinese</MenuItem>
+                        <MenuItem divider={true} value={"Asian - Other"}>
+                          Asian - Other
+                        </MenuItem>
+                        <MenuItem value={"Black African"}>
+                          Black African
+                        </MenuItem>
+                        <MenuItem value={"Black Caribbean"}>
+                          Black Caribbean
+                        </MenuItem>
+                        <MenuItem divider={true} value={"Black - Other"}>
+                          Black - Other
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Asian"}>
+                          Mixed White/Asian
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Black African	"}>
+                          Mixed White/Black African
+                        </MenuItem>
+                        <MenuItem value={"Mixed White/Black Caribbean"}>
+                          Mixed White/Black Caribbean
+                        </MenuItem>
+                        <MenuItem divider={true} value={"Mixed - Other"}>
+                          Mixed - Other
+                        </MenuItem>
+                        <MenuItem value={"White British"}>
+                          White British
+                        </MenuItem>
+                        <MenuItem value={"White Irish	"}>White Irish </MenuItem>
+                        <MenuItem value={"White Gypsy/Traveller"}>
+                          White Gypsy/Traveller
+                        </MenuItem>
+                        <MenuItem divider={true} value={"White - Other"}>
+                          White - Other
+                        </MenuItem>
+                        <MenuItem value={"Arab"}>Arab</MenuItem>
+                        <MenuItem value={"Other"}>Other </MenuItem>
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Gender (Optional)"
+                        id="gender"
+                        name="gender"
+                        value={values.gender}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        <MenuItem value={"Female"}>Female</MenuItem>
+                        <MenuItem value={"Male"}>Male</MenuItem>
+                        <MenuItem value={"Other"}>Other</MenuItem>
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel
+                        style={{ paddingTop: "6px", paddingBottom: "2px" }}
+                      >
+                        CV Upload (Optional)
+                      </InputLabel>
+                      <Box mt={1} mb={2}>
+                        <Typography variant="caption">
+                          Upload your CV for our sponsors to see!
+                        </Typography>
+                      </Box>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        id="resume"
+                        name="resume"
+                        onChange={(e) => {
+                          if (e.target.type === "file" && e.target.files) {
+                            const file = e.target.files[0];
+                            const t = new Date().toLocaleTimeString();
+                            const storageRef = ref(
+                              getStorage(),
+                              "CVs/" +
+                                `${values.firstName}${values.lastName} - ` +
+                                t
+                            );
+                            uploadBytes(storageRef, file).then(() => {
+                              console.log("Uploaded file!");
+                            });
+                          }
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl required>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              color="primary"
+                              name="GDPR"
+                              id="GDPR"
+                              checked={values.GDPR}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          }
+                          label="I agree to the terms and conditions."
+                        />
+                      </FormControl>
+                      {touched.GDPR && Boolean(errors.GDPR) && (
+                        <FormHelperText error>{errors.GDPR}</FormHelperText>
+                      )}
+                    </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Apply
+                  </Button>
+                  <Grid container justifyContent="flex-end">
+                    <Grid item>
+                      <Button component={Link} to="/login">
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          Already have an account? Log in
+                        </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+        <Box p={5}>
+          <Copyright variant="body2" color="textSecondary" />
+        </Box>
+      </Container>
       <Dialog
         open={messageOpen}
         onClose={() => {
@@ -202,200 +358,6 @@ export default function Apply() {
           <Typography>{messageText}</Typography>
         </Box>
       </Dialog>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Apply
-          </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  value={state.firstName}
-                  autoFocus
-                  onChange={handleChange}
-                  error={firstNameError}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  value={state.lastName}
-                  onChange={handleChange}
-                  error={lastNameError}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={state.email}
-                  onChange={handleChange}
-                  error={emailError}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={state.password}
-                  onChange={handleChange}
-                  error={passwordError}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="discord"
-                  label="Discord"
-                  type="Discord"
-                  id="Discord"
-                  autoComplete="Discord-username"
-                  value={state.discord}
-                  onChange={handleChange}
-                  error={discordError}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  className={classes.formControl}
-                >
-                  Ethnicity
-                </InputLabel>
-                <Select
-                  variant="outlined"
-                  fullWidth
-                  name="ethnicity"
-                  label="Ethnicity"
-                  type="ethnicity"
-                  id="ethnicity"
-                  autoComplete="ethnicity"
-                  value={state.ethnicity}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"1"}>
-                    English, Welsh, Scottish, Northern Irish or British
-                  </MenuItem>
-                  <MenuItem value={"2"}>Irish</MenuItem>
-                  <MenuItem value={"3"}>Any other White background</MenuItem>
-                  <MenuItem value={"4"}>White and Black Caribbean</MenuItem>
-                  <MenuItem value={"5"}>White and Black African</MenuItem>
-                  <MenuItem value={"6"}>White and Asian</MenuItem>
-                  <MenuItem value={"7"}>
-                    Any other Mixed or Multiple ethnic background
-                  </MenuItem>
-                  <MenuItem value={"8"}>Indian</MenuItem>
-                  <MenuItem value={"9"}>Pakistani</MenuItem>
-                  <MenuItem value={"10"}>Bangladeshi</MenuItem>
-                  <MenuItem value={"11"}>Pakistani</MenuItem>
-                  <MenuItem value={"12"}>Chinese</MenuItem>
-                  <MenuItem value={"13"}>Any other Asian background</MenuItem>
-                  <MenuItem value={"14"}>African</MenuItem>
-                  <MenuItem value={"15"}>Caribbean</MenuItem>
-                  <MenuItem value={"16"}>Any other Asian background</MenuItem>
-                  <MenuItem value={"17"}>
-                    Any other Black, African or Caribbean background
-                  </MenuItem>
-                  <MenuItem value={"18"}>Arab</MenuItem>
-                  <MenuItem value={"19"}>Any other ethnic group</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel
-                  id="demo-simple-select-label"
-                  className={classes.formControl}
-                >
-                  Gender
-                </InputLabel>
-                <Select
-                  variant="outlined"
-                  fullWidth
-                  name="gender"
-                  label="gender"
-                  type="gender"
-                  id="gender"
-                  autoComplete="Gender"
-                  value={state.gender}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"Female"}>Female</MenuItem>
-                  <MenuItem value={"Male"}>Male</MenuItem>
-                  <MenuItem value={"Other"}>Other</MenuItem>
-                </Select>
-                <InputLabel style={{ padding: "10px" }}>Upload CV</InputLabel>
-                <Button variant="contained" component="label">
-                  <input type="file" onChange={handleChange} />
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl required error={GDPRError}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        name="GDPRaccept"
-                        checked={state.GDPRaccept}
-                        onChange={handleChange}
-                      />
-                    }
-                    label="I agree for my data to be stored when necessary."
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Apply
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </Box>
-        <Box p={5}>
-          <Copyright variant="body2" color="textSecondary" />
-        </Box>
-      </Container>
     </>
   );
 }
