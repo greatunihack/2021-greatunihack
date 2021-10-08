@@ -1,16 +1,9 @@
-import { Box, makeStyles, Button, Card } from "@material-ui/core";
+import { Box, Button, Card } from "@material-ui/core";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 
-const useStyles = makeStyles(() => ({
-  form: {
-    width: "100%", // Fix IE 11 issue.
-  },
-  formControl: {
-    minWidth: 120,
-  },
-}));
-
+// Implement Discord OAuth
+// Set return discordToken in Firebase user document to access token
 export default function Discord() {
   return (
     <>

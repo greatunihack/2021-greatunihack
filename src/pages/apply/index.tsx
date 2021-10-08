@@ -313,9 +313,9 @@ export default function Apply() {
                           label="I agree to the terms and conditions."
                         />
                       </FormControl>
-                    {touched.GDPR && Boolean(errors.GDPR) && (
-                      <FormHelperText error>{errors.GDPR}</FormHelperText>
-                    )}
+                      {touched.GDPR && Boolean(errors.GDPR) && (
+                        <FormHelperText error>{errors.GDPR}</FormHelperText>
+                      )}
                     </Grid>
                   </Grid>
                   <Button
