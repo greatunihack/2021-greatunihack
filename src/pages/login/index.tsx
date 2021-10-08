@@ -3,19 +3,28 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { AuthContext } from "src/components/auth/AuthContext";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Copyright } from "src/components/copyright";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@material-ui/core";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -40,45 +49,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const { setUser } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [resetPassword, setResetPassword] = useState(false);
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [messageText, setMessageText] = useState("");
   const history = useHistory();
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-
-  // eslint-disable-next-line
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setEmailError(false);
-    setPasswordError(false);
-
-    if (email === "") {
-      setEmailError(true);
-    }
-
-    if (password === "") {
-      setPasswordError(true);
-    }
-    if (email && password) {
-      checkUser(email, password);
-    }
-  };
-
-  function checkUser(email: string, password: string) {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setUser(user);
-        history.push("/dashboard/home");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        alert(errorMessage);
-      });
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -90,63 +64,186 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-            error={emailError}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-            error={passwordError}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+        <Box m={2}>
+          <Formik
+            onSubmit={(values) => {
+              const auth = getAuth();
+              signInWithEmailAndPassword(auth, values.email, values.email)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  setUser(user);
+                  history.push("/dashboard/home");
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.log(errorCode);
+                  alert(errorMessage);
+                });
+            }}
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email("Invalid email")
+                .required("Email required"),
+              password: Yup.string().required("Password required"),
+            })}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/apply" variant="body2">
-                {"Don't have an account? Apply"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+            {({ errors, handleBlur, handleChange, touched, values }) => (
+              <Form>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  value={values.email}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                  value={values.password}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  {/* <Grid item xs>
+                    <Button
+                      onClick={() => {
+                        setResetPassword(true);
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        style={{ fontSize: "0.8em" }}
+                      >
+                        Forgot password?
+                      </Typography>
+                    </Button>
+                  </Grid> */}
+                  <Grid item>
+                    <Button component={Link} to="/apply">
+                      <Typography
+                        variant="caption"
+                        style={{ fontSize: "0.8em" }}
+                      >
+                        {"Don't have an account? Apply"}
+                      </Typography>
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Box>
       </Box>
       <Box p={5}>
         <Copyright variant="body2" color="textSecondary" />
       </Box>
+      <Dialog
+        open={resetPassword}
+        onClose={() => {
+          setResetPassword(false);
+        }}
+        fullWidth
+      >
+        <Formik
+          onSubmit={(values) => {
+            const auth = getAuth();
+            sendPasswordResetEmail(auth, values.email)
+              .then(() => {
+                setResetPassword(false);
+
+                setMessageText("Reset email sent!");
+                setMessageOpen(true);
+              })
+              .catch(() => {
+                setResetPassword(false);
+                setMessageText("Error. Please enter a valid email address.");
+                setMessageOpen(true);
+              });
+          }}
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email("Invalid email")
+              .required("Email required"),
+          })}
+        >
+          {({ errors, handleBlur, handleChange, values, touched }) => (
+            <Form>
+              <DialogTitle>Reset Password</DialogTitle>
+              <DialogContent>
+                <TextField
+                  margin="dense"
+                  id="email"
+                  label="Email"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    setResetPassword(false);
+                  }}
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary">
+                  Reset
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </Dialog>
+      <Dialog
+        open={messageOpen}
+        onClose={() => {
+          window.location.reload();
+        }}
+      >
+        <Box m={3}>
+          <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
     </Container>
   );
 }
