@@ -90,7 +90,7 @@ export default function Discord() {
               <Box display="flex" alignItems="center" justifyContent="center">
                 {discordLinked ? (
                   <Typography>
-                    You have linked your Discord account already!
+                    You have linked your Discord account!
                   </Typography>
                 ) : (
                   <Button
