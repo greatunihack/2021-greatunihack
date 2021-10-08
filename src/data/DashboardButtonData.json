@@ -1,9 +1,9 @@
 {
   "pageItems": [
     {
-      "link": "/dashboard/profile",
-      "name": "Profile",
-      "description": "View and edit your profile"
+      "link": "/dashboard/discord",
+      "name": "Link Discord",
+      "description": "Link your Dicord account to join the Discord server"
     },
     {
       "link": "https://greatunihack-2021.devpost.com/",

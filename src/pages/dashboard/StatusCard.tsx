@@ -9,7 +9,13 @@ import {
 import { useState, useContext } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { getApp } from "firebase/app";
-import { getFirestore, collection, query, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  getDocs,
+  where,
+} from "firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,30 +37,25 @@ export default function HomeButton() {
   const { user } = useContext(AuthContext);
 
   const [userStatus, setUserStatus] = useState<[number, string]>(() => {
-    return [0, ""];
+    return [0, "Loading..."];
   });
 
   if (userStatus[0] === 0) {
-    // TODO: This is very inefficient
     const app = getApp();
     const db = getFirestore(app);
     if (user && user != "loading") {
-      const q = query(collection(db, "users"));
-      // eslint-disable-next-line
-      const usersData: any[] = [];
-      getDocs(q).then((users) => {
-        users.forEach((user) => usersData.push(user.data()));
-        const userData = usersData.filter(
-          (x) => x.email.toLowerCase() == user.email?.toLowerCase()
-        )[0];
-
-        if (userData.team) {
-          setUserStatus([100, "Joined Team"]);
-        } else if (userData.discord) {
-          setUserStatus([75, "Linked Discord Account"]);
-        } else {
-          setUserStatus([50, "Registered"]);
-        }
+      getDocs(
+        query(collection(db, "users"), where("email", "==", user.email))
+      ).then((querySnapshot) => {
+        querySnapshot.forEach((document) => {
+          if (document.data().team) {
+            setUserStatus([100, "Joined a team"]);
+          } else if (document.data().discordToken) {
+            setUserStatus([66, "Linked Discord account"]);
+          } else {
+            setUserStatus([33, "Registered"]);
+          }
+        });
       });
     }
   }
@@ -84,7 +85,6 @@ export default function HomeButton() {
               >{`${userStatus[0]}%`}</Typography>
             </Box>
           </Box>
-          {/* TODO: Get status from Firebase, set according text and progressbar values */}
           <Box mt={3}>
             <Typography variant="body2" component="p" align="center">
               {`${userStatus[1]}`}

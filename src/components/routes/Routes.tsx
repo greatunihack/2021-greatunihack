@@ -5,7 +5,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Dashboard from "src/pages/dashboard";
-import Profile from "src/pages/profile";
+import Profile from "src/pages/discord";
 import Contact from "src/pages/contact";
 import Sponsors from "src/pages/sponsors";
 import Challenges from "src/pages/challenges";
@@ -19,7 +19,7 @@ export default function Routes() {
         <Route exact path="/dashboard/home">
           <Dashboard />
         </Route>
-        <Route exact path="/dashboard/profile">
+        <Route exact path="/dashboard/discord">
           <Profile />
         </Route>
         <Route exact path="/dashboard/sponsors">

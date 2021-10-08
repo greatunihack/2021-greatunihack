@@ -167,7 +167,7 @@ export default function Apply() {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            discord: discord,
+            // discord: discord,
             ethnicity: ethnicity,
             gender: gender,
             status: 1,
@@ -271,7 +271,7 @@ export default function Apply() {
                   error={passwordError}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
@@ -285,7 +285,7 @@ export default function Apply() {
                   onChange={handleChange}
                   error={discordError}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <InputLabel
                   id="demo-simple-select-label"
