@@ -27,7 +27,6 @@ import { Copyright } from "src/components/copyright";
 import { Dialog, FormHelperText } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
