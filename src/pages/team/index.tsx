@@ -244,18 +244,11 @@ export default function Team() {
                     </Grid>
                     <Grid item xs={12}>
                       <Box m={2}>
-                        <Typography>Team Members:</Typography>
+                        <Typography>
+                          Team Members: {teamMembers.join(", ")}
+                        </Typography>
                       </Box>
                     </Grid>
-
-                    {teamMembers.map((data) => (
-                      <Grid item xs={12}>
-                        <Box m={2}>
-                          <Typography>{data}</Typography>
-                        </Box>
-                      </Grid>
-                    ))}
-
                     <Grid item xs={12}>
                       <Box
                         display="flex"
