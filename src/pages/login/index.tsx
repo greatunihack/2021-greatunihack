@@ -68,7 +68,7 @@ export default function Login() {
           <Formik
             onSubmit={(values) => {
               const auth = getAuth();
-              signInWithEmailAndPassword(auth, values.email, values.email)
+              signInWithEmailAndPassword(auth, values.email, values.password)
                 .then((userCredential) => {
                   const user = userCredential.user;
                   setUser(user);
