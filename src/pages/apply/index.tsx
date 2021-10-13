@@ -328,7 +328,7 @@ export default function Apply() {
                   >
                     Apply
                   </Button>
-                  <Grid container justifyContent="flex-end">
+                  {/* <Grid container justifyContent="flex-end">
                     <Grid item>
                       <Button component={Link} to="/login">
                         <Typography
@@ -339,7 +339,7 @@ export default function Apply() {
                         </Typography>
                       </Button>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                 </Box>
               </Box>
             </Form>

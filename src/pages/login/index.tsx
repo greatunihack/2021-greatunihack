@@ -133,8 +133,8 @@ export default function Login() {
                 >
                   Sign In
                 </Button>
-                <Grid container justifyContent="flex-end">
-                  {/* <Grid item xs>
+                {/* <Grid container justifyContent="flex-end">
+                  <Grid item xs>
                     <Button
                       onClick={() => {
                         setResetPassword(true);
@@ -147,7 +147,7 @@ export default function Login() {
                         Forgot password?
                       </Typography>
                     </Button>
-                  </Grid> */}
+                  </Grid>
                   <Grid item>
                     <Button component={Link} to="/apply">
                       <Typography
@@ -158,7 +158,7 @@ export default function Login() {
                       </Typography>
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </Form>
             )}
           </Formik>
