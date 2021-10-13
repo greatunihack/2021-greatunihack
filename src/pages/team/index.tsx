@@ -120,25 +120,32 @@ export default function Team() {
             ).then((querySnapshot) => {
               querySnapshot.forEach((document) => {
                 getDocs(
-                  query(
-                    collection(db, "teams", document.id, "teamMembers"),
-                    where("email", "==", user.email)
-                  )
+                  collection(db, "teams", document.id, "teamMembers")
                 ).then((querySnapshot) => {
-                  querySnapshot.forEach((document_user) => {
-                    deleteDoc(
-                      doc(
-                        db,
-                        "teams",
-                        document.id,
-                        "teamMembers",
-                        document_user.id
-                      )
-                    );
+                  console.log(querySnapshot.size);
+                  if (querySnapshot.size === 1) {
+                    deleteDoc(doc(db, "teams", document.id));
                     handleClose();
                     setMessageText("Left team successfully!");
                     setMessageOpen(true);
-                  });
+                  } else {
+                    querySnapshot.forEach((document_user) => {
+                      if (user.email === document_user.data().email) {
+                        deleteDoc(
+                          doc(
+                            db,
+                            "teams",
+                            document.id,
+                            "teamMembers",
+                            document_user.id
+                          )
+                        );
+                      }
+                      handleClose();
+                      setMessageText("Left team successfully!");
+                      setMessageOpen(true);
+                    });
+                  }
                 });
               });
             });
@@ -155,23 +162,38 @@ export default function Team() {
       ).then((querySnapshot) => {
         if (querySnapshot.size > 0) {
           querySnapshot.forEach((document) => {
-            addDoc(collection(db, "teams", document.id, "teamMembers"), {
-              name: user.displayName,
-              email: user.email,
-            });
-          });
-          getDocs(
-            query(collection(db, "users"), where("email", "==", user.email))
-          ).then((querySnapshot) => {
-            querySnapshot.forEach((document) => {
-              setDoc(
-                doc(db, "users", document.id),
-                {
-                  teamId: form.teamId,
-                },
-                { merge: true }
-              );
-            });
+            getDocs(collection(db, "teams", document.id, "teamMembers")).then(
+              (querySnapshot) => {
+                if (querySnapshot.size < 6) {
+                  addDoc(collection(db, "teams", document.id, "teamMembers"), {
+                    name: user.displayName,
+                    email: user.email,
+                  });
+                  getDocs(
+                    query(
+                      collection(db, "users"),
+                      where("email", "==", user.email)
+                    )
+                  ).then((querySnapshot) => {
+                    querySnapshot.forEach((document) => {
+                      setDoc(
+                        doc(db, "users", document.id),
+                        {
+                          teamId: form.teamId,
+                        },
+                        { merge: true }
+                      );
+                    });
+                  });
+                } else {
+                  handleClose();
+                  setMessageText(
+                    "You can't have more than 6 people on the same team!"
+                  );
+                  setMessageOpen(true);
+                }
+              }
+            );
           });
           handleClose();
           setMessageText("Team joined successfully!");
