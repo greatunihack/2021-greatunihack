@@ -44,7 +44,7 @@ export default function Team() {
   const [messageText, setMessageText] = useState("");
   const [discordNotLinked, setDiscordNotLinked] = useState(false);
   const [form, setForm] = useState({ teamName: null, teamId: null });
-  const [teamMembers, setTeamMembers] = useState({});
+  const [teamMembers, setTeamMembers] = useState([]);
   const app = getApp();
   const db = getFirestore(app);
   const { user } = useContext(AuthContext);
@@ -75,12 +75,11 @@ export default function Team() {
                   getDocs(
                     collection(db, "teams", document.id, "teamMembers")
                   ).then((querySnapshot) => {
+                    const currentTeamMembers: any = [];
                     querySnapshot.forEach((document) => {
-                      setTeamMembers({
-                        ...teamMembers,
-                        [document.data().name]: document.data().email,
-                      });
+                      currentTeamMembers.push(document.data().name);
                     });
+                    setTeamMembers(currentTeamMembers);
                   });
                 });
               });
@@ -156,23 +155,22 @@ export default function Team() {
       ).then((querySnapshot) => {
         if (querySnapshot.size > 0) {
           querySnapshot.forEach((document) => {
-            const teamId = document.data().teamid;
             addDoc(collection(db, "teams", document.id, "teamMembers"), {
               name: user.displayName,
               email: user.email,
             });
-            getDocs(
-              query(collection(db, "users"), where("email", "==", user.email))
-            ).then((querySnapshot) => {
-              querySnapshot.forEach((document) => {
-                setDoc(
-                  doc(db, "users", document.id),
-                  {
-                    teamId: teamId,
-                  },
-                  { merge: true }
-                );
-              });
+          });
+          getDocs(
+            query(collection(db, "users"), where("email", "==", user.email))
+          ).then((querySnapshot) => {
+            querySnapshot.forEach((document) => {
+              setDoc(
+                doc(db, "users", document.id),
+                {
+                  teamId: form.teamId,
+                },
+                { merge: true }
+              );
             });
           });
           handleClose();
@@ -250,7 +248,7 @@ export default function Team() {
                       </Box>
                     </Grid>
 
-                    {Object.keys(teamMembers).map((data) => (
+                    {teamMembers.map((data) => (
                       <Grid item xs={12}>
                         <Box m={2}>
                           <Typography>{data}</Typography>
