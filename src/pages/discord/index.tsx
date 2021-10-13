@@ -12,6 +12,7 @@ import {
   getFirestore,
 } from "@firebase/firestore";
 import { Box, Button, Card, Typography } from "@material-ui/core";
+import axios, { AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import Title from "src/components/title";
@@ -49,22 +50,30 @@ export default function Discord() {
                 redirectUri: process.env.REACT_APP_DISCORD_REDIRECT_URL,
               })
               .then((response: any) => {
-                getDocs(
-                  query(
-                    collection(db, "users"),
-                    where("email", "==", user.email)
-                  )
-                ).then((querySnapshot) => {
-                  querySnapshot.forEach((document) => {
-                    setDoc(
-                      doc(db, "users", document.id),
-                      {
-                        discordAccessToken: response.access_token,
-                        discordRefreshToken: response.refresh_token,
-                      },
-                      { merge: true }
-                    );
-                    setDiscordLinked(true);
+                axios.get('https://discord.com/api/users/@me', {
+                  headers: {
+                    authorization: `Bearer ${response.access_token}`,
+                  },
+                }).then((discord: AxiosResponse) => {
+                  console.log(discord);
+                  getDocs(
+                    query(
+                      collection(db, "users"),
+                      where("email", "==", user.email)
+                    )
+                  ).then((querySnapshot) => {
+                    querySnapshot.forEach((document) => {
+                      setDoc(
+                        doc(db, "users", document.id),
+                        {
+                          discordId: discord.data.id,
+                          discordAccessToken: response.access_token,
+                          discordRefreshToken: response.refresh_token,
+                        },
+                        { merge: true }
+                      );
+                      setDiscordLinked(true);
+                    });
                   });
                 });
               })

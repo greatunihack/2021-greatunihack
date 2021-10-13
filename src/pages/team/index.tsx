@@ -35,6 +35,7 @@ import {
 import { getApp } from "@firebase/app";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export default function Team() {
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function Team() {
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((querySnapshot) => {
         querySnapshot.forEach((document) => {
-          if (!document.data().discordAccessToken) {
+          if (!document.data().discordId) {
             setDiscordNotLinked(true);
           } else {
             if (document.data().teamId) {
@@ -109,6 +110,11 @@ export default function Team() {
       ).then((querySnapshot) => {
         querySnapshot.forEach((document) => {
           if (document.data().teamId) {
+            axios.delete(`${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${document.data().discordId}`, {
+              headers: {
+                'Authorization': process.env.REACT_APP_DISCORD_BOT_SECRET
+              }
+            });
             updateDoc(doc(db, "users", document.id), {
               teamId: deleteField(),
             });
@@ -158,6 +164,13 @@ export default function Team() {
   function joinTeam() {
     if (!(user == "loading" || user == null)) {
       getDocs(
+        query(collection(db, "teams"))
+      ).then((querySnapshot) => {
+        querySnapshot.forEach((document) => {
+          console.log(document.data());
+        });
+      });
+      getDocs(
         query(collection(db, "teams"), where("teamId", "==", form.teamId))
       ).then((querySnapshot) => {
         if (querySnapshot.size > 0) {
@@ -183,6 +196,11 @@ export default function Team() {
                         },
                         { merge: true }
                       );
+                      axios.put(`${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${document.data().discordId}/${form.teamId}`, {}, {
+                        headers: {
+                          'Authorization': process.env.REACT_APP_DISCORD_BOT_SECRET
+                        }
+                      });
                     });
                   });
                 } else {
@@ -207,12 +225,18 @@ export default function Team() {
     }
   }
 
-  function createTeam() {
+  async function createTeam() {
     if (!(user == "loading" || user == null)) {
-      const uuid = require("uuid");
-      const teamId = uuid.v4();
       const Filter = require("bad-words"),
         filter = new Filter();
+      const resp = await axios.post(`${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}`, {
+        name: filter.clean(form.teamName)
+      }, {
+        headers: {
+          'Authorization': process.env.REACT_APP_DISCORD_BOT_SECRET
+        }
+      });
+      const teamId = resp.data.replace('token', '') as string;
       addDoc(collection(db, "teams"), {
         teamName: filter.clean(form.teamName),
         teamId: teamId,
@@ -233,6 +257,11 @@ export default function Team() {
             },
             { merge: true }
           );
+          axios.put(`${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${document.data().discordId}/${teamId}`, {}, {
+            headers: {
+              'Authorization': process.env.REACT_APP_DISCORD_BOT_SECRET
+            }
+          });
         });
       });
       handleClose();
