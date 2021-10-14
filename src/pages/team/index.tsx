@@ -46,49 +46,68 @@ export default function Team() {
   const [discordNotLinked, setDiscordNotLinked] = useState(false);
   const [form, setForm] = useState({ teamName: null, teamId: null });
   const [teamMembers, setTeamMembers] = useState([]);
+
+  const { user } = useContext(AuthContext);
   const app = getApp();
   const db = getFirestore(app);
-  const { user } = useContext(AuthContext);
   const history = useHistory();
 
-  useEffect(() => {
-    if (user && user != "loading") {
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          if (!document.data().discordId) {
-            setDiscordNotLinked(true);
-          } else {
-            if (document.data().teamId) {
-              getDocs(
-                query(
-                  collection(db, "teams"),
-                  where("teamId", "==", document.data().teamId)
-                )
-              ).then((querySnapshot) => {
-                querySnapshot.forEach((document) => {
-                  setOnATeam(true);
-                  setForm({
-                    teamName: document.data().teamName,
-                    teamId: document.data().teamId,
-                  });
-                  getDocs(
-                    collection(db, "teams", document.id, "teamMembers")
-                  ).then((querySnapshot) => {
-                    const currentTeamMembers: any = [];
-                    querySnapshot.forEach((document) => {
-                      currentTeamMembers.push(document.data().name);
-                    });
-                    setTeamMembers(currentTeamMembers);
-                  });
-                });
-              });
-            }
-          }
-        });
-      });
+  async function getUserDoc(email: string | null) {
+    const userDocs = await getDocs(
+      query(collection(db, "users"), where("email", "==", email))
+    );
+    return userDocs.docs[0];
+  }
+
+  async function getTeamDoc(teamId: string | null) {
+    if (teamId) {
+      console.log(teamId);
+      const teamDocs = await getDocs(
+        query(collection(db, "teams"), where("teamId", "==", parseInt(teamId)))
+      );
+      return teamDocs.docs[0] ? teamDocs.docs[0] : null;
     }
+  }
+
+  async function getTeamMembersDocs(teamDocId: string) {
+    const teamMemberDocs = await getDocs(
+      collection(db, "teams", teamDocId, "teamMembers")
+    );
+    return teamMemberDocs;
+  }
+
+  function openMessageBox(message: string) {
+    handleClose();
+    setMessageText(message);
+    setMessageOpen(true);
+  }
+
+  useEffect(() => {
+    async function effectFunction() {
+      if (user && user != "loading") {
+        const userDoc = await getUserDoc(user.email);
+        if (!userDoc.data().discordId) {
+          setDiscordNotLinked(true);
+        } else if (userDoc.data().teamId) {
+          const teamDoc = await getTeamDoc(userDoc.data().teamId);
+          if (teamDoc) {
+            console.log(teamDoc.data());
+            setOnATeam(true);
+            setForm({
+              teamName: teamDoc.data().teamName,
+              teamId: teamDoc.data().teamId,
+            });
+            const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
+            const currentTeamMembers: any = [];
+            teamMemberDocs.forEach((teamMember) => {
+              currentTeamMembers.push(teamMember.data().name);
+            });
+            setTeamMembers(currentTeamMembers);
+          }
+        }
+      }
+    }
+    effectFunction();
   }, []);
 
   const handleClose = () => {
@@ -103,132 +122,80 @@ export default function Team() {
     });
   };
 
-  function leaveTeam() {
+  async function leaveTeam() {
     if (user && user != "loading") {
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          if (document.data().teamId) {
-            axios.delete(
-              `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-                process.env.REACT_APP_DISCORD_BOT_SERVER
-              }/${document.data().discordId}`,
-              {
-                headers: {
-                  Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-                },
+      const userDoc = await getUserDoc(user.email);
+      if (userDoc.data().teamId) {
+        axios.delete(
+          `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+            process.env.REACT_APP_DISCORD_BOT_SERVER
+          }/${userDoc.data().discordId}`,
+          {
+            headers: {
+              Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+            },
+          }
+        );
+        await updateDoc(doc(db, "users", userDoc.id), {
+          teamId: deleteField(),
+        });
+        const teamDoc = await getTeamDoc(userDoc.data().teamId);
+        if (teamDoc) {
+          const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
+          if (teamMemberDocs.size === 1) {
+            deleteDoc(doc(db, "teams", teamDoc.id));
+          } else {
+            teamMemberDocs.forEach((teamMember) => {
+              if (user.email === teamMember.data().email) {
+                deleteDoc(
+                  doc(db, "teams", teamDoc.id, "teamMembers", teamMember.id)
+                );
               }
-            );
-            updateDoc(doc(db, "users", document.id), {
-              teamId: deleteField(),
-            });
-            getDocs(
-              query(
-                collection(db, "teams"),
-                where("teamId", "==", document.data().teamId)
-              )
-            ).then((querySnapshot) => {
-              querySnapshot.forEach((document) => {
-                getDocs(
-                  collection(db, "teams", document.id, "teamMembers")
-                ).then((querySnapshot) => {
-                  console.log(querySnapshot.size);
-                  if (querySnapshot.size === 1) {
-                    deleteDoc(doc(db, "teams", document.id));
-                    handleClose();
-                    setMessageText("Left team successfully!");
-                    setMessageOpen(true);
-                  } else {
-                    querySnapshot.forEach((document_user) => {
-                      if (user.email === document_user.data().email) {
-                        deleteDoc(
-                          doc(
-                            db,
-                            "teams",
-                            document.id,
-                            "teamMembers",
-                            document_user.id
-                          )
-                        );
-                      }
-                      handleClose();
-                      setMessageText("Left team successfully!");
-                      setMessageOpen(true);
-                    });
-                  }
-                });
-              });
             });
           }
-        });
-      });
+          openMessageBox("Left team successfully!");
+        }
+      }
     }
   }
 
-  function joinTeam() {
+  async function joinTeam() {
     if (!(user == "loading" || user == null)) {
-      getDocs(
-        query(collection(db, "teams"), where("teamId", "==", form.teamId))
-      ).then((querySnapshot) => {
-        if (querySnapshot.size > 0) {
-          querySnapshot.forEach((document) => {
-            getDocs(collection(db, "teams", document.id, "teamMembers")).then(
-              (querySnapshot) => {
-                if (querySnapshot.size < 6) {
-                  addDoc(collection(db, "teams", document.id, "teamMembers"), {
-                    name: user.displayName,
-                    email: user.email,
-                  });
-                  getDocs(
-                    query(
-                      collection(db, "users"),
-                      where("email", "==", user.email)
-                    )
-                  ).then((querySnapshot) => {
-                    querySnapshot.forEach((document) => {
-                      setDoc(
-                        doc(db, "users", document.id),
-                        {
-                          teamId: form.teamId,
-                        },
-                        { merge: true }
-                      );
-                      axios.put(
-                        `${
-                          process.env.REACT_APP_DISCORD_BOT_BASE
-                        }/participant/${
-                          process.env.REACT_APP_DISCORD_BOT_SERVER
-                        }/${document.data().discordId}/${form.teamId}`,
-                        {},
-                        {
-                          headers: {
-                            Authorization:
-                              process.env.REACT_APP_DISCORD_BOT_SECRET,
-                          },
-                        }
-                      );
-                    });
-                  });
-                } else {
-                  handleClose();
-                  setMessageText(
-                    "You can't have more than 6 people on the same team!"
-                  );
-                  setMessageOpen(true);
-                }
-              }
-            );
+      console.log(form.teamId);
+      const teamDoc = await getTeamDoc(form.teamId);
+      if (teamDoc) {
+        const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
+        if (teamMemberDocs.size < 6) {
+          await addDoc(collection(db, "teams", teamDoc.id, "teamMembers"), {
+            name: user.displayName,
+            email: user.email,
           });
-          handleClose();
-          setMessageText("Team joined successfully!");
-          setMessageOpen(true);
+          const userDoc = await getUserDoc(user.email);
+          setDoc(
+            doc(db, "users", userDoc.id),
+            {
+              teamId: form.teamId,
+            },
+            { merge: true }
+          );
+          axios.put(
+            `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+              process.env.REACT_APP_DISCORD_BOT_SERVER
+            }/${userDoc.data().discordId}/${form.teamId}`,
+            {},
+            {
+              headers: {
+                Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+              },
+            }
+          );
         } else {
-          handleClose();
-          setMessageText("Team not found!");
-          setMessageOpen(true);
+          openMessageBox("You can't have more than 6 people on the same team!");
         }
-      });
+        openMessageBox("Team joined successfully!");
+      } else {
+        openMessageBox("Team not found!");
+      }
     }
   }
 
@@ -236,7 +203,7 @@ export default function Team() {
     if (!(user == "loading" || user == null)) {
       const Filter = require("bad-words"),
         filter = new Filter();
-      const resp = await axios.post(
+      const createTeamResponse = await axios.post(
         `${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}`,
         {
           name: filter.clean(form.teamName),
@@ -247,43 +214,35 @@ export default function Team() {
           },
         }
       );
-      const teamId = resp.data.replace("token", "") as string;
-      addDoc(collection(db, "teams"), {
+      const teamId = createTeamResponse.data.replace("token", "") as string;
+      const teamDocRef = await addDoc(collection(db, "teams"), {
         teamName: filter.clean(form.teamName),
         teamId: teamId,
-      }).then((docRef) => {
-        addDoc(collection(db, "teams", docRef.id, "teamMembers"), {
-          name: user.displayName,
-          email: user.email,
-        });
       });
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          setDoc(
-            doc(db, "users", document.id),
-            {
-              teamId: teamId,
-            },
-            { merge: true }
-          );
-          axios.put(
-            `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-              process.env.REACT_APP_DISCORD_BOT_SERVER
-            }/${document.data().discordId}/${teamId}`,
-            {},
-            {
-              headers: {
-                Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-              },
-            }
-          );
-        });
+      await addDoc(collection(db, "teams", teamDocRef.id, "teamMembers"), {
+        name: user.displayName,
+        email: user.email,
       });
-      handleClose();
-      setMessageText(`Team created successfully! Your team ID is: ${teamId}`);
-      setMessageOpen(true);
+      const userDoc = await getUserDoc(user.email);
+      await setDoc(
+        doc(db, "users", userDoc.id),
+        {
+          teamId: teamId,
+        },
+        { merge: true }
+      );
+      axios.put(
+        `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+          process.env.REACT_APP_DISCORD_BOT_SERVER
+        }/${userDoc.data().discordId}/${teamId}`,
+        {},
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+          },
+        }
+      );
+      openMessageBox(`Team created successfully! Your team ID is: ${teamId}`);
     }
   }
 
