@@ -61,9 +61,8 @@ export default function Team() {
 
   async function getTeamDoc(teamId: string | null) {
     if (teamId) {
-      console.log(teamId);
       const teamDocs = await getDocs(
-        query(collection(db, "teams"), where("teamId", "==", parseInt(teamId)))
+        query(collection(db, "teams"), where("teamId", "==", teamId))
       );
       return teamDocs.docs[0] ? teamDocs.docs[0] : null;
     }
@@ -91,7 +90,6 @@ export default function Team() {
         } else if (userDoc.data().teamId) {
           const teamDoc = await getTeamDoc(userDoc.data().teamId);
           if (teamDoc) {
-            console.log(teamDoc.data());
             setOnATeam(true);
             setForm({
               teamName: teamDoc.data().teamName,
@@ -161,7 +159,6 @@ export default function Team() {
 
   async function joinTeam() {
     if (!(user == "loading" || user == null)) {
-      console.log(form.teamId);
       const teamDoc = await getTeamDoc(form.teamId);
       if (teamDoc) {
         const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
