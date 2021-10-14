@@ -67,7 +67,8 @@ export default function Login() {
           <Formik
             onSubmit={(values) => {
               const auth = getAuth();
-              signInWithEmailAndPassword(auth, values.email, values.password)
+              const inputEmail = values.email.toLowerCase();
+              signInWithEmailAndPassword(auth, inputEmail, values.password)
                 .then((userCredential) => {
                   const user = userCredential.user;
                   setUser(user);
@@ -176,7 +177,9 @@ export default function Login() {
         <Formik
           onSubmit={(values) => {
             const auth = getAuth();
-            sendPasswordResetEmail(auth, values.email)
+            const inputEmail = values.email.toLowerCase();
+
+            sendPasswordResetEmail(auth, inputEmail)
               .then(() => {
                 setResetPassword(false);
 
