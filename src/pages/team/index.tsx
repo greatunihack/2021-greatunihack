@@ -168,11 +168,6 @@ export default function Team() {
 
   function joinTeam() {
     if (!(user == "loading" || user == null)) {
-      getDocs(query(collection(db, "teams"))).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          console.log(document.data());
-        });
-      });
       getDocs(
         query(collection(db, "teams"), where("teamId", "==", form.teamId))
       ).then((querySnapshot) => {
