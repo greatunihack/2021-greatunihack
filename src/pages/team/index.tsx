@@ -15,238 +15,52 @@ import {
   DialogTitle,
   TextField,
   Typography,
+  IconButton,
 } from "@material-ui/core";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
-import Title from "src/components/title";
-import pages from "src/data/DashboardButtonData.json";
-import {
-  addDoc,
-  doc,
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  setDoc,
-  where,
-  updateDoc,
-  deleteField,
-  deleteDoc,
-} from "@firebase/firestore";
-import { getApp } from "@firebase/app";
-import { AuthContext } from "src/components/auth/AuthContext";
+import CloseIcon from "@material-ui/icons/Close";
+
+import { useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
-import PageHeaders from "src/components/headers";
+import { Controller, useForm } from "react-hook-form";
+
+import { reducer, initialState } from "./reducer";
+import { getActions } from "./actions";
+import { CreateTeamInputs, JoinTeamInputs } from "./types";
+import Title from "src/components/title";
+import { AuthContext } from "src/components/auth/AuthContext";
+import pages from "src/data/DashboardButtonData.json";
+
+import type { User } from "@firebase/auth";
 
 export default function Team() {
-  const [createTeamOpen, setCreateTeamOpen] = useState(false);
-  const [onATeam, setOnATeam] = useState(false);
-  const [joinTeamOpen, setJoinTeamOpen] = useState(false);
-  const [messageOpen, setMessageOpen] = useState(false);
-  const [messageText, setMessageText] = useState("");
-  const [discordNotLinked, setDiscordNotLinked] = useState(false);
-  const [form, setForm] = useState({ teamName: "", teamId: "" });
-  const [teamMembers, setTeamMembers] = useState<string[]>([]);
-
-  const { user } = useContext(AuthContext);
-  const app = getApp();
-  const db = getFirestore(app);
   const history = useHistory();
 
-  async function getUserDoc(email: string) {
-    const userDocs = await getDocs(
-      query(collection(db, "users"), where("email", "==", email))
-    );
-    return userDocs.docs[0];
-  }
+  const joinTeamForm = useForm<JoinTeamInputs>();
+  const createTeamForm = useForm<CreateTeamInputs>();
 
-  async function getTeamDoc(teamId: string) {
-    if (teamId) {
-      const teamDocs = await getDocs(
-        query(collection(db, "teams"), where("teamId", "==", teamId))
-      );
-      return teamDocs.size ? teamDocs.docs[0] : null;
-    }
-  }
+  const { user } = useContext(AuthContext);
 
-  async function getTeamMembersDocs(teamDocId: string) {
-    const teamMemberDocs = await getDocs(
-      collection(db, "teams", teamDocId, "teamMembers")
-    );
-    return teamMemberDocs;
-  }
-
-  function openMessageBox(message: string) {
-    handleClose();
-    setMessageText(message);
-    setMessageOpen(true);
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    createTeam,
+    loadCurrentTeam,
+    deleteCurrentTeam,
+    closeMessageDialog,
+    joinTeam,
+    showJoinTeamDialog,
+    closeJoinTeamDialog,
+    showCreateTeamDialog,
+    closeCreateTeamDialog,
+  } = getActions(dispatch);
 
   useEffect(() => {
-    async function effectFunction() {
-      if (user && user != "loading" && user.email) {
-        const userDoc = await getUserDoc(user.email);
-        if (!userDoc.data().discordId) {
-          setDiscordNotLinked(true);
-        } else if (userDoc.data().teamId) {
-          const teamDoc = await getTeamDoc(userDoc.data().teamId);
-          if (teamDoc) {
-            setOnATeam(true);
-            setForm({
-              teamName: teamDoc.data().teamName,
-              teamId: teamDoc.data().teamId,
-            });
-            const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
-            const currentTeamMembers: string[] = [];
-            teamMemberDocs.forEach((teamMember) => {
-              currentTeamMembers.push(teamMember.data().name);
-            });
-            setTeamMembers(currentTeamMembers);
-          }
-        }
-      }
+    if (user && user != "loading") {
+      loadCurrentTeam(user);
     }
-    effectFunction();
-  }, []);
-
-  const handleClose = () => {
-    setCreateTeamOpen(false);
-    setJoinTeamOpen(false);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  async function leaveTeam() {
-    if (user && user != "loading" && user.email) {
-      const userDoc = await getUserDoc(user.email);
-      if (userDoc.data().teamId) {
-        axios.delete(
-          `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-            process.env.REACT_APP_DISCORD_BOT_SERVER
-          }/${userDoc.data().discordId}`,
-          {
-            headers: {
-              Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-            },
-          }
-        );
-        await updateDoc(doc(db, "users", userDoc.id), {
-          teamId: deleteField(),
-        });
-        const teamDoc = await getTeamDoc(userDoc.data().teamId);
-        if (teamDoc) {
-          const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
-          if (teamMemberDocs.size === 1) {
-            deleteDoc(doc(db, "teams", teamDoc.id));
-          } else {
-            teamMemberDocs.forEach((teamMember) => {
-              if (user.email === teamMember.data().email) {
-                deleteDoc(
-                  doc(db, "teams", teamDoc.id, "teamMembers", teamMember.id)
-                );
-              }
-            });
-          }
-          openMessageBox("Left team successfully!");
-        }
-      }
-    }
-  }
-
-  async function joinTeam() {
-    if (user && user != "loading" && user.email) {
-      const teamDoc = await getTeamDoc(form.teamId);
-      if (teamDoc) {
-        const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
-        if (teamMemberDocs.size < 6) {
-          await addDoc(collection(db, "teams", teamDoc.id, "teamMembers"), {
-            name: user.displayName,
-            email: user.email,
-          });
-          const userDoc = await getUserDoc(user.email);
-          setDoc(
-            doc(db, "users", userDoc.id),
-            {
-              teamId: form.teamId,
-            },
-            { merge: true }
-          );
-          axios.put(
-            `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-              process.env.REACT_APP_DISCORD_BOT_SERVER
-            }/${userDoc.data().discordId}/${form.teamId}`,
-            {},
-            {
-              headers: {
-                Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-              },
-            }
-          );
-        } else {
-          openMessageBox("You can't have more than 6 people on the same team!");
-        }
-        openMessageBox("Team joined successfully!");
-      } else {
-        openMessageBox("Team not found!");
-      }
-    }
-  }
-
-  async function createTeam() {
-    if (user && user != "loading" && user.email) {
-      const Filter = require("bad-words"),
-        filter = new Filter();
-      const createTeamResponse = await axios.post(
-        `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}`,
-        {
-          name: filter.clean(form.teamName),
-        },
-        {
-          headers: {
-            Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-          },
-        }
-      );
-      const teamId = createTeamResponse.data.replace("token", "") as string;
-      const teamDocRef = await addDoc(collection(db, "teams"), {
-        teamName: filter.clean(form.teamName),
-        teamId: teamId,
-      });
-      await addDoc(collection(db, "teams", teamDocRef.id, "teamMembers"), {
-        name: user.displayName,
-        email: user.email,
-      });
-      const userDoc = await getUserDoc(user.email);
-      await setDoc(
-        doc(db, "users", userDoc.id),
-        {
-          teamId: teamId,
-        },
-        { merge: true }
-      );
-      axios.put(
-        `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-          process.env.REACT_APP_DISCORD_BOT_SERVER
-        }/${userDoc.data().discordId}/${teamId}`,
-        {},
-        {
-          headers: {
-            Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-          },
-        }
-      );
-      openMessageBox(`Team created successfully! Your team ID is: ${teamId}`);
-    }
-  }
+  }, [user]);
 
   return (
     <>
-      <PageHeaders title={pages.pageItems[7].name} />
       <Title
         title={pages.pageItems[7].name}
         description={pages.pageItems[7].description}
@@ -256,22 +70,27 @@ export default function Team() {
           <CardContent>
             <Box width="100%">
               <Grid container>
-                {onATeam ? (
+                {state.team ? (
                   <>
                     <Grid item xs={12} md={6}>
                       <Box m={2}>
-                        <Typography>Team name: {form.teamName}</Typography>
+                        <Typography>
+                          Team name: {state.team.teamName}
+                        </Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Box m={2}>
-                        <Typography>Team ID: {form.teamId}</Typography>
+                        <Typography>Team ID: {state.team.teamId}</Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12}>
                       <Box m={2}>
                         <Typography>
-                          Team Members: {teamMembers.join(", ")}
+                          Team Members:{" "}
+                          {state.team.teamMembers
+                            .map((tm) => `${tm.name} <${tm.email}>`)
+                            .join(", ")}
                         </Typography>
                       </Box>
                     </Grid>
@@ -285,7 +104,7 @@ export default function Team() {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={leaveTeam}
+                          onClick={() => deleteCurrentTeam(user as User)}
                         >
                           Leave team
                         </Button>
@@ -304,9 +123,7 @@ export default function Team() {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={() => {
-                            setCreateTeamOpen(true);
-                          }}
+                          onClick={showCreateTeamDialog}
                         >
                           Create a team
                         </Button>
@@ -322,9 +139,7 @@ export default function Team() {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={() => {
-                            setJoinTeamOpen(true);
-                          }}
+                          onClick={showJoinTeamDialog}
                         >
                           Join a team
                         </Button>
@@ -337,58 +152,110 @@ export default function Team() {
           </CardContent>
         </Card>
       </Box>
-      <Dialog open={createTeamOpen} onClose={handleClose} fullWidth>
+
+      {/* Create Team Dialog */}
+      <Dialog
+        open={state.createTeamDialog.open}
+        onClose={closeCreateTeamDialog}
+        fullWidth
+      >
         <DialogTitle>Create a team</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            id="teamName"
-            label="Team Name"
-            fullWidth
-            onChange={handleChange}
+          <Controller
+            name={"teamName"}
+            control={createTeamForm.control}
+            defaultValue={""}
+            render={({
+              field: { onChange, value },
+              fieldState: { invalid, error },
+            }) => (
+              <TextField
+                error={invalid}
+                margin="dense"
+                label="Team Name"
+                helperText={error?.message}
+                fullWidth
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={closeCreateTeamDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={createTeam} color="primary">
+          <Button
+            onClick={createTeamForm.handleSubmit(({ teamName }) =>
+              createTeam(user as User, teamName, createTeamForm.setError)
+            )}
+            color="primary"
+          >
             Create
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={joinTeamOpen} onClose={handleClose} fullWidth>
+
+      {/* Join Team Dialog */}
+      <Dialog
+        open={state.joinTeamDialog.open}
+        onClose={closeJoinTeamDialog}
+        fullWidth
+      >
         <DialogTitle>Join a team</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            id="teamId"
-            label="Team ID"
-            fullWidth
-            onChange={handleChange}
+          <Controller
+            name={"teamId"}
+            control={joinTeamForm.control}
+            defaultValue={""}
+            render={({
+              field: { onChange, value },
+              fieldState: { invalid, error },
+            }) => (
+              <TextField
+                error={invalid}
+                margin="dense"
+                label="Team ID"
+                helperText={error?.message}
+                fullWidth
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={closeJoinTeamDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={joinTeam} color="primary">
+          <Button
+            onClick={joinTeamForm.handleSubmit(({ teamId }) =>
+              joinTeam(user as User, teamId, joinTeamForm.setError)
+            )}
+            color="primary"
+          >
             Join
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Message dialog */}
       <Dialog
-        open={messageOpen}
-        onClose={() => {
-          window.location.reload();
-        }}
+        open={state.messageDialog.open}
+        onClose={closeMessageDialog}
+        color={state.messageDialog.color}
       >
-        <Box m={3}>
-          <Typography>{messageText}</Typography>
-        </Box>
+        <DialogTitle>
+          <Typography>{state.messageDialog.text}</Typography>
+          <IconButton aria-label="close" onClick={closeMessageDialog}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
       </Dialog>
+
+      {/* Discord dialog */}
       <Dialog
-        open={discordNotLinked}
+        open={!state.isDiscordLinked}
         onClose={() => {
           history.push("/dashboard/home");
         }}
