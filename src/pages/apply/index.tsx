@@ -67,13 +67,14 @@ export default function Apply() {
         <Formik
           onSubmit={(values) => {
             const auth = getAuth();
-            createUserWithEmailAndPassword(auth, values.email, values.password)
+            const inputEmail = values.email.toLowerCase();
+            createUserWithEmailAndPassword(auth, inputEmail, values.password)
               .then(() => {
                 try {
                   const docRef = addDoc(collection(db, "users"), {
                     firstName: values.firstName,
                     lastName: values.lastName,
-                    email: values.email,
+                    email: inputEmail,
                     ethnicity: values.ethnicity,
                     gender: values.gender,
                   });
