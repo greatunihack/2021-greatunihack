@@ -125,7 +125,7 @@ export default function Team() {
       const userDoc = await getUserDoc(user.email);
       if (userDoc.data().teamId) {
         axios.delete(
-          `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+          `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
             process.env.REACT_APP_DISCORD_BOT_SERVER
           }/${userDoc.data().discordId}`,
           {
@@ -176,7 +176,7 @@ export default function Team() {
             { merge: true }
           );
           axios.put(
-            `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+            `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
               process.env.REACT_APP_DISCORD_BOT_SERVER
             }/${userDoc.data().discordId}/${form.teamId}`,
             {},
@@ -201,7 +201,7 @@ export default function Team() {
       const Filter = require("bad-words"),
         filter = new Filter();
       const createTeamResponse = await axios.post(
-        `${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}`,
+        `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}`,
         {
           name: filter.clean(form.teamName),
         },
@@ -229,7 +229,7 @@ export default function Team() {
         { merge: true }
       );
       axios.put(
-        `${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+        `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
           process.env.REACT_APP_DISCORD_BOT_SERVER
         }/${userDoc.data().discordId}/${teamId}`,
         {},
