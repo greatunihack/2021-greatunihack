@@ -7,7 +7,7 @@ import {
   Box,
   makeStyles,
 } from "@material-ui/core";
-import FAQData from "src/data/FAQData";
+import FAQData from "src/data/FAQData.json";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#a59132",
@@ -50,7 +50,7 @@ export default function FAQ() {
       </Typography>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
-          {FAQData.map((data, index) => (
+          {FAQData.details.map((data, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardContent className={classes.CardContent}>

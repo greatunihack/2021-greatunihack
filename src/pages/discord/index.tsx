@@ -17,15 +17,14 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
+import { useHistory } from "react-router-dom";
 
 export default function Discord() {
-  const queryParams = new URLSearchParams(window.location.search);
-  const discordCode = queryParams.get("code");
   const app = getApp();
   const db = getFirestore(app);
   const { user } = useContext(AuthContext);
   const [discordLinked, setDiscordLinked] = useState(false);
-
+  const history = useHistory();
   async function getUserDoc(email: string | null) {
     const userDocs = await getDocs(
       query(collection(db, "users"), where("email", "==", email))
@@ -35,12 +34,18 @@ export default function Discord() {
 
   useEffect(() => {
     async function effectFunction() {
+      const queryParams = new URLSearchParams(window.location.search);
+      const discordCode = queryParams.get("code");
+
       if (user && user != "loading") {
         const userDoc = await getUserDoc(user.email);
-        if (userDoc.data().discordAccessToken) {
+        if (userDoc.data().discordId) {
           setDiscordLinked(true);
-        }
-        if (discordCode) {
+        } else if (discordCode) {
+          queryParams.delete("code");
+          history.replace({
+            search: queryParams.toString(),
+          });
           const DiscordOauth2 = require("discord-oauth2");
           const oauth = new DiscordOauth2();
           const discordTokenRequest = await oauth
@@ -53,25 +58,26 @@ export default function Discord() {
               redirectUri: `${window.location.origin}/dashboard/discord`,
             })
             .catch();
-
-          const discordAccessRequest = await axios.get(
-            "https://discord.com/api/users/@me",
-            {
-              headers: {
-                authorization: `Bearer ${discordTokenRequest.access_token}`,
+          if (discordTokenRequest) {
+            const discordAccessRequest = await axios.get(
+              "https://discord.com/api/users/@me",
+              {
+                headers: {
+                  authorization: `Bearer ${discordTokenRequest.access_token}`,
+                },
+              }
+            );
+            await setDoc(
+              doc(db, "users", userDoc.id),
+              {
+                discordId: discordAccessRequest.data.id,
+                discordAccessToken: discordTokenRequest.access_token,
+                discordRefreshToken: discordTokenRequest.refresh_token,
               },
-            }
-          );
-          await setDoc(
-            doc(db, "users", userDoc.id),
-            {
-              discordId: discordAccessRequest.data.id,
-              discordAccessToken: discordTokenRequest.access_token,
-              discordRefreshToken: discordTokenRequest.refresh_token,
-            },
-            { merge: true }
-          );
-          setDiscordLinked(true);
+              { merge: true }
+            );
+            setDiscordLinked(true);
+          }
         }
       }
     }

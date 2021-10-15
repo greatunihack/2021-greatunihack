@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import SponsorCategory from "src/pages/sponsors/SponsorCategory";
-import sponsors from "src/pages/sponsors/SponsorData.json";
+import sponsors from "src/data/SponsorData.json";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyle = makeStyles(() => ({
