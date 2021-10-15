@@ -10,6 +10,7 @@ import pages from "src/data/DashboardButtonData.json";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "src/components/auth/AuthContext";
+import PageHeaders from "src/components/headers";
 
 const ValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name required"),
@@ -25,6 +26,7 @@ export default function Contact() {
   const { user } = useContext(AuthContext);
   return (
     <>
+      <PageHeaders title={pages.pageItems[3].name} />
       <Title
         title={pages.pageItems[3].name}
         description={pages.pageItems[3].description}

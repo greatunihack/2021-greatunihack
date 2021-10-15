@@ -18,6 +18,7 @@ import { AuthContext } from "src/components/auth/AuthContext";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import { useHistory } from "react-router-dom";
+import PageHeaders from "src/components/headers/index";
 
 export default function Discord() {
   const app = getApp();
@@ -86,6 +87,7 @@ export default function Discord() {
 
   return (
     <>
+      <PageHeaders title={pages.pageItems[0].name} />
       <Title
         title={pages.pageItems[0].name}
         description={pages.pageItems[0].description}

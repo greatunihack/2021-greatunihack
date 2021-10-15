@@ -36,6 +36,7 @@ import { getApp } from "@firebase/app";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import PageHeaders from "src/components/headers";
 
 export default function Team() {
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
@@ -245,6 +246,7 @@ export default function Team() {
 
   return (
     <>
+      <PageHeaders title={pages.pageItems[7].name} />
       <Title
         title={pages.pageItems[7].name}
         description={pages.pageItems[7].description}
