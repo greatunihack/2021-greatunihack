@@ -1,12 +1,14 @@
 import { Grid } from "@material-ui/core";
 import SponsorCategory from "src/pages/sponsors/SponsorCategory";
-import sponsors from "src/pages/sponsors/SponsorData.json";
+import sponsors from "src/data/SponsorData.json";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
+import PageHeaders from "src/components/headers";
 
 export default function Sponsors() {
   return (
     <>
+      <PageHeaders title={pages.pageItems[2].name} />
       <Title
         title={pages.pageItems[2].name}
         description={pages.pageItems[2].description}

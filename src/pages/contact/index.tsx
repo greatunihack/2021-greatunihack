@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -9,6 +9,8 @@ import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { AuthContext } from "src/components/auth/AuthContext";
+import PageHeaders from "src/components/headers";
 
 const ValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name required"),
@@ -21,9 +23,10 @@ const ValidationSchema = Yup.object().shape({
 export default function Contact() {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
-
+  const { user } = useContext(AuthContext);
   return (
     <>
+      <PageHeaders title={pages.pageItems[3].name} />
       <Title
         title={pages.pageItems[3].name}
         description={pages.pageItems[3].description}
@@ -48,7 +51,11 @@ export default function Contact() {
                     setMessageOpen(true);
                   });
               }}
-              initialValues={{ name: "", email: "", message: "" }}
+              initialValues={{
+                name: user && user != "loading" ? user.displayName : "",
+                email: user && user != "loading" ? user.email : "",
+                message: "",
+              }}
               validationSchema={ValidationSchema}
             >
               {({ errors, handleBlur, handleChange, touched, values }) => (
@@ -57,6 +64,7 @@ export default function Contact() {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth={true}>
                         <TextField
+                          disabled
                           required
                           name="name"
                           id="name"
@@ -73,6 +81,7 @@ export default function Contact() {
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth={true}>
                         <TextField
+                          disabled
                           required
                           name="email"
                           id="email"

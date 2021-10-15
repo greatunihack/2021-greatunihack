@@ -1,6 +1,7 @@
 import { Box, Grid, Hidden, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import PageHeaders from "src/components/headers";
 import suggestions from "src/data/ErrorSuggestionData.json";
 
 interface ErrorProps {
@@ -57,27 +58,30 @@ export default function Error(props: ErrorProps) {
   const classes = useStyles();
 
   return (
-    <Box className={classes.outerWrapper}>
-      <Grid container className={classes.innerWrapper}>
-        <Grid item xs={12} md={6} className={classes.root}>
-          <Typography className={classes.code}>{code ?? 400}</Typography>
-          <Typography className={classes.message}>
-            {message ?? "Something Went Wrong"}
-          </Typography>
+    <>
+      <PageHeaders title={"404"} />
+      <Box className={classes.outerWrapper}>
+        <Grid container className={classes.innerWrapper}>
+          <Grid item xs={12} md={6} className={classes.root}>
+            <Typography className={classes.code}>{code ?? 400}</Typography>
+            <Typography className={classes.message}>
+              {message ?? "Something Went Wrong"}
+            </Typography>
+          </Grid>
+          <Hidden smDown>
+            <Grid item md={6} className={classes.root}>
+              <ReportProblemOutlinedIcon className={classes.icon} />
+            </Grid>
+          </Hidden>
         </Grid>
         <Hidden smDown>
-          <Grid item md={6} className={classes.root}>
-            <ReportProblemOutlinedIcon className={classes.icon} />
-          </Grid>
+          <Box className={classes.footer}>
+            <Typography className={classes.tip}>
+              <strong>Hackathon Tip {index + 1}:</strong> {tip}
+            </Typography>
+          </Box>
         </Hidden>
-      </Grid>
-      <Hidden smDown>
-        <Box className={classes.footer}>
-          <Typography className={classes.tip}>
-            <strong>Hackathon Tip {index + 1}:</strong> {tip}
-          </Typography>
-        </Box>
-      </Hidden>
-    </Box>
+      </Box>
+    </>
   );
 }

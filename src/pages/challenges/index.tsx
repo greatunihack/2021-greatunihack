@@ -5,6 +5,7 @@ import fakechallenges from "src/data/FakeChallengeData.json";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import { useState } from "react";
+import PageHeaders from "src/components/headers";
 
 export default function Challenges() {
   const [earlyRestrict] = useState(() => {
@@ -18,6 +19,7 @@ export default function Challenges() {
   });
   return (
     <>
+      <PageHeaders title={pages.pageItems[4].name} />
       <Title
         title={pages.pageItems[4].name}
         description={pages.pageItems[4].description}

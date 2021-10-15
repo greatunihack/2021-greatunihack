@@ -12,6 +12,7 @@ export default function CountdownTimer() {
       </Typography>
     );
   };
+
   return (
     <Countdown
       date={process.env.REACT_APP_HACKATHON_DATE}

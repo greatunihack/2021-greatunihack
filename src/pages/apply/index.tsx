@@ -27,6 +27,7 @@ import { Copyright } from "src/components/copyright";
 import { Dialog, FormHelperText } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import PageHeaders from "src/components/headers";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -62,6 +63,7 @@ export default function Apply() {
 
   return (
     <>
+      <PageHeaders title={"Apply"} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Formik

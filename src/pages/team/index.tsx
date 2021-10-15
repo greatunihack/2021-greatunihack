@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import {
@@ -36,6 +36,7 @@ import { getApp } from "@firebase/app";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import PageHeaders from "src/components/headers";
 
 export default function Team() {
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function Team() {
   const [messageText, setMessageText] = useState("");
   const [discordNotLinked, setDiscordNotLinked] = useState(false);
   const [form, setForm] = useState({ teamName: "", teamId: "" });
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
   const { user } = useContext(AuthContext);
   const app = getApp();
@@ -96,7 +97,7 @@ export default function Team() {
               teamId: teamDoc.data().teamId,
             });
             const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
-            const currentTeamMembers: any = [];
+            const currentTeamMembers: string[] = [];
             teamMemberDocs.forEach((teamMember) => {
               currentTeamMembers.push(teamMember.data().name);
             });
@@ -113,7 +114,7 @@ export default function Team() {
     setJoinTeamOpen(false);
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.id]: e.target.value,
@@ -245,6 +246,7 @@ export default function Team() {
 
   return (
     <>
+      <PageHeaders title={pages.pageItems[7].name} />
       <Title
         title={pages.pageItems[7].name}
         description={pages.pageItems[7].description}
