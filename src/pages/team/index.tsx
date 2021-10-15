@@ -44,7 +44,7 @@ export default function Team() {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
   const [discordNotLinked, setDiscordNotLinked] = useState(false);
-  const [form, setForm] = useState({ teamName: null, teamId: null });
+  const [form, setForm] = useState({ teamName: "", teamId: "" });
   const [teamMembers, setTeamMembers] = useState([]);
 
   const { user } = useContext(AuthContext);
@@ -52,19 +52,19 @@ export default function Team() {
   const db = getFirestore(app);
   const history = useHistory();
 
-  async function getUserDoc(email: string | null) {
+  async function getUserDoc(email: string) {
     const userDocs = await getDocs(
       query(collection(db, "users"), where("email", "==", email))
     );
     return userDocs.docs[0];
   }
 
-  async function getTeamDoc(teamId: string | null) {
+  async function getTeamDoc(teamId: string) {
     if (teamId) {
       const teamDocs = await getDocs(
         query(collection(db, "teams"), where("teamId", "==", teamId))
       );
-      return teamDocs.docs[0] ? teamDocs.docs[0] : null;
+      return teamDocs.size ? teamDocs.docs[0] : null;
     }
   }
 
@@ -83,7 +83,7 @@ export default function Team() {
 
   useEffect(() => {
     async function effectFunction() {
-      if (user && user != "loading") {
+      if (user && user != "loading" && user.email) {
         const userDoc = await getUserDoc(user.email);
         if (!userDoc.data().discordId) {
           setDiscordNotLinked(true);
@@ -121,7 +121,7 @@ export default function Team() {
   };
 
   async function leaveTeam() {
-    if (user && user != "loading") {
+    if (user && user != "loading" && user.email) {
       const userDoc = await getUserDoc(user.email);
       if (userDoc.data().teamId) {
         axios.delete(
@@ -158,7 +158,7 @@ export default function Team() {
   }
 
   async function joinTeam() {
-    if (!(user == "loading" || user == null)) {
+    if (user && user != "loading" && user.email) {
       const teamDoc = await getTeamDoc(form.teamId);
       if (teamDoc) {
         const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
@@ -197,7 +197,7 @@ export default function Team() {
   }
 
   async function createTeam() {
-    if (!(user == "loading" || user == null)) {
+    if (user && user != "loading" && user.email) {
       const Filter = require("bad-words"),
         filter = new Filter();
       const createTeamResponse = await axios.post(

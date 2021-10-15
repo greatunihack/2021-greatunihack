@@ -46,16 +46,14 @@ export default function HomeButton() {
     if (user && user != "loading") {
       getDocs(
         query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          if (document.data().teamId) {
-            setUserStatus([100, "Joined a team"]);
-          } else if (document.data().discordAccessToken) {
-            setUserStatus([66, "Linked Discord account"]);
-          } else {
-            setUserStatus([33, "Registered"]);
-          }
-        });
+      ).then((userDocs) => {
+        if (userDocs.docs[0].data().teamId) {
+          setUserStatus([100, "Joined a team"]);
+        } else if (userDocs.docs[0].data().discordId) {
+          setUserStatus([66, "Linked Discord account"]);
+        } else {
+          setUserStatus([33, "Registered"]);
+        }
       });
     }
   }

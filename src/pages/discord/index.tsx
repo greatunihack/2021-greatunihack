@@ -12,14 +12,12 @@ import {
   getFirestore,
 } from "@firebase/firestore";
 import { Box, Button, Card, Typography } from "@material-ui/core";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 
-// Implement Discord OAuth
-// Set return discordToken in Firebase user document to access token
 export default function Discord() {
   const queryParams = new URLSearchParams(window.location.search);
   const discordCode = queryParams.get("code");
@@ -28,62 +26,56 @@ export default function Discord() {
   const { user } = useContext(AuthContext);
   const [discordLinked, setDiscordLinked] = useState(false);
 
+  async function getUserDoc(email: string | null) {
+    const userDocs = await getDocs(
+      query(collection(db, "users"), where("email", "==", email))
+    );
+    return userDocs.docs[0];
+  }
+
   useEffect(() => {
-    if (user && user != "loading") {
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          if (document.data().discordAccessToken) {
-            setDiscordLinked(true);
-          }
-          if (discordCode) {
-            const DiscordOauth2 = require("discord-oauth2");
-            const oauth = new DiscordOauth2();
-            oauth
-              .tokenRequest({
-                clientId: process.env.REACT_APP_DISCORD_CLIENT,
-                clientSecret: process.env.REACT_APP_DISCORD_SECRET,
-                code: discordCode,
-                scope: ["identify", "guilds.join"],
-                grantType: "authorization_code",
-                redirectUri: process.env.REACT_APP_DISCORD_REDIRECT_URL,
-              })
-              .then((response: any) => {
-                axios
-                  .get("https://discord.com/api/users/@me", {
-                    headers: {
-                      authorization: `Bearer ${response.access_token}`,
-                    },
-                  })
-                  .then((discord: AxiosResponse) => {
-                    console.log(discord);
-                    getDocs(
-                      query(
-                        collection(db, "users"),
-                        where("email", "==", user.email)
-                      )
-                    ).then((querySnapshot) => {
-                      querySnapshot.forEach((document) => {
-                        setDoc(
-                          doc(db, "users", document.id),
-                          {
-                            discordId: discord.data.id,
-                            discordAccessToken: response.access_token,
-                            discordRefreshToken: response.refresh_token,
-                          },
-                          { merge: true }
-                        );
-                        setDiscordLinked(true);
-                      });
-                    });
-                  });
-              })
-              .catch();
-          }
-        });
-      });
+    async function effectFunction() {
+      if (user && user != "loading") {
+        const userDoc = await getUserDoc(user.email);
+        if (userDoc.data().discordAccessToken) {
+          setDiscordLinked(true);
+        }
+        if (discordCode) {
+          const DiscordOauth2 = require("discord-oauth2");
+          const oauth = new DiscordOauth2();
+          const discordTokenRequest = await oauth
+            .tokenRequest({
+              clientId: process.env.REACT_APP_DISCORD_CLIENT,
+              clientSecret: process.env.REACT_APP_DISCORD_SECRET,
+              code: discordCode,
+              scope: ["identify", "guilds.join"],
+              grantType: "authorization_code",
+              redirectUri: process.env.REACT_APP_DISCORD_REDIRECT_URL,
+            })
+            .catch();
+
+          const discordAccessRequest = await axios.get(
+            "https://discord.com/api/users/@me",
+            {
+              headers: {
+                authorization: `Bearer ${discordTokenRequest.access_token}`,
+              },
+            }
+          );
+          await setDoc(
+            doc(db, "users", userDoc.id),
+            {
+              discordId: discordAccessRequest.data.id,
+              discordAccessToken: discordTokenRequest.access_token,
+              discordRefreshToken: discordTokenRequest.refresh_token,
+            },
+            { merge: true }
+          );
+          setDiscordLinked(true);
+        }
+      }
     }
+    effectFunction();
   }, []);
 
   return (

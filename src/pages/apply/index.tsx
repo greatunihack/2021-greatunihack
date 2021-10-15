@@ -65,36 +65,32 @@ export default function Apply() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Formik
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             const auth = getAuth();
             const inputEmail = values.email.toLowerCase();
-            createUserWithEmailAndPassword(auth, inputEmail, values.password)
-              .then(() => {
-                try {
-                  const docRef = addDoc(collection(db, "users"), {
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    email: inputEmail,
-                    ethnicity: values.ethnicity,
-                    gender: values.gender,
-                  });
-                  if (auth.currentUser) {
-                    updateProfile(auth.currentUser, {
-                      displayName: `${values.firstName} ${values.lastName}`,
-                    });
-                  }
-                  setMessageText(
-                    "Thank you for applying! You can log into the hub 5 days before the hackathon begins."
-                  );
-                  setMessageOpen(true);
-                } catch (e) {
-                  console.error("Error adding document: ", e);
-                }
-              })
-              .catch((error) => {
-                const errorMessage = error.message;
-                alert(errorMessage);
+            await createUserWithEmailAndPassword(
+              auth,
+              inputEmail,
+              values.password
+            ).catch((error) => {
+              alert(error.message);
+            });
+            await addDoc(collection(db, "users"), {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: inputEmail,
+              ethnicity: values.ethnicity,
+              gender: values.gender,
+            });
+            if (auth.currentUser) {
+              updateProfile(auth.currentUser, {
+                displayName: `${values.firstName} ${values.lastName}`,
               });
+            }
+            setMessageText(
+              "Thank you for applying! You can log into the hub 5 days before the hackathon begins."
+            );
+            setMessageOpen(true);
           }}
           initialValues={{
             firstName: "",
