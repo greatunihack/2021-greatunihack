@@ -50,7 +50,7 @@ export default function Discord() {
               code: discordCode,
               scope: ["identify", "guilds.join"],
               grantType: "authorization_code",
-              redirectUri: process.env.REACT_APP_DISCORD_REDIRECT_URL,
+              redirectUri: `${window.location.origin}/dashboard/discord`,
             })
             .catch();
 
@@ -96,10 +96,11 @@ export default function Discord() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      if (process.env.REACT_APP_DISCORD_URL) {
-                        window.location.href =
-                          process.env.REACT_APP_DISCORD_URL;
-                      }
+                      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${
+                        process.env.REACT_APP_DISCORD_CLIENT
+                      }&redirect_uri=${encodeURIComponent(
+                        `${window.location.origin}/dashboard/discord`
+                      )}&response_type=code&scope=identify%20guilds.join`;
                     }}
                   >
                     Link Discord Account
