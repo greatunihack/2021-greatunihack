@@ -301,7 +301,7 @@ export default function Apply() {
                                 "CVs/" +
                                   `${values.firstName}${
                                     values.lastName
-                                  } - ${date.getDate()}${date.getMonth()} ${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+                                  } - ${date.getDate()}${date.getMonth()} ${date.getHours()}${date.getMinutes()}${date.getSeconds()}.pdf`
                               ),
                               e.target.files[0]
                             );
