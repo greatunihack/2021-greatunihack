@@ -1,4 +1,5 @@
 import {
+  addDoc,
   deleteDoc,
   deleteField,
   doc,
@@ -23,7 +24,6 @@ import {
   User,
   userConverter,
 } from "../models";
-import { addDoc } from "firebase/firestore";
 import axios from "axios";
 
 export async function getTeamDoc(
@@ -116,6 +116,18 @@ export async function createTeam(
     )
     .then((data) => data.data.replace("token", ""));
 
+  await axios.put(
+    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+      process.env.REACT_APP_DISCORD_BOT_SERVER
+    }/${userDoc.data().discordId}/${teamId}`,
+    {},
+    {
+      headers: {
+        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+      },
+    }
+  );
+
   const newTeamDoc = await addDoc(collection(db, "teams"), {
     teamName: teamName,
     teamId: teamId,
@@ -131,18 +143,6 @@ export async function createTeam(
       teamId: teamId,
     },
     { merge: true }
-  );
-
-  await axios.put(
-    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-      process.env.REACT_APP_DISCORD_BOT_SERVER
-    }/${userDoc.data().discordId}/${teamId}`,
-    {},
-    {
-      headers: {
-        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-      },
-    }
   );
 
   return {
@@ -168,9 +168,22 @@ export async function joinUserToTeam(
   const countMembersInTeam = await getDocs(
     collection(db, "teams", teamDocId, "teamMembers")
   ).then((tmds) => tmds.size);
+  
   if (countMembersInTeam >= 6) {
     throw new TeamFullError();
   }
+
+  await axios.put(
+    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+      process.env.REACT_APP_DISCORD_BOT_SERVER
+    }/${userDoc.data().discordId}/${teamId}`,
+    {},
+    {
+      headers: {
+        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+      },
+    }
+  );
 
   await addDoc(collection(db, "teams", teamDocId, "teamMembers"), {
     email: user.email as string,
@@ -187,18 +200,6 @@ export async function joinUserToTeam(
     },
     {
       merge: true,
-    }
-  );
-
-  await axios.put(
-    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-      process.env.REACT_APP_DISCORD_BOT_SERVER
-    }/${userDoc.data().discordId}/${teamId}`,
-    {},
-    {
-      headers: {
-        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-      },
     }
   );
 }
@@ -226,6 +227,17 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
     return;
   }
 
+  await axios.delete(
+    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+      process.env.REACT_APP_DISCORD_BOT_SERVER
+    }/${userDoc.data().discordId}`,
+    {
+      headers: {
+        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+      },
+    }
+  );
+
   const userTeamMemberDocs = await getDocs(
     query(
       collection(db, "teams", teamDocId, "teamMembers").withConverter(
@@ -240,17 +252,6 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
 
   deleteDoc(
     doc(db, "teams", teamDocId, "teamMembers", userTeamMemberDocs.docs[0].id)
-  );
-
-  await axios.delete(
-    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-      process.env.REACT_APP_DISCORD_BOT_SERVER
-    }/${userDoc.data().discordId}`,
-    {
-      headers: {
-        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-      },
-    }
   );
 }
 
