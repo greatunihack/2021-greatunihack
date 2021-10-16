@@ -16,6 +16,7 @@ export type User = {
   cvUrl?: string;
   discordAccessToken?: string;
   discordRefreshToken?: string;
+  discordId?: string;
 };
 
 export const userConverter: FirestoreDataConverter<User> = {

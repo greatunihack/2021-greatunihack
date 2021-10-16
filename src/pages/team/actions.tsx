@@ -1,33 +1,6 @@
 import { Dispatch } from "react";
 import type { UseFormSetError } from "react-hook-form";
 
-import Filter from "bad-words";
-import { v4 } from "uuid";
-
-import {
-  addDoc,
-  doc,
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  setDoc,
-  where,
-  updateDoc,
-  deleteField,
-  deleteDoc,
-} from "@firebase/firestore";
-import type { User } from "@firebase/auth";
-import { getApp } from "@firebase/app";
-
-import {
-  User as InternalUser,
-  userConverter,
-  Team,
-  teamConverter,
-  TeamMember,
-  teamMemberConverter,
-} from "src/data/models";
 import {
   TeamDispatchActions,
   TeamActions,
@@ -36,230 +9,136 @@ import {
   CreateTeamInputs,
 } from "./types";
 
+import Filter from "bad-words";
+
+import type { User } from "@firebase/auth";
+
+import {
+  getTeamWithMembers,
+  getUserDoc,
+  joinUserToTeam,
+  removeUserFromTeam,
+  createTeam as createTeamForUser,
+  TeamFullError,
+  TeamNotExistsError,
+  UserNotExistsError,
+  TeamNameTakenError,
+} from "src/data/accessors";
+
 export function getActions(
   dispatch: Dispatch<TeamDispatchActions>
 ): TeamActions {
-  const app = getApp();
-  const db = getFirestore(app);
+  const loadCurrentTeam = async ({ email }: User) => {
+    try {
+      const userDoc = await getUserDoc(email as string);
+      const user = userDoc.data();
 
-  const loadCurrentTeam = (user: User) => {
-    getDocs(
-      query(
-        collection(db, "users").withConverter<InternalUser>(userConverter),
-        where("email", "==", user.email)
-      )
-    ).then((querySnapshot) => {
-      querySnapshot.forEach((document) => {
-        const user = document.data();
+      if (!user.teamId) return;
 
-        if (!user.teamId) return;
+      if (!user.discordAccessToken) {
+        dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
+        return;
+      }
 
-        if (!user.discordAccessToken) {
-          dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
-          return;
-        }
+      const team = await getTeamWithMembers(user.teamId);
 
-        getDocs(
-          query(
-            collection(db, "teams").withConverter<Team>(teamConverter),
-            where("teamId", "==", document.data().teamId)
-          )
-        ).then((querySnapshot) => {
-          querySnapshot.forEach((document) => {
-            const teamData = document.data();
-
-            getDocs(
-              collection(
-                db,
-                "teams",
-                document.id,
-                "teamMembers"
-              ).withConverter<TeamMember>(teamMemberConverter)
-            ).then((querySnapshot) => {
-              const currentTeamMembers: TeamMember[] = [];
-              querySnapshot.forEach((document) => {
-                currentTeamMembers.push(document.data());
-              });
-              dispatch({
-                type: TeamDispatchActionType.Load,
-                payload: {
-                  team: {
-                    ...teamData,
-                    teamMembers: currentTeamMembers,
-                  },
-                },
-              });
-            });
-          });
-        });
+      dispatch({
+        type: TeamDispatchActionType.Load,
+        payload: { team },
       });
-    });
+    } catch (err) {
+      if (err instanceof UserNotExistsError) {
+        // TODO: add handler, send to login
+      } else {
+        showErrorMessage("Internal error, please try again in a bit!");
+        console.log(err);
+      }
+    }
   };
 
-  const deleteCurrentTeam = (user: User) => {
-    getDocs(
-      query(
-        collection(db, "users"),
-        where("email", "==", user.email)
-      ).withConverter(userConverter)
-    ).then((querySnapshot) => {
-      querySnapshot.forEach((document) => {
-        const user = document.data();
-        if (user.teamId) {
-          // Delete teamId from user document
-          updateDoc(doc(db, "users", document.id), {
-            teamId: deleteField(),
-          });
+  const deleteCurrentTeam = async (user: User) => {
+    try {
+      const userDoc = await getUserDoc(user.email as string);
+      const internalUser = userDoc.data();
 
-          getDocs(
-            query(
-              collection(db, "teams").withConverter(teamConverter),
-              where("teamId", "==", document.data().teamId)
-            )
-          ).then((querySnapshot) => {
-            querySnapshot.forEach((team_document) => {
-              getDocs(
-                collection(
-                  db,
-                  "teams",
-                  team_document.id,
-                  "teamMembers"
-                ).withConverter(teamMemberConverter)
-              ).then((querySnapshot) => {
-                // If this was the last user on the team, delte the team
+      if (!internalUser.teamId) return;
 
-                console.log(`Members in team: ${querySnapshot.size}`);
+      if (!internalUser.discordAccessToken) {
+        dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
+        return;
+      }
 
-                if (querySnapshot.size === 1) {
-                  console.log("deleting document");
-                  deleteDoc(doc(db, "teams", team_document.id));
-                } else {
-                  // Otherwise just remove this users from member
-                  querySnapshot.forEach((user_document) => {
-                    const teamMember = user_document.data();
-                    if (user.email === teamMember.email) {
-                      deleteDoc(
-                        doc(
-                          db,
-                          "teams",
-                          team_document.id,
-                          "teamMembers",
-                          user_document.id
-                        )
-                      );
-                    }
-                  });
-                }
+      removeUserFromTeam(user);
 
-                showSuccessMessage("Left team successfully!");
-                dispatch({ type: TeamDispatchActionType.Delete });
-              });
-            });
-          });
-        }
-      });
-    });
+      showSuccessMessage("Left team successfully!");
+      dispatch({ type: TeamDispatchActionType.Delete });
+    } catch (err) {
+      if (err instanceof UserNotExistsError) {
+        // TODO: Handle this
+      } else {
+        showErrorMessage("Internal error, please try again in a bit!");
+        console.log(err);
+      }
+    }
   };
 
-  const joinTeam = (
+  const joinTeam = async (
     user: User,
     teamId: string,
     setErrors: UseFormSetError<JoinTeamInputs>
   ) => {
-    getDocs(
-      query(
-        collection(db, "teams"),
-        where("teamId", "==", teamId)
-      ).withConverter(teamConverter)
-    ).then((querySnapshot) => {
-      if (querySnapshot.size === 0) {
-        console.log("Got here!");
-        setErrors(
-          "teamId",
-          {
-            message: "Team not found!",
-          },
-          {
-            shouldFocus: true,
-          }
-        );
+    try {
+      const userDoc = await getUserDoc(user.email as string);
+      const internalUser = userDoc.data();
+
+      if (internalUser.teamId) return;
+
+      if (!internalUser.discordAccessToken) {
+        dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
 
-      querySnapshot.forEach((team_document) => {
-        const team = team_document.data();
+      const team = await getTeamWithMembers(teamId);
 
-        getDocs(
-          collection(
-            db,
-            "teams",
-            team_document.id,
-            "teamMembers"
-          ).withConverter(teamMemberConverter)
-        ).then((querySnapshot) => {
-          if (querySnapshot.size >= 6) {
-            setErrors("teamId", {
-              message: "You can't have more than 6 people on the same team!",
-            });
-            return;
-          }
+      await joinUserToTeam(user, team.teamId);
 
-          // Gather all current team members, add user and dispatch
-          const currentTeamMembers: TeamMember[] = [];
-          querySnapshot.forEach((document) => {
-            currentTeamMembers.push(document.data());
-          });
-          dispatch({
-            type: TeamDispatchActionType.Load,
-            payload: {
-              team: {
-                ...team,
-                teamMembers: [
-                  ...currentTeamMembers,
-                  {
-                    email: user.email as string,
-                    name: user.displayName as string,
-                  },
-                ],
+      dispatch({
+        type: TeamDispatchActionType.Load,
+        payload: {
+          team: {
+            ...team,
+            teamMembers: [
+              ...team.teamMembers,
+              {
+                name: user.displayName as string,
+                email: user.displayName as string,
               },
-            },
-          });
-          closeJoinTeamDialog();
-          showSuccessMessage("Team joined successfully!");
-
-          addDoc(collection(db, "teams", team_document.id, "teamMembers"), {
-            name: user.displayName,
-            email: user.email,
-          });
-
-          // Updating the user
-          getDocs(
-            query(
-              collection(db, "users"),
-              where("email", "==", user.email)
-            ).withConverter(userConverter)
-          ).then((querySnapshot) => {
-            querySnapshot.forEach((document) => {
-              setDoc(
-                doc(db, "users", document.id),
-                {
-                  teamId: teamId,
-                },
-                { merge: true }
-              );
-            });
-          });
-        });
+            ],
+          },
+        },
       });
-    });
+      closeJoinTeamDialog();
+    } catch (err) {
+      if (err instanceof TeamNotExistsError) {
+        setErrors("teamId", {
+          message: "Team not found!",
+        });
+      } else if (err instanceof TeamFullError) {
+        setErrors("teamId", {
+          message: "You can't have more than 6 people on the same team!",
+        });
+      } else {
+        showErrorMessage("Internal error, please try again in a bit!");
+        console.log(err);
+      }
+    }
   };
 
-  const createTeam = (
+  const createTeam = async (
     user: User,
     teamName: string,
     setError: UseFormSetError<CreateTeamInputs>
   ) => {
-    const teamId = v4();
     if (new Filter().isProfane(teamName)) {
       setError(
         "teamName",
@@ -273,71 +152,29 @@ export function getActions(
       return;
     }
 
-    getDocs(
-      query(
-        collection(db, "teams").withConverter<Team>(teamConverter),
-        where("teamName", "==", teamName)
-      )
-    ).then((querySnapshot) => {
-      if (querySnapshot.size > 0) {
-        setError(
-          "teamName",
-          {
-            message: "Team name is taken",
-          },
-          {
-            shouldFocus: true,
-          }
-        );
-        return;
-      }
-
-      // Create Team
-      addDoc(collection(db, "teams"), {
-        teamName: teamName,
-        teamId: teamId,
-      }).then((docRef) => {
-        addDoc(collection(db, "teams", docRef.id, "teamMembers"), {
-          name: user.displayName,
-          email: user.email,
-        });
-      });
-
-      // Assign User to team
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((querySnapshot) => {
-        querySnapshot.forEach((document) => {
-          setDoc(
-            doc(db, "users", document.id),
-            {
-              teamId: teamId,
-            },
-            { merge: true }
-          );
-        });
-      });
+    try {
+      const team = await createTeamForUser(user, teamName);
 
       closeCreateTeamDialog();
       showSuccessMessage(
-        `Team created successfully! Your team ID is: ${teamId}`
+        `Team created successfully! Your team ID is: ${team.teamId}. You can share with up to 4 people`
       );
       dispatch({
         type: TeamDispatchActionType.Load,
         payload: {
-          team: {
-            teamId,
-            teamName,
-            teamMembers: [
-              {
-                name: user.displayName as string,
-                email: user.email as string,
-              },
-            ],
-          },
+          team,
         },
       });
-    });
+    } catch (err) {
+      if (err instanceof TeamNameTakenError) {
+        setError("teamName", {
+          message: "Team name is taken",
+        });
+      } else {
+        showErrorMessage("Internal error, please try again in a bit!");
+        console.log(err);
+      }
+    }
   };
 
   const showMessage = (text: string) => {
