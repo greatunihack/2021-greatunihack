@@ -14,13 +14,14 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { AuthContext } from "src/components/auth/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Copyright } from "src/components/copyright";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Grid,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -53,7 +54,8 @@ export default function Login() {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
   const history = useHistory();
-
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+  const [errorMessageText, setErrorMessageText] = useState("");
   return (
     <>
       <PageHeaders title={"Login"} />
@@ -78,8 +80,14 @@ export default function Login() {
                     history.push("/dashboard/home");
                   })
                   .catch((error) => {
-                    const errorMessage = error.message;
-                    alert(errorMessage);
+                    let message = "";
+                    if (error.code === "auth/wrong-password") {
+                      message = "Incorrect password!";
+                    } else {
+                      message = error.code;
+                    }
+                    setErrorMessageText(message);
+                    setErrorMessageOpen(true);
                   });
               }}
               initialValues={{
@@ -136,32 +144,32 @@ export default function Login() {
                   >
                     Sign In
                   </Button>
-                  {/* <Grid container justifyContent="flex-end">
-                  <Grid item xs>
-                    <Button
-                      onClick={() => {
-                        setResetPassword(true);
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        style={{ fontSize: "0.8em" }}
+                  <Grid container justifyContent="flex-end">
+                    {/* <Grid item xs>
+                      <Button
+                        onClick={() => {
+                          setResetPassword(true);
+                        }}
                       >
-                        Forgot password?
-                      </Typography>
-                    </Button>
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          Forgot password?
+                        </Typography>
+                      </Button>
+                    </Grid> */}
+                    <Grid item>
+                      <Button component={Link} to="/apply">
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          {"Don't have an account? Apply"}
+                        </Typography>
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Button component={Link} to="/apply">
-                      <Typography
-                        variant="caption"
-                        style={{ fontSize: "0.8em" }}
-                      >
-                        {"Don't have an account? Apply"}
-                      </Typography>
-                    </Button>
-                  </Grid>
-                </Grid> */}
                 </Form>
               )}
             </Formik>
@@ -245,6 +253,16 @@ export default function Login() {
         >
           <Box m={3}>
             <Typography>{messageText}</Typography>
+          </Box>
+        </Dialog>
+        <Dialog
+          open={errorMessageOpen}
+          onClose={() => {
+            setErrorMessageOpen(false);
+          }}
+        >
+          <Box m={3}>
+            <Typography>{errorMessageText}</Typography>
           </Box>
         </Dialog>
       </Container>

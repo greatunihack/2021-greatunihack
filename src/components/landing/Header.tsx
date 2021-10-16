@@ -3,7 +3,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import { Hidden, IconButton } from "@material-ui/core";
@@ -12,9 +11,9 @@ const useStyles = makeStyles((theme) => ({
   link: {
     fontSize: "20px",
     textTransform: "none",
-    "&:hover": {
-      borderBottom: "1px solid #fafdf6",
-    },
+    // "&:hover": {
+    //   borderBottom: "1px solid #fafdf6",
+    // },
   },
   icon: {
     fill: "white",
@@ -40,14 +39,14 @@ export default function Header() {
           &#60;{process.env.REACT_APP_HACKATHON_NAME} /&#62;
         </Typography>
         <Hidden mdDown>
-          <Button
+          {/* <Button
             color="inherit"
             component={Link}
             to="/"
             className={classes.link}
           >
             Home
-          </Button>
+          </Button> */}
           <Button color="inherit" href="#about" className={classes.link}>
             About
           </Button>
