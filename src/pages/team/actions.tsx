@@ -21,7 +21,6 @@ import {
   createTeam as createTeamForUser,
   TeamFullError,
   TeamNotExistsError,
-  UserNotExistsError,
   TeamNameTakenError,
 } from "src/data/accessors";
 
@@ -47,12 +46,8 @@ export function getActions(
         payload: { team },
       });
     } catch (err) {
-      if (err instanceof UserNotExistsError) {
-        // TODO: add handler, send to login
-      } else {
-        showErrorMessage("Internal error, please try again in a bit!");
-        console.log(err);
-      }
+      showErrorMessage("Internal error, please try again in a bit!");
+      console.log(err);
     }
   };
 
@@ -73,12 +68,8 @@ export function getActions(
       showSuccessMessage("Left team successfully!");
       dispatch({ type: TeamDispatchActionType.Delete });
     } catch (err) {
-      if (err instanceof UserNotExistsError) {
-        // TODO: Handle this
-      } else {
-        showErrorMessage("Internal error, please try again in a bit!");
-        console.log(err);
-      }
+      showErrorMessage("Internal error, please try again in a bit!");
+      console.log(err);
     }
   };
 
