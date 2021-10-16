@@ -28,6 +28,7 @@ import { Dialog, FormHelperText } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import PageHeaders from "src/components/headers";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -90,7 +91,7 @@ export default function Apply() {
               });
             }
             setMessageText(
-              "Thank you for applying! You can log into the hub 5 days before the hackathon begins."
+              "Thank you for applying! You should now create a Devpost account and link your Discord account."
             );
             setMessageOpen(true);
           }}
@@ -273,7 +274,8 @@ export default function Apply() {
                       </InputLabel>
                       <Box mt={1} mb={2}>
                         <Typography variant="caption">
-                          Upload your CV for our sponsors to see!
+                          Upload your CV for our sponsors to potentially reach
+                          out to you!
                         </Typography>
                       </Box>
                       <input
@@ -283,15 +285,17 @@ export default function Apply() {
                         name="resume"
                         onChange={(e) => {
                           if (e.target.type === "file" && e.target.files) {
-                            const file = e.target.files[0];
-                            const t = new Date().toLocaleTimeString();
-                            const storageRef = ref(
-                              getStorage(),
-                              "CVs/" +
-                                `${values.firstName}${values.lastName} - ` +
-                                t
+                            const date = new Date();
+                            uploadBytes(
+                              ref(
+                                getStorage(),
+                                "CVs/" +
+                                  `${values.firstName}${
+                                    values.lastName
+                                  } - ${date.getDate()}${date.getMonth()} ${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+                              ),
+                              e.target.files[0]
                             );
-                            uploadBytes(storageRef, file);
                           }
                         }}
                       />
@@ -326,7 +330,7 @@ export default function Apply() {
                   >
                     Apply
                   </Button>
-                  {/* <Grid container justifyContent="flex-end">
+                  <Grid container justifyContent="flex-end">
                     <Grid item>
                       <Button component={Link} to="/login">
                         <Typography
@@ -337,7 +341,7 @@ export default function Apply() {
                         </Typography>
                       </Button>
                     </Grid>
-                  </Grid> */}
+                  </Grid>
                 </Box>
               </Box>
             </Form>
@@ -350,7 +354,7 @@ export default function Apply() {
       <Dialog
         open={messageOpen}
         onClose={() => {
-          window.location.href = "/";
+          window.location.href = "/dashboard/home";
         }}
       >
         <Box m={3}>

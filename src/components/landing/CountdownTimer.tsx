@@ -5,7 +5,7 @@ import Countdown from "react-countdown";
 export default function CountdownTimer() {
   const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
     return (
-      <Typography variant="h5">
+      <Typography variant="h4">
         {completed
           ? "Get Coding!"
           : `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}

@@ -1,5 +1,5 @@
 /* eslint-disable import/named */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -19,6 +19,15 @@ import { Loading } from "src/components/loading";
 
 export default function App() {
   const { user } = useContext(AuthContext);
+  const [earlyRestrict] = useState(() => {
+    const currentTime = new Date();
+    const hackathonTime = Date.parse(`${process.env.REACT_APP_APPLY_DATE}`);
+    if (currentTime.getTime() < hackathonTime) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   return (
     <ThemeProvider theme={Theme}>
@@ -39,14 +48,19 @@ export default function App() {
               <Login />
             )}
           </Route>
-          <Route exact path="/apply">
-            <Apply />
-          </Route>
+          {earlyRestrict ? (
+            <Route exact path="/apply">
+              <Apply />
+            </Route>
+          ) : null}
           <Route
             exact
             path="/discord"
             component={() => {
-              window.location.href = "https://discord.com";
+              if (process.env.REACT_APP_DISCORD_SERVER_LINK) {
+                window.location.href =
+                  process.env.REACT_APP_DISCORD_SERVER_LINK;
+              }
               return null;
             }}
           />

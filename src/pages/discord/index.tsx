@@ -72,8 +72,6 @@ export default function Discord() {
               doc(db, "users", userDoc.id),
               {
                 discordId: discordAccessRequest.data.id,
-                discordAccessToken: discordTokenRequest.access_token,
-                discordRefreshToken: discordTokenRequest.refresh_token,
               },
               { merge: true }
             );

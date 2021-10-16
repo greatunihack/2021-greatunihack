@@ -84,6 +84,7 @@ export default function Team() {
 
   useEffect(() => {
     async function effectFunction() {
+      axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
       if (user && user != "loading" && user.email) {
         const userDoc = await getUserDoc(user.email);
         if (!userDoc.data().discordId) {
@@ -240,7 +241,9 @@ export default function Team() {
           },
         }
       );
-      openMessageBox(`Team created successfully! Your team ID is: ${teamId}`);
+      openMessageBox(
+        `Team created successfully! Your team ID is: ${teamId}. You can share this ID with up to 5 other people.`
+      );
     }
   }
 
@@ -255,23 +258,38 @@ export default function Team() {
         <Card>
           <CardContent>
             <Box width="100%">
-              <Grid container>
+              <Grid container alignItems="center" justifyContent="center">
                 {onATeam ? (
                   <>
-                    <Grid item xs={12} md={6}>
-                      <Box m={2}>
+                    <Grid item xs={12}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>Team name: {form.teamName}</Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Box m={2}>
+                    <Grid item xs={12}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>Team ID: {form.teamId}</Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12}>
-                      <Box m={2}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>
-                          Team Members: {teamMembers.join(", ")}
+                          Team members: {teamMembers.join(", ")}
                         </Typography>
                       </Box>
                     </Grid>

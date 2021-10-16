@@ -14,13 +14,14 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { AuthContext } from "src/components/auth/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Copyright } from "src/components/copyright";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Grid,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -136,32 +137,32 @@ export default function Login() {
                   >
                     Sign In
                   </Button>
-                  {/* <Grid container justifyContent="flex-end">
-                  <Grid item xs>
-                    <Button
-                      onClick={() => {
-                        setResetPassword(true);
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        style={{ fontSize: "0.8em" }}
+                  <Grid container justifyContent="flex-end">
+                    {/* <Grid item xs>
+                      <Button
+                        onClick={() => {
+                          setResetPassword(true);
+                        }}
                       >
-                        Forgot password?
-                      </Typography>
-                    </Button>
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          Forgot password?
+                        </Typography>
+                      </Button>
+                    </Grid> */}
+                    <Grid item>
+                      <Button component={Link} to="/apply">
+                        <Typography
+                          variant="caption"
+                          style={{ fontSize: "0.8em" }}
+                        >
+                          {"Don't have an account? Apply"}
+                        </Typography>
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Button component={Link} to="/apply">
-                      <Typography
-                        variant="caption"
-                        style={{ fontSize: "0.8em" }}
-                      >
-                        {"Don't have an account? Apply"}
-                      </Typography>
-                    </Button>
-                  </Grid>
-                </Grid> */}
                 </Form>
               )}
             </Formik>

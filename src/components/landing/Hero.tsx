@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Container, Button, Box, Typography, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
+import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
 import CountdownTimer from "src/components/landing/CountdownTimer";
 import Logo from "src/images/logo512.png";
@@ -53,9 +55,8 @@ export default function Launch() {
   const classes = useStyles();
   const [earlyRestrict] = useState(() => {
     const currentTime = new Date();
-    const hackathonTime = Date.parse(`${process.env.REACT_APP_HACKATHON_DATE}`);
-    if (currentTime.getTime() < hackathonTime - 432000000) {
-      // hackathonTime - 5 DAYS
+    const hackathonTime = Date.parse(`${process.env.REACT_APP_APPLY_DATE}`);
+    if (currentTime.getTime() < hackathonTime) {
       return true;
     } else {
       return false;
@@ -76,15 +77,36 @@ export default function Launch() {
             </Grid>
             <Grid item xs={12} md={6}>
               <Box className={classes.info} pt={5}>
-                <Typography variant="h4" className={classes.title}>
+                {/* <Typography variant="h4" className={classes.title}>
                   27th - 28th November
+                </Typography> */}
+                <Typography variant="h6" className={classes.plug}>
+                  {process.env.REACT_APP_HACKATHON_NAME} begins in...
                 </Typography>
                 <CountdownTimer />
                 <Typography variant="h6" className={classes.plug}>
                   Join us for another coding challenge, with a theme of{" "}
-                  <a className={classes.nuclear}>NUCLEAR FALLOUT</a>. There is a
-                  lot to enjoy and take part in!
+                  <a className={classes.nuclear}>NUCLEAR FALLOUT</a>.{" "}
+                  <Countdown
+                    date={process.env.REACT_APP_APPLY_DATE}
+                    renderer={({
+                      days,
+                      // hours,
+                      // minutes,
+                      // seconds,
+                      completed,
+                    }: any) => {
+                      return (
+                        <>
+                          {completed
+                            ? "Applications are now closed! Come back next year for more fun coding!"
+                            : `Applications close in ${days} days, so don't wait!`}
+                        </>
+                      );
+                    }}
+                  />
                 </Typography>
+
                 <Box>
                   {earlyRestrict ? (
                     <Button
@@ -93,18 +115,17 @@ export default function Launch() {
                       to="/apply"
                       className={classes.button}
                     >
-                      Apply Now!
+                      Apply now!
                     </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      component={Link}
-                      to="/login"
-                      className={classes.button}
-                    >
-                      Log in
-                    </Button>
-                  )}
+                  ) : null}
+                  <Button
+                    variant="contained"
+                    component={Link}
+                    to="/login"
+                    className={classes.button}
+                  >
+                    Log in
+                  </Button>
                 </Box>
               </Box>
             </Grid>
