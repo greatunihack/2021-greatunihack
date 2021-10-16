@@ -85,7 +85,12 @@ export default function Team() {
                       </Box>
                     </Grid>
                     <Grid item xs={12}>
-                      <Box m={2}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>
                           Team Members:{" "}
                           {state.team.teamMembers

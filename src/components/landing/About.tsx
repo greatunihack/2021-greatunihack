@@ -31,7 +31,7 @@ export default function About() {
               Since 2014, we have brought together students from 88 universities
               across Europe to work and develop innovative ideas in a
               competitive environment. The hackathon this year will again be
-              online to keep us all safe whilst Covid is still with us, but we
+              online to keep us all safe whilst COVID is still with us, but we
               have worked very hard to ensure the hackathon is as amazing as
               ever!
             </Typography>

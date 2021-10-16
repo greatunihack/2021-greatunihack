@@ -2,7 +2,6 @@
 
 !["License"](https://img.shields.io/github/license/greatunihack/2021-greatunihack)
 !["Repository Size"](https://img.shields.io/github/repo-size/greatunihack/2021-greatunihack)
-!["Vulnerabilities"](https://img.shields.io/snyk/vulnerabilities/github/greatunihack/2021-greatunihack)
 !["Version"](https://img.shields.io/github/package-json/v/greatunihack/2021-greatunihack)
 !["Build"](https://img.shields.io/github/workflow/status/greatunihack/2021-greatunihack/Build/master)
 
