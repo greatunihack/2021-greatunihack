@@ -20,7 +20,6 @@ export function Copyright(props: CopyrightProps) {
         UniCS
       </Link>{" "}
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
