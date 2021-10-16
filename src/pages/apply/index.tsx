@@ -61,6 +61,8 @@ export default function Apply() {
 
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+  const [errorMessageText, setErrorMessageText] = useState("");
 
   return (
     <>
@@ -76,7 +78,14 @@ export default function Apply() {
               inputEmail,
               values.password
             ).catch((error) => {
-              alert(error.message);
+              let message = "";
+              if (error.code === "auth/email-already-in-use") {
+                message = "This email has already been used! Please log in.";
+              } else {
+                message = error.code;
+              }
+              setErrorMessageText(message);
+              setErrorMessageOpen(true);
             });
             await addDoc(collection(db, "users"), {
               firstName: values.firstName,
@@ -359,6 +368,16 @@ export default function Apply() {
       >
         <Box m={3}>
           <Typography>{messageText}</Typography>
+        </Box>
+      </Dialog>
+      <Dialog
+        open={errorMessageOpen}
+        onClose={() => {
+          setErrorMessageOpen(false);
+        }}
+      >
+        <Box m={3}>
+          <Typography>{errorMessageText}</Typography>
         </Box>
       </Dialog>
     </>

@@ -54,7 +54,8 @@ export default function Login() {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
   const history = useHistory();
-
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+  const [errorMessageText, setErrorMessageText] = useState("");
   return (
     <>
       <PageHeaders title={"Login"} />
@@ -79,8 +80,14 @@ export default function Login() {
                     history.push("/dashboard/home");
                   })
                   .catch((error) => {
-                    const errorMessage = error.message;
-                    alert(errorMessage);
+                    let message = "";
+                    if (error.code === "auth/wrong-password") {
+                      message = "Incorrect password!";
+                    } else {
+                      message = error.code;
+                    }
+                    setErrorMessageText(message);
+                    setErrorMessageOpen(true);
                   });
               }}
               initialValues={{
@@ -246,6 +253,16 @@ export default function Login() {
         >
           <Box m={3}>
             <Typography>{messageText}</Typography>
+          </Box>
+        </Dialog>
+        <Dialog
+          open={errorMessageOpen}
+          onClose={() => {
+            setErrorMessageOpen(false);
+          }}
+        >
+          <Box m={3}>
+            <Typography>{errorMessageText}</Typography>
           </Box>
         </Dialog>
       </Container>
