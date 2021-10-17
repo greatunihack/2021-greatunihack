@@ -13,9 +13,6 @@ export type User = {
   gender?: string;
   ethnicity?: string;
   teamId?: string;
-  cvUrl?: string;
-  discordAccessToken?: string;
-  discordRefreshToken?: string;
   discordId?: string;
 };
 

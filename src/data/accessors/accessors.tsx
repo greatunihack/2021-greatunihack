@@ -168,7 +168,7 @@ export async function joinUserToTeam(
   const countMembersInTeam = await getDocs(
     collection(db, "teams", teamDocId, "teamMembers")
   ).then((tmds) => tmds.size);
-  
+
   if (countMembersInTeam >= 6) {
     throw new TeamFullError();
   }

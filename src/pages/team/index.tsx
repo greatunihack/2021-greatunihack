@@ -31,6 +31,7 @@ import { AuthContext } from "src/components/auth/AuthContext";
 import pages from "src/data/DashboardButtonData.json";
 
 import type { User } from "@firebase/auth";
+import axios from "axios";
 
 export default function Team() {
   const history = useHistory();
@@ -55,6 +56,7 @@ export default function Team() {
 
   useEffect(() => {
     if (user && user != "loading") {
+      axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
       loadCurrentTeam(user);
     }
   }, [user]);
@@ -72,15 +74,25 @@ export default function Team() {
               <Grid container>
                 {state.team ? (
                   <>
-                    <Grid item xs={12} md={6}>
-                      <Box m={2}>
+                    <Grid item xs={12}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>
                           Team name: {state.team.teamName}
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Box m={2}>
+                    <Grid item xs={12}>
+                      <Box
+                        m={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <Typography>Team ID: {state.team.teamId}</Typography>
                       </Box>
                     </Grid>
@@ -92,7 +104,7 @@ export default function Team() {
                         alignItems="center"
                       >
                         <Typography>
-                          Team Members:{" "}
+                          Team members:{" "}
                           {state.team.teamMembers
                             .map((tm) => `${tm.name} <${tm.email}>`)
                             .join(", ")}
@@ -250,12 +262,14 @@ export default function Team() {
         onClose={closeMessageDialog}
         color={state.messageDialog.color}
       >
-        <DialogTitle>
+        <Box m={3} mb={0}>
           <Typography>{state.messageDialog.text}</Typography>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" m={1}>
           <IconButton aria-label="close" onClick={closeMessageDialog}>
             <CloseIcon />
           </IconButton>
-        </DialogTitle>
+        </Box>
       </Dialog>
 
       {/* Discord dialog */}

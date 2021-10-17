@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User } from "@firebase/auth";
 import type { UseFormSetError } from "react-hook-form";
 import { Team } from "src/data/models";

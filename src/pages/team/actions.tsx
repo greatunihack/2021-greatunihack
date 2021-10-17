@@ -34,7 +34,7 @@ export function getActions(
 
       if (!user.teamId) return;
 
-      if (!user.discordAccessToken) {
+      if (user.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
@@ -58,7 +58,7 @@ export function getActions(
 
       if (!internalUser.teamId) return;
 
-      if (!internalUser.discordAccessToken) {
+      if (!internalUser.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
@@ -84,7 +84,7 @@ export function getActions(
 
       if (internalUser.teamId) return;
 
-      if (!internalUser.discordAccessToken) {
+      if (!internalUser.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
@@ -134,7 +134,7 @@ export function getActions(
       setError(
         "teamName",
         {
-          message: "Team name is not allowed",
+          message: "Team name is not allowed.",
         },
         {
           shouldFocus: true,
@@ -148,7 +148,7 @@ export function getActions(
 
       closeCreateTeamDialog();
       showSuccessMessage(
-        `Team created successfully! Your team ID is: ${team.teamId}. You can share with up to 4 people`
+        `Team created successfully! Your team ID is: ${team.teamId}. You can share this with up to 5 people.`
       );
       dispatch({
         type: TeamDispatchActionType.Load,
@@ -159,7 +159,7 @@ export function getActions(
     } catch (err) {
       if (err instanceof TeamNameTakenError) {
         setError("teamName", {
-          message: "Team name is taken",
+          message: "Team name is taken.",
         });
       } else {
         showErrorMessage("Internal error, please try again in a bit!");
