@@ -84,7 +84,6 @@ export default function Team() {
 
   useEffect(() => {
     async function effectFunction() {
-      axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
       if (user && user != "loading" && user.email) {
         const userDoc = await getUserDoc(user.email);
         if (!userDoc.data().discordId) {
