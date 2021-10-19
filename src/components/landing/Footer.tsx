@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   icons: {
     padding: "2px",
     fontSize: "1.4em",
-    color: "white",
+    color: "black",
   },
   boxes: {
     margin: "1px",

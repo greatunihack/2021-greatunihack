@@ -1,12 +1,12 @@
 import { Typography, Box, Container, makeStyles } from "@material-ui/core";
 const useStyle = makeStyles(() => ({
   body: {
-    backgroundColor: "#a59132",
+    backgroundColor: "#272727",
     color: "#fafdf6",
     paddingTop: "30px",
   },
   title: {
-    borderBottomStyle: "solid",
+    // borderBottomStyle: "solid",
     paddingBottom: "5px",
   },
   info: {
