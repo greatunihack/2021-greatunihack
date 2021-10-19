@@ -10,7 +10,7 @@ import {
 import FAQData from "src/data/FAQData.json";
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#a59132",
+    backgroundColor: "#272727",
     color: "#fafdf6",
     paddingBottom: "30px",
     display: "block",
@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
   title: {
     padding: "10px",
-    borderBottomStyle: "solid",
-    paddingBottom: "5px",
+    // borderBottomStyle: "solid",
+    // paddingBottom: "5px",
   },
 
   cardGrid: {
@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    background: "#30362f",
-    color: "#fafdf6",
+    // background: "#30362f",
+    // color: "#fafdf6",
   },
-  CardContent: {
+  cardContent: {
     flexGrow: 1,
   },
 }));
@@ -53,7 +53,7 @@ export default function FAQ() {
           {FAQData.details.map((data, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <CardContent className={classes.CardContent}>
+                <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5">
                     {data.question}
                   </Typography>
