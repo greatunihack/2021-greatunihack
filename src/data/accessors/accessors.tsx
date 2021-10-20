@@ -222,22 +222,6 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
     collection(db, "teams", teamDocId, "teamMembers")
   ).then((tmds) => tmds.size);
 
-  if (teamSize === 1) {
-    await deleteDoc(doc(db, "teams", teamDocId));
-    return;
-  }
-
-  await axios.delete(
-    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
-      process.env.REACT_APP_DISCORD_BOT_SERVER
-    }/${userDoc.data().discordId}`,
-    {
-      headers: {
-        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
-      },
-    }
-  );
-
   const userTeamMemberDocs = await getDocs(
     query(
       collection(db, "teams", teamDocId, "teamMembers").withConverter(
@@ -250,9 +234,36 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
   // User not in the list of members
   if (userTeamMemberDocs.empty) return;
 
-  deleteDoc(
+  await deleteDoc(
     doc(db, "teams", teamDocId, "teamMembers", userTeamMemberDocs.docs[0].id)
   );
+
+  // Remove user from team
+  await axios.delete(
+    `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+      process.env.REACT_APP_DISCORD_BOT_SERVER
+    }/${userDoc.data().discordId}`,
+    {
+      headers: {
+        Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+      },
+    }
+  );
+
+  if (teamSize === 1) {
+    await deleteDoc(doc(db, "teams", teamDocId));
+    // Delete team
+    await axios.delete(
+      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${
+        process.env.REACT_APP_DISCORD_BOT_SERVER
+      }/${teamId}`,
+      {
+        headers: {
+          Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+        },
+      }
+    );
+  }
 }
 
 export class UserNotExistsError extends Error {}

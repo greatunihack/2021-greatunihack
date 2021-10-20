@@ -34,7 +34,7 @@ export function getActions(
 
       if (!user.teamId) return;
 
-      if (user.discordId) {
+      if (!user.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }

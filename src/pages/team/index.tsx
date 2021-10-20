@@ -266,8 +266,8 @@ export default function Team() {
           <Typography>{state.messageDialog.text}</Typography>
         </Box>
         <Box display="flex" justifyContent="center" alignItems="center" m={1}>
-          <IconButton aria-label="close" onClick={closeMessageDialog}>
-            <CloseIcon />
+          <IconButton>
+            <CloseIcon aria-label="close" onClick={closeMessageDialog} />
           </IconButton>
         </Box>
       </Dialog>
