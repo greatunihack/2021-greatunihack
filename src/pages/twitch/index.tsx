@@ -18,8 +18,8 @@ export default function Twitch() {
         </Box>
       </Grid>
       <Box m={2}>
-          <BackButton />
-        </Box>
+        <BackButton />
+      </Box>
     </>
   );
 }
