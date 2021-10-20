@@ -145,6 +145,16 @@ export default function Team() {
           const teamMemberDocs = await getTeamMembersDocs(teamDoc.id);
           if (teamMemberDocs.size === 1) {
             deleteDoc(doc(db, "teams", teamDoc.id));
+            axios.delete(
+              `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${
+                process.env.REACT_APP_DISCORD_BOT_SERVER
+              }/${userDoc.data().teamId}`,
+              {
+                headers: {
+                  Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+                },
+              }
+            );
           } else {
             teamMemberDocs.forEach((teamMember) => {
               if (user.email === teamMember.data().email) {
