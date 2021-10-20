@@ -83,6 +83,8 @@ export default function Login() {
                     let message = "";
                     if (error.code === "auth/wrong-password") {
                       message = "Incorrect password!";
+                    } else if (error.code === "auth/user-not-found") {
+                      message = "Please make an account before signing in!";
                     } else {
                       message = error.code;
                     }
