@@ -355,7 +355,7 @@ export default function Team() {
             </Box>
           </CardContent>
         </Card>
-        <Box m={2}>
+        <Box m={2} display="flex" alignItems="center" justifyContent="center">
           <BackButton />
         </Box>
       </Box>

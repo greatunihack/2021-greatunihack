@@ -17,7 +17,7 @@ export default function Twitch() {
           />
         </Box>
       </Grid>
-      <Box m={2}>
+      <Box m={2} display="flex" alignItems="center" justifyContent="center">
         <BackButton />
       </Box>
     </>

@@ -135,7 +135,7 @@ export default function Contact() {
             </Formik>
           </Box>
         </Card>
-        <Box m={2}>
+        <Box m={2} display="flex" alignItems="center" justifyContent="center">
           <BackButton />
         </Box>
       </Box>

@@ -117,7 +117,7 @@ export default function Discord() {
             </Box>
           </Box>
         </Card>
-        <Box m={2}>
+        <Box m={2} display="flex" alignItems="center" justifyContent="center">
           <BackButton />
         </Box>
       </Box>
