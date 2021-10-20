@@ -11,6 +11,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "src/components/auth/AuthContext";
 import PageHeaders from "src/components/headers";
+import BackButton from "src/components/backbutton";
 
 const ValidationSchema = Yup.object().shape({
   name: Yup.string().required("Name required"),
@@ -27,6 +28,7 @@ export default function Contact() {
   return (
     <>
       <PageHeaders title={pages.pageItems[3].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[3].name}
         description={pages.pageItems[3].description}
