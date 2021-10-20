@@ -46,6 +46,7 @@ export default function Team() {
   const [messageOpen, setMessageOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
   const [discordNotLinked, setDiscordNotLinked] = useState(false);
+  const [discordNotOnServer, setDiscordNotOnServer] = useState(false);
   const [form, setForm] = useState({ teamName: "", teamId: "" });
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
@@ -88,6 +89,21 @@ export default function Team() {
       axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
       if (user && user != "loading" && user.email) {
         const userDoc = await getUserDoc(user.email);
+        if (userDoc.data().discordId) {
+          const onServer = await axios.get(
+            `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${
+              process.env.REACT_APP_DISCORD_BOT_SERVER
+            }/${userDoc.data().discordId}`,
+            {
+              headers: {
+                Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+              },
+            }
+          );
+          if (onServer.status !== 200) {
+            setDiscordNotOnServer(true);
+          }
+        }
         if (!userDoc.data().discordId) {
           setDiscordNotLinked(true);
         } else if (userDoc.data().teamId) {
@@ -427,6 +443,39 @@ export default function Team() {
           <Typography>
             Please link your Discord account before joining a team!
           </Typography>
+        </Box>
+      </Dialog>
+      <Dialog
+        open={discordNotOnServer}
+        onClose={() => {
+          history.push("/dashboard/home");
+          window.open(`${process.env.REACT_APP_DISCORD_SERVER_LINK}`, "_blank");
+        }}
+      >
+        <Box m={3}>
+          <Typography>
+            Please join the Discord server before joining a team!
+          </Typography>
+          <Box
+            pt={2}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                history.push("/dashboard/home");
+                window.open(
+                  `${process.env.REACT_APP_DISCORD_SERVER_LINK}`,
+                  "_blank"
+                );
+              }}
+            >
+              Join Discord server
+            </Button>
+          </Box>
         </Box>
       </Dialog>
     </>
