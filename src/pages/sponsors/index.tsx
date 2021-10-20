@@ -9,6 +9,7 @@ export default function Sponsors() {
   return (
     <>
       <PageHeaders title={pages.pageItems[2].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[2].name}
         description={pages.pageItems[2].description}
@@ -16,9 +17,6 @@ export default function Sponsors() {
       <Grid container>
         <SponsorSection />
       </Grid>
-      <Box m={2} display="flex" alignItems="center" justifyContent="center">
-        <BackButton />
-      </Box>
     </>
   );
 }

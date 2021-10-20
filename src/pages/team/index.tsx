@@ -251,6 +251,7 @@ export default function Team() {
   return (
     <>
       <PageHeaders title={pages.pageItems[7].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[7].name}
         description={pages.pageItems[7].description}
@@ -355,9 +356,6 @@ export default function Team() {
             </Box>
           </CardContent>
         </Card>
-        <Box m={2} display="flex" alignItems="center" justifyContent="center">
-          <BackButton />
-        </Box>
       </Box>
       <Dialog open={createTeamOpen} onClose={handleClose} fullWidth>
         <DialogTitle>Create a team</DialogTitle>

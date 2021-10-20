@@ -28,6 +28,7 @@ export default function Contact() {
   return (
     <>
       <PageHeaders title={pages.pageItems[3].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[3].name}
         description={pages.pageItems[3].description}
@@ -135,9 +136,6 @@ export default function Contact() {
             </Formik>
           </Box>
         </Card>
-        <Box m={2} display="flex" alignItems="center" justifyContent="center">
-          <BackButton />
-        </Box>
       </Box>
       <Dialog
         open={messageOpen}

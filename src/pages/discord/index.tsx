@@ -87,6 +87,7 @@ export default function Discord() {
   return (
     <>
       <PageHeaders title={pages.pageItems[0].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[0].name}
         description={pages.pageItems[0].description}
@@ -117,9 +118,6 @@ export default function Discord() {
             </Box>
           </Box>
         </Card>
-        <Box m={2} display="flex" alignItems="center" justifyContent="center">
-          <BackButton />
-        </Box>
       </Box>
     </>
   );

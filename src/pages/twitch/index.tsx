@@ -7,6 +7,7 @@ export default function Twitch() {
   return (
     <>
       <PageHeaders title={"Twitch"} />
+      <BackButton />
       <Grid container xs={12} justifyContent="center" alignContent="center">
         <Box mt={2}>
           <ReactPlayer
@@ -17,9 +18,6 @@ export default function Twitch() {
           />
         </Box>
       </Grid>
-      <Box m={2} display="flex" alignItems="center" justifyContent="center">
-        <BackButton />
-      </Box>
     </>
   );
 }
