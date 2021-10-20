@@ -1,6 +1,7 @@
 import { Box, Grid } from "@material-ui/core";
 import ReactPlayer from "react-player";
 import PageHeaders from "src/components/headers";
+import BackButton from "src/components/backbutton";
 
 export default function Twitch() {
   return (
@@ -16,6 +17,9 @@ export default function Twitch() {
           />
         </Box>
       </Grid>
+      <Box m={2}>
+          <BackButton />
+        </Box>
     </>
   );
 }
