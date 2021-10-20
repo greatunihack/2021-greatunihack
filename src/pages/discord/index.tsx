@@ -19,6 +19,7 @@ import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import { useHistory } from "react-router-dom";
 import PageHeaders from "src/components/headers/index";
+import BackButton from "src/components/backbutton";
 
 export default function Discord() {
   const app = getApp();
@@ -116,6 +117,9 @@ export default function Discord() {
             </Box>
           </Box>
         </Card>
+        <Box m={2}>
+          <BackButton />
+        </Box>
       </Box>
     </>
   );
