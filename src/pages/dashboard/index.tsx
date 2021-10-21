@@ -53,7 +53,10 @@ export default function Dashboard() {
             <Button pageDetails={pages.pageItems[0]} />
             <Button pageDetails={pages.pageItems[4]} />
             <Button pageDetails={pages.pageItems[1]} />
-            <Button pageDetails={pages.pageItems[7]} disabled={linkedDiscord} />
+            <Button
+              pageDetails={pages.pageItems[7]}
+              disabled={!linkedDiscord}
+            />
           </Grid>
           <Grid container xs={12} justifyContent="center">
             <Button pageDetails={pages.pageItems[2]} />
