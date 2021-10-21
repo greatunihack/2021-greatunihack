@@ -16,6 +16,7 @@ import Login from "src/pages/login";
 import Error from "src/pages/error";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { Loading } from "src/components/loading";
+import Legal from "src/pages/legal";
 
 export default function App() {
   const { user } = useContext(AuthContext);
@@ -72,6 +73,9 @@ export default function App() {
             ) : (
               <Redirect to="/login" />
             )}
+          </Route>
+          <Route path="/legal">
+            <Legal />
           </Route>
           <Route path="*">
             <Redirect to="/404" />

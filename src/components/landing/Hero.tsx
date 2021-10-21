@@ -9,7 +9,7 @@ import Logo from "src/images/logo512.png";
 
 const useStyles = makeStyles((theme) => ({
   hero: {
-    backgroundColor: "#a59132",
+    backgroundColor: "#272727",
     color: "#fafdf6",
   },
   media: {
@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
   },
   nuclear: {
-    color: "#ddd92a",
+    color: "#00ffb0",
   },
   button: {
     marginTop: "30px",
     marginLeft: "5px",
-    backgroundColor: "#a59132",
+    backgroundColor: "#272727",
     border: "1px solid #fafdf6",
     color: "#fafdf6",
     textTransform: "none",

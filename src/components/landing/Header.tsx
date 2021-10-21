@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme) => ({
     // },
   },
   icon: {
-    fill: "white",
+    fill: "black",
     margin: "2px",
   },
   header: {
     padding: theme.spacing(1, 2),
-    backgroundColor: "#30362f",
+    backgroundColor: "#00ffb0",
   },
   title: {
     fontSize: "25px",

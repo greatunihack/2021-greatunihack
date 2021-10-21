@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import { getApp } from "firebase/app";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
@@ -28,7 +29,7 @@ import { Dialog, FormHelperText } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import PageHeaders from "src/components/headers";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -310,21 +311,26 @@ export default function Apply() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControl required>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              color="primary"
-                              name="GDPR"
-                              id="GDPR"
-                              checked={values.GDPR}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="I agree to the terms and conditions."
+                      <Box alignItems="center" display="flex" ml={-1}>
+                        <Checkbox
+                          color="primary"
+                          name="GDPR"
+                          id="GDPR"
+                          checked={values.GDPR}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
                         />
-                      </FormControl>
+                        <Typography color="textSecondary" variant="body1">
+                          I agree to the{" "}
+                          <Link
+                            color="primary"
+                            component={RouterLink}
+                            to="/legal"
+                          >
+                            terms and conditions
+                          </Link>
+                        </Typography>
+                      </Box>
                       {touched.GDPR && Boolean(errors.GDPR) && (
                         <FormHelperText error>{errors.GDPR}</FormHelperText>
                       )}
@@ -341,7 +347,7 @@ export default function Apply() {
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Button component={Link} to="/login">
+                      <Button component={RouterLink} to="/login">
                         <Typography
                           variant="caption"
                           style={{ fontSize: "0.8em" }}

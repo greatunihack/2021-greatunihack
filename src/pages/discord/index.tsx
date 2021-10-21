@@ -11,7 +11,7 @@ import {
   doc,
   getFirestore,
 } from "@firebase/firestore";
-import { Box, Button, Card, Typography } from "@material-ui/core";
+import { Box, Button, Card, Typography, Grid } from "@material-ui/core";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
@@ -19,6 +19,7 @@ import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import { useHistory } from "react-router-dom";
 import PageHeaders from "src/components/headers/index";
+import BackButton from "src/components/backbutton";
 
 export default function Discord() {
   const app = getApp();
@@ -86,6 +87,7 @@ export default function Discord() {
   return (
     <>
       <PageHeaders title={pages.pageItems[0].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[0].name}
         description={pages.pageItems[0].description}
@@ -96,7 +98,42 @@ export default function Discord() {
             <Box p={2} pl={0}>
               <Box display="flex" alignItems="center" justifyContent="center">
                 {discordLinked ? (
-                  <Typography>You have linked your Discord account!</Typography>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Box
+                        p={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Typography>
+                          You have linked your Discord account! Now join our
+                          Discord server!
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Box
+                        p={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            window.open(
+                              `${process.env.REACT_APP_DISCORD_SERVER_LINK}`,
+                              "_blank"
+                            );
+                          }}
+                        >
+                          Join Discord server
+                        </Button>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 ) : (
                   <Button
                     variant="contained"

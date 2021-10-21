@@ -32,6 +32,8 @@ import pages from "src/data/DashboardButtonData.json";
 
 import type { User } from "@firebase/auth";
 import axios from "axios";
+import PageHeaders from "src/components/headers";
+import BackButton from "src/components/backbutton";
 
 export default function Team() {
   const history = useHistory();
@@ -63,6 +65,8 @@ export default function Team() {
 
   return (
     <>
+      <PageHeaders title={pages.pageItems[7].name} />
+      <BackButton />
       <Title
         title={pages.pageItems[7].name}
         description={pages.pageItems[7].description}

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   icon: {
-    fill: "white",
+    fill: "black",
   },
 }));
 
