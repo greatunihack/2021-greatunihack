@@ -6,16 +6,6 @@ import {
   makeStyles,
   LinearProgress,
 } from "@material-ui/core";
-import { useState, useContext } from "react";
-import { AuthContext } from "src/components/auth/AuthContext";
-import { getApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  query,
-  getDocs,
-  where,
-} from "firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,31 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HomeButton() {
+interface StatusProps {
+  status: [number, string];
+}
+
+export default function HomeButton(props: StatusProps) {
   const classes = useStyles();
-  const { user } = useContext(AuthContext);
-
-  const [userStatus, setUserStatus] = useState<[number, string]>(() => {
-    return [0, "Loading..."];
-  });
-
-  if (userStatus[0] === 0) {
-    const app = getApp();
-    const db = getFirestore(app);
-    if (user && user != "loading") {
-      getDocs(
-        query(collection(db, "users"), where("email", "==", user.email))
-      ).then((userDocs) => {
-        if (userDocs.docs[0].data().teamId) {
-          setUserStatus([100, "Joined a team"]);
-        } else if (userDocs.docs[0].data().discordId) {
-          setUserStatus([66, "Linked Discord account"]);
-        } else {
-          setUserStatus([33, "Registered"]);
-        }
-      });
-    }
-  }
 
   return (
     <Box m={4}>
@@ -74,18 +45,18 @@ export default function HomeButton() {
           </Box>
           <Box display="flex" alignItems="center">
             <Box width="100%" mr={2}>
-              <LinearProgress variant="determinate" value={userStatus[0]} />
+              <LinearProgress variant="determinate" value={props.status[0]} />
             </Box>
             <Box>
               <Typography
                 variant="body2"
                 color="textSecondary"
-              >{`${userStatus[0]}%`}</Typography>
+              >{`${props.status[0]}%`}</Typography>
             </Box>
           </Box>
           <Box mt={3}>
             <Typography variant="body2" component="p" align="center">
-              {`${userStatus[1]}`}
+              {`${props.status[1]}`}
             </Typography>
           </Box>
         </CardContent>

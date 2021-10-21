@@ -254,9 +254,7 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
     await deleteDoc(doc(db, "teams", teamDocId));
     // Delete team
     await axios.delete(
-      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${
-        process.env.REACT_APP_DISCORD_BOT_SERVER
-      }/${teamId}`,
+      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${teamId}`,
       {
         headers: {
           Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,

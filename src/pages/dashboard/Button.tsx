@@ -34,6 +34,7 @@ interface HomeButtonProps {
     external?: boolean;
     restricted?: boolean;
   };
+  disabled?: boolean;
 }
 
 export default function HomeButton(props: HomeButtonProps) {
@@ -46,7 +47,7 @@ export default function HomeButton(props: HomeButtonProps) {
       return false;
     }
   });
-  const { pageDetails } = props;
+  const { pageDetails, disabled } = props;
   const classes = useStyles();
   const history = useHistory();
 
@@ -62,7 +63,7 @@ export default function HomeButton(props: HomeButtonProps) {
         <CardActionArea
           className={classes.cardAction}
           onClick={handleOnClick}
-          disabled={earlyRestrict && pageDetails.restricted}
+          disabled={(earlyRestrict && pageDetails.restricted) || disabled}
         >
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -75,6 +76,16 @@ export default function HomeButton(props: HomeButtonProps) {
                   className={classes.italics}
                 >
                   Restricted until hackathon start
+                </Typography>
+              ) : null}
+              {disabled ? (
+                <Typography
+                  variant="caption"
+                  color="textSecondary"
+                  component="h3"
+                  className={classes.italics}
+                >
+                  Please link your Discord account!
                 </Typography>
               ) : null}
             </Typography>
