@@ -34,7 +34,7 @@ export function reducer(
         ...state,
         messageDialog: {
           open: false,
-          text: "",
+          text: state.messageDialog.text,
           color: "primary",
         },
       };
