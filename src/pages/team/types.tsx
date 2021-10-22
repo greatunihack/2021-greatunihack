@@ -27,6 +27,7 @@ export type TeamPageState = {
     open: boolean;
   };
   isDiscordLinked: boolean;
+  isOnDiscordServer: boolean;
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -50,6 +51,7 @@ export enum TeamDispatchActionType {
   ShowCreateTeamDialog = "SHOW_CREATE_TEAM_DIALOG",
   CloseCreateTeamDialog = "CLOSE_CRETE_TEAM_DIALOG",
   SetDiscordNotLinked = "SET_DISCORD_NOT_LINKED",
+  SetNotOnDiscordServer = "SET_NOT_ON_DISCORD_SERVER",
 }
 
 type TeamDispatchActionPayload = {
@@ -66,6 +68,7 @@ type TeamDispatchActionPayload = {
   [TeamDispatchActionType.ShowCreateTeamDialog]: undefined;
   [TeamDispatchActionType.CloseCreateTeamDialog]: undefined;
   [TeamDispatchActionType.SetDiscordNotLinked]: undefined;
+  [TeamDispatchActionType.SetNotOnDiscordServer]: undefined;
   [TeamDispatchActionType.Delete]: undefined;
 };
 

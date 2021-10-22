@@ -107,12 +107,13 @@ export default function Discord() {
                         alignItems="center"
                       >
                         <Typography>
-                          You have linked your Discord account! Now join our
-                          Discord server!
+                          You have linked your Discord account! If your
+                          application is accepted, you&apos;ll be sent a link to
+                          join our awesome Discord server!
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Box
                         p={2}
                         display="flex"
@@ -132,7 +133,7 @@ export default function Discord() {
                           Join Discord server
                         </Button>
                       </Box>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 ) : (
                   <Button

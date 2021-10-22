@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -30,6 +28,10 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import PageHeaders from "src/components/headers";
 import { Link as RouterLink } from "react-router-dom";
+import UniversityData from "src/data/UniversityData.json";
+import DegreeData from "src/data/DegreeData.json";
+import GenderData from "src/data/GenderData.json";
+import EthnicityData from "src/data/EthnicityData.json";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,6 +57,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ValidationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name required"),
+  lastName: Yup.string().required("Last name required"),
+  email: Yup.string().email("Invalid email").required("Email required"),
+  password: Yup.string()
+    .required("Password required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*£"'])(?=.{8,})/,
+      "Must contain 8 characters (one uppercase, one lowercase, one number and one special character)"
+    ),
+  legal: Yup.boolean()
+    .required("Please accept the terms & conditions")
+    .oneOf([true], "Please accept the terms & conditions"),
+  whyThisHackathon: Yup.string()
+    .required("Required")
+    .min(30, "Answer too short!"),
+  priorExperience: Yup.string()
+    .required("Required")
+    .min(30, "Answer too short!"),
+});
+
+const InitialValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  ethnicity: "",
+  gender: "",
+  university: "",
+  degree: "",
+  whyThisHackathon: "",
+  priorExperience: "",
+  legal: false,
+};
+
 export default function Apply() {
   const classes = useStyles();
   const app = getApp();
@@ -65,72 +102,44 @@ export default function Apply() {
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [errorMessageText, setErrorMessageText] = useState("");
 
+  const handleFormSubmit = async (values: any) => {
+    const auth = getAuth();
+    values.email = values.email.toLowerCase();
+    await createUserWithEmailAndPassword(
+      auth,
+      values.email,
+      values.password
+    ).catch((error) => {
+      let message = "";
+      if (error.code === "auth/email-already-in-use") {
+        message = "This email has already been used! Please log in.";
+      } else {
+        message = error.code;
+      }
+      setErrorMessageText(message);
+      setErrorMessageOpen(true);
+    });
+    await addDoc(collection(db, "users"), values);
+    if (auth.currentUser) {
+      updateProfile(auth.currentUser, {
+        displayName: `${values.firstName} ${values.lastName}`,
+      });
+    }
+    setMessageText(
+      "Thank you for applying! We will reach out to you if your application is accepted, so stay tuned!"
+    );
+    setMessageOpen(true);
+  };
+
   return (
     <>
       <PageHeaders title={"Apply"} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Formik
-          onSubmit={async (values) => {
-            const auth = getAuth();
-            const inputEmail = values.email.toLowerCase();
-            await createUserWithEmailAndPassword(
-              auth,
-              inputEmail,
-              values.password
-            ).catch((error) => {
-              let message = "";
-              if (error.code === "auth/email-already-in-use") {
-                message = "This email has already been used! Please log in.";
-              } else {
-                message = error.code;
-              }
-              setErrorMessageText(message);
-              setErrorMessageOpen(true);
-            });
-            await addDoc(collection(db, "users"), {
-              firstName: values.firstName,
-              lastName: values.lastName,
-              email: inputEmail,
-              ethnicity: values.ethnicity,
-              gender: values.gender,
-            });
-            if (auth.currentUser) {
-              updateProfile(auth.currentUser, {
-                displayName: `${values.firstName} ${values.lastName}`,
-              });
-            }
-            setMessageText(
-              "Thank you for applying! You should now create a Devpost account and link your Discord account."
-            );
-            setMessageOpen(true);
-          }}
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            ethnicity: "",
-            gender: "",
-            resume: null,
-            GDPR: false,
-          }}
-          validationSchema={Yup.object().shape({
-            firstName: Yup.string().required("First name required"),
-            lastName: Yup.string().required("Last name required"),
-            email: Yup.string()
-              .email("Invalid email")
-              .required("Email required"),
-            password: Yup.string()
-              .required("Password required")
-              .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*£"'])(?=.{8,})/,
-                "Must contain 8 characters (one uppercase, one lowercase, one number and one special character)"
-              ),
-            GDPR: Yup.boolean()
-              .required("Please accept the terms & conditions")
-              .oneOf([true], "Please accept the terms & conditions"),
-          })}
+          onSubmit={handleFormSubmit}
+          initialValues={InitialValues}
+          validationSchema={ValidationSchema}
         >
           {({ errors, handleBlur, handleChange, touched, values }) => (
             <Form>
@@ -209,6 +218,50 @@ export default function Apply() {
                       <TextField
                         variant="outlined"
                         fullWidth
+                        label={`Why do you want to participate in ${process.env.REACT_APP_HACKATHON_NAME_SHORT}?`}
+                        id="whyThisHackathon"
+                        name="whyThisHackathon"
+                        value={values.whyThisHackathon}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        multiline
+                        rows={6}
+                        required
+                        error={
+                          touched.whyThisHackathon &&
+                          Boolean(errors.whyThisHackathon)
+                        }
+                        helperText={
+                          touched.whyThisHackathon && errors.whyThisHackathon
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Do you have any prior coding experience?"
+                        id="priorExperience"
+                        name="priorExperience"
+                        value={values.priorExperience}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        multiline
+                        rows={6}
+                        required
+                        error={
+                          touched.priorExperience &&
+                          Boolean(errors.priorExperience)
+                        }
+                        helperText={
+                          touched.priorExperience && errors.priorExperience
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
                         label="Ethnicity (Optional)"
                         id="ethnicity"
                         name="ethnicity"
@@ -217,46 +270,11 @@ export default function Apply() {
                         onBlur={handleBlur}
                         select
                       >
-                        <MenuItem value={"Indian"}>Indian</MenuItem>
-                        <MenuItem value={"Pakistani"}>Pakistani</MenuItem>
-                        <MenuItem value={"Bangladeshi"}>Bangladeshi</MenuItem>
-                        <MenuItem value={"Chinese"}>Chinese</MenuItem>
-                        <MenuItem divider={true} value={"Asian - Other"}>
-                          Asian - Other
-                        </MenuItem>
-                        <MenuItem value={"Black African"}>
-                          Black African
-                        </MenuItem>
-                        <MenuItem value={"Black Caribbean"}>
-                          Black Caribbean
-                        </MenuItem>
-                        <MenuItem divider={true} value={"Black - Other"}>
-                          Black - Other
-                        </MenuItem>
-                        <MenuItem value={"Mixed White/Asian"}>
-                          Mixed White/Asian
-                        </MenuItem>
-                        <MenuItem value={"Mixed White/Black African	"}>
-                          Mixed White/Black African
-                        </MenuItem>
-                        <MenuItem value={"Mixed White/Black Caribbean"}>
-                          Mixed White/Black Caribbean
-                        </MenuItem>
-                        <MenuItem divider={true} value={"Mixed - Other"}>
-                          Mixed - Other
-                        </MenuItem>
-                        <MenuItem value={"White British"}>
-                          White British
-                        </MenuItem>
-                        <MenuItem value={"White Irish	"}>White Irish </MenuItem>
-                        <MenuItem value={"White Gypsy/Traveller"}>
-                          White Gypsy/Traveller
-                        </MenuItem>
-                        <MenuItem divider={true} value={"White - Other"}>
-                          White - Other
-                        </MenuItem>
-                        <MenuItem value={"Arab"}>Arab</MenuItem>
-                        <MenuItem value={"Other"}>Other </MenuItem>
+                        {EthnicityData.map((name, key) => (
+                          <MenuItem key={key} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -271,11 +289,52 @@ export default function Apply() {
                         onBlur={handleBlur}
                         select
                       >
-                        <MenuItem value={"Female"}>Female</MenuItem>
-                        <MenuItem value={"Male"}>Male</MenuItem>
-                        <MenuItem value={"Other"}>Other</MenuItem>
+                        {GenderData.map((name, key) => (
+                          <MenuItem key={key} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))}
                       </TextField>
                     </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="University (Optional)"
+                        id="university"
+                        name="university"
+                        value={values.university}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        {UniversityData.map((name, key) => (
+                          <MenuItem key={key} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Degree (Optional)"
+                        id="degree"
+                        name="degree"
+                        value={values.degree}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        select
+                      >
+                        {DegreeData.map((name, key) => (
+                          <MenuItem key={key} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+
                     <Grid item xs={12}>
                       <InputLabel
                         style={{ paddingTop: "6px", paddingBottom: "2px" }}
@@ -314,14 +373,14 @@ export default function Apply() {
                       <Box alignItems="center" display="flex" ml={-1}>
                         <Checkbox
                           color="primary"
-                          name="GDPR"
-                          id="GDPR"
-                          checked={values.GDPR}
+                          name="legal"
+                          id="legal"
+                          checked={values.legal}
                           onChange={handleChange}
                           onBlur={handleBlur}
                         />
                         <Typography color="textSecondary" variant="body1">
-                          I agree to the{" "}
+                          I accept the{" "}
                           <Link
                             color="primary"
                             component={RouterLink}
@@ -331,8 +390,8 @@ export default function Apply() {
                           </Link>
                         </Typography>
                       </Box>
-                      {touched.GDPR && Boolean(errors.GDPR) && (
-                        <FormHelperText error>{errors.GDPR}</FormHelperText>
+                      {touched.legal && Boolean(errors.legal) && (
+                        <FormHelperText error>{errors.legal}</FormHelperText>
                       )}
                     </Grid>
                   </Grid>

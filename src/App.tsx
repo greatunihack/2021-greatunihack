@@ -54,7 +54,7 @@ export default function App() {
               <Apply />
             </Route>
           ) : null}
-          <Route
+          {/* <Route
             exact
             path="/discord"
             component={() => {
@@ -64,7 +64,7 @@ export default function App() {
               }
               return null;
             }}
-          />
+          /> */}
           <Route path="/dashboard">
             {user == "loading" ? (
               <Loading />

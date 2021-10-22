@@ -22,6 +22,7 @@ import {
   TeamFullError,
   TeamNotExistsError,
   TeamNameTakenError,
+  getDiscordServerStatus,
 } from "src/data/accessors";
 
 export function getActions(
@@ -34,6 +35,11 @@ export function getActions(
 
       if (!user.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
+        return;
+      }
+      const isOnServer = await getDiscordServerStatus(user.discordId);
+      if (!isOnServer) {
+        dispatch({ type: TeamDispatchActionType.SetNotOnDiscordServer });
         return;
       }
 

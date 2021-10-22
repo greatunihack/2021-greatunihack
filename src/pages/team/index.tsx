@@ -289,6 +289,18 @@ export default function Team() {
           </Typography>
         </Box>
       </Dialog>
+
+      {/* Discord server dialog */}
+      <Dialog
+        open={!state.isOnDiscordServer}
+        onClose={() => {
+          history.push("/dashboard/home");
+        }}
+      >
+        <Box m={3}>
+          <Typography>Join the server before creating a team!</Typography>
+        </Box>
+      </Dialog>
     </>
   );
 }
