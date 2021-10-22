@@ -22,6 +22,7 @@ import {
   TeamFullError,
   TeamNotExistsError,
   TeamNameTakenError,
+  getDiscordServerStatus,
 } from "src/data/accessors";
 
 export function getActions(
@@ -32,12 +33,17 @@ export function getActions(
       const userDoc = await getUserDoc(email as string);
       const user = userDoc.data();
 
-      if (!user.teamId) return;
-
       if (!user.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
+      const isOnServer = await getDiscordServerStatus(user.discordId);
+      if (!isOnServer) {
+        dispatch({ type: TeamDispatchActionType.SetNotOnDiscordServer });
+        return;
+      }
+
+      if (!user.teamId) return;
 
       const team = await getTeamWithMembers(user.teamId);
 
@@ -56,12 +62,12 @@ export function getActions(
       const userDoc = await getUserDoc(user.email as string);
       const internalUser = userDoc.data();
 
-      if (!internalUser.teamId) return;
-
       if (!internalUser.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
+
+      if (!internalUser.teamId) return;
 
       removeUserFromTeam(user);
 
@@ -82,12 +88,12 @@ export function getActions(
       const userDoc = await getUserDoc(user.email as string);
       const internalUser = userDoc.data();
 
-      if (internalUser.teamId) return;
-
       if (!internalUser.discordId) {
         dispatch({ type: TeamDispatchActionType.SetDiscordNotLinked });
         return;
       }
+
+      if (internalUser.teamId) return;
 
       const team = await getTeamWithMembers(teamId);
 

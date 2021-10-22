@@ -34,7 +34,7 @@ export function reducer(
         ...state,
         messageDialog: {
           open: false,
-          text: "",
+          text: state.messageDialog.text,
           color: "primary",
         },
       };
@@ -77,6 +77,12 @@ export function reducer(
         isDiscordLinked: false,
       };
     }
+    case TeamDispatchActionType.SetNotOnDiscordServer: {
+      return {
+        ...state,
+        isOnDiscordServer: false,
+      };
+    }
   }
 }
 
@@ -94,4 +100,5 @@ export const initialState: TeamPageState = {
     open: false,
   },
   isDiscordLinked: true,
+  isOnDiscordServer: true,
 };

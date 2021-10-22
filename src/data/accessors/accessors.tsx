@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   addDoc,
   deleteDoc,
@@ -85,6 +86,26 @@ export async function getUserDoc(
   if (userDocs.empty) throw new UserNotExistsError();
 
   return userDocs.docs[0];
+}
+
+export async function getDiscordServerStatus(discordId: string): Promise<any> {
+  let status = false;
+  await axios
+    .get<string>(
+      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/participant/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${discordId}`,
+      {
+        headers: {
+          Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
+        },
+      }
+    )
+    .then((res) => {
+      if (res.status === 200) status = true;
+    })
+    .catch(() => {
+      status = false;
+    });
+  return status;
 }
 
 export async function createTeam(
@@ -254,9 +275,7 @@ export async function removeUserFromTeam(user: FirebaseUser): Promise<void> {
     await deleteDoc(doc(db, "teams", teamDocId));
     // Delete team
     await axios.delete(
-      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${
-        process.env.REACT_APP_DISCORD_BOT_SERVER
-      }/${teamId}`,
+      `https://${process.env.REACT_APP_DISCORD_BOT_BASE}/team/${process.env.REACT_APP_DISCORD_BOT_SERVER}/${teamId}`,
       {
         headers: {
           Authorization: process.env.REACT_APP_DISCORD_BOT_SECRET,
