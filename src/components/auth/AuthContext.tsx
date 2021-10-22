@@ -1,7 +1,7 @@
 /* eslint-disable import/named */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from "react";
-import { User } from "firebase/auth";
+import type { User } from "@firebase/auth";
 
 export const AuthContext = React.createContext<{
   user: User | null | "loading";
