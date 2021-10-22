@@ -105,10 +105,14 @@ export default function Apply() {
   const handleFormSubmit = async (values: any) => {
     const auth = getAuth();
     values.email = values.email.toLowerCase();
+    values["date"] = Date.now();
+    const currPassword = values.password;
+    delete values["password"];
+    delete values["legal"];
     await createUserWithEmailAndPassword(
       auth,
       values.email,
-      values.password
+      currPassword
     ).catch((error) => {
       let message = "";
       if (error.code === "auth/email-already-in-use") {
