@@ -27,7 +27,7 @@ export default function SponsorCategory(props: SponsorCategoryProps) {
   const { category, sponsors } = props;
   const classes = useStyles(props);
   return (
-    <Grid item xs={12} lg={4}>
+    <Grid item xs={12} lg={3}>
       <Box m={2}>
         <Card>
           <CardContent>
