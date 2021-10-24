@@ -6,9 +6,7 @@ export default function CountdownTimer() {
   const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
     return (
       <Typography variant="h4">
-        {completed
-          ? "Get Coding!"
-          : `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}
+        {`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}
       </Typography>
     );
   };

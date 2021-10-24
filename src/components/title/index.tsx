@@ -8,7 +8,7 @@ interface TitleProps {
 
 export default function Title(props: TitleProps) {
   return (
-    <Box m={2}>
+    <Box m={2} mb={0}>
       <Card>
         <CardContent>
           <Box p={2}>
