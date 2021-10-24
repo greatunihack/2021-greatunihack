@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#00ffb0",
   },
   title: {
-    fontSize: "25px",
+    fontSize: "1.5em",
     fontWeight: 400,
     flex: 1,
   },
