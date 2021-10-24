@@ -9,7 +9,7 @@ export default function Twitch() {
       <PageHeaders title={"Twitch"} />
       <BackButton />
       <Grid container xs={12} justifyContent="center" alignContent="center">
-        <Box mt={2}>
+        <Box m={2}>
           <ReactPlayer
             url={`https://www.twitch.tv/${process.env.REACT_APP_TWITCH_CHANNEL}`}
             width="80vw"
