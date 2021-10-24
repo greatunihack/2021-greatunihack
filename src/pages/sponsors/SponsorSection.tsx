@@ -5,6 +5,11 @@ export default function SponsorSection() {
   return (
     <>
       <SponsorCategory
+        category="Platinum"
+        colour="#DDEEDD"
+        sponsors={sponsors.platinum}
+      />
+      <SponsorCategory
         category="Gold"
         colour="#FFD700"
         sponsors={sponsors.gold}

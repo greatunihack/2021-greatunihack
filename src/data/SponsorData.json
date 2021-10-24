@@ -1,32 +1,52 @@
 {
+  "platinum": [
+    {
+      "name": "Booking.com",
+      "website": "https://www.booking.com/",
+      "image": "https://1000logos.net/wp-content/uploads/2021/05/Booking.Com-logo.png",
+      "description": ""
+    }
+  ],
   "gold": [
     {
-      "name": "Scarfolk Tech Company Ltd.",
-      "website": "https://unicsmcr.com/",
-      "image": "https://picsum.photos/700/400",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+      "name": "Bet365",
+      "website": "https://www.bet365.com/",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Bet365_Logo.svg",
+      "description": ""
     },
     {
-      "name": "Harchester Printing Solutions",
-      "website": "https://unicsmcr.com/",
-      "image": "https://picsum.photos/700/400",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+      "name": "Accenture",
+      "website": "",
+      "image": "https://steelcase-res.cloudinary.com/image/upload/v1594808802/www.steelcase.com/eu-en/2020/07/15/Accenture-Logo.png",
+      "description": ""
     }
   ],
   "silver": [
     {
-      "name": "Walford Development Services",
-      "website": "https://unicsmcr.com/",
-      "image": "https://picsum.photos/700/400",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+      "name": "G-Research",
+      "website": "",
+      "image": "https://www.gresearch.co.uk/wp-content/uploads/2020/01/G-Logo_x1.png",
+      "description": ""
+    },
+    {
+      "name": "Fuzzy Labs",
+      "website": "",
+      "image": "https://www.manchesterdigital.com/storage/1474/Fuzzy-Labs-FINAL-DEV-02-copy.png",
+      "description": ""
     }
   ],
   "bronze": [
     {
-      "name": "Akenfield Networking",
-      "website": "https://unicsmcr.com/",
-      "image": "https://picsum.photos/700/400",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu mollis dolor. Mauris vel neque sed augue aliquet aliquet."
+      "name": "TPP Careers",
+      "website": "",
+      "image": "https://www.tedxcambridgeuniversity.org/wordpress/wp-content/uploads/2019/02/tpp.png",
+      "description": ""
+    },
+    {
+      "name": "Peak AI",
+      "website": "",
+      "image": "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/apaj5fglzpt3weucpli3",
+      "description": ""
     }
   ]
 }
