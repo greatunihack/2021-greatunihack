@@ -70,12 +70,9 @@ const ValidationSchema = Yup.object().shape({
   legal: Yup.boolean()
     .required("Please accept the terms & conditions")
     .oneOf([true], "Please accept the terms & conditions"),
-  whyThisHackathon: Yup.string()
-    .required("Required")
-    .min(30, "Answer too short!"),
-  priorExperience: Yup.string()
-    .required("Required")
-    .min(30, "Answer too short!"),
+  whyThisHackathon: Yup.string().required("Required"),
+  priorExperience: Yup.string().required("Required"),
+  firstHack: Yup.string().required("Required"),
 });
 
 const InitialValues = {
@@ -89,6 +86,7 @@ const InitialValues = {
   degree: "",
   whyThisHackathon: "",
   priorExperience: "",
+  firstHack: "",
   legal: false,
 };
 
@@ -138,7 +136,7 @@ export default function Apply() {
   return (
     <>
       <PageHeaders title={"Apply"} />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Formik
           onSubmit={handleFormSubmit}
@@ -244,7 +242,7 @@ export default function Apply() {
                       <TextField
                         variant="outlined"
                         fullWidth
-                        label="Do you have any prior coding experience?"
+                        label="Do you have any prior experience in programming?"
                         id="priorExperience"
                         name="priorExperience"
                         value={values.priorExperience}
@@ -260,6 +258,23 @@ export default function Apply() {
                         helperText={
                           touched.priorExperience && errors.priorExperience
                         }
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Is this your first hackathon? If not, what is are the names of the hackathons and what did you build?"
+                        id="firstHack"
+                        name="firstHack"
+                        value={values.firstHack}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        multiline
+                        rows={6}
+                        required
+                        error={touched.firstHack && Boolean(errors.firstHack)}
+                        helperText={touched.firstHack && errors.firstHack}
                       />
                     </Grid>
                     <Grid item xs={12}>
