@@ -49,7 +49,7 @@ interface Props {
 }
 
 export const AuthProvider = (props: Props) => {
-  const [user, setUser] = useState<User | null | "loading">("loading");
+  const [user, setUser] = useState<User | null | string>("loading");
 
   useEffect(() => {
     onAuthStateChanged(auth, (firebaseUser) => {

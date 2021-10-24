@@ -70,7 +70,7 @@ export default function Login() {
           </Typography>
           <Box m={2}>
             <Formik
-              onSubmit={(values) => {
+              onSubmit={(values: { email: string; password: string }) => {
                 const auth = getAuth();
                 const inputEmail = values.email.toLowerCase();
                 signInWithEmailAndPassword(auth, inputEmail, values.password)

@@ -4,8 +4,8 @@ import React from "react";
 import type { User } from "@firebase/auth";
 
 export const AuthContext = React.createContext<{
-  user: User | null | "loading";
-  setUser: React.Dispatch<React.SetStateAction<User | null | "loading">>;
+  user: User | null | string;
+  setUser: React.Dispatch<React.SetStateAction<User | null | string>>;
 }>({
   user: null,
   setUser: () => {},

@@ -54,8 +54,8 @@ export default function Contact() {
                   });
               }}
               initialValues={{
-                name: user && user != "loading" ? user.displayName : "",
-                email: user && user != "loading" ? user.email : "",
+                name: user && typeof user !== "string" ? user.displayName : "",
+                email: user && typeof user !== "string" ? user.email : "",
                 message: "",
               }}
               validationSchema={ValidationSchema}

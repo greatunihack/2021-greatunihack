@@ -57,7 +57,7 @@ export default function Team() {
   } = getActions(dispatch);
 
   useEffect(() => {
-    if (user && user != "loading") {
+    if (user && typeof user !== "string") {
       axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
       loadCurrentTeam(user);
     }
