@@ -107,9 +107,9 @@ export default function Discord() {
                         alignItems="center"
                       >
                         <Typography>
-                          You have linked your Discord account! If your
-                          application is accepted, you&apos;ll be sent a link to
-                          join our awesome Discord server!
+                          You have linked your Discord account! You can join the{" "}
+                          {process.env.REACT_APP_HACKATHON_NAME} Discord server
+                          form the link sent in the welcome email.
                         </Typography>
                       </Box>
                     </Grid>
