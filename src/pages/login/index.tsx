@@ -59,7 +59,7 @@ export default function Login() {
   return (
     <>
       <PageHeaders title={"Login"} />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Box className={classes.paper}>
           <Avatar className={classes.avatar}>
