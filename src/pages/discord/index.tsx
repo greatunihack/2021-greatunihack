@@ -39,7 +39,7 @@ export default function Discord() {
       const queryParams = new URLSearchParams(window.location.search);
       const discordCode = queryParams.get("code");
 
-      if (user && user != "loading") {
+      if (user && typeof user !== "string") {
         const userDoc = await getUserDoc(user.email);
         if (userDoc.data().discordId) {
           setDiscordLinked(true);

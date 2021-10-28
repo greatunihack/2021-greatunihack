@@ -447,7 +447,7 @@ export default function Apply() {
       <Dialog
         open={messageOpen}
         onClose={() => {
-          window.location.href = "/dashboard/home";
+          window.location.href = "/";
         }}
       >
         <Box m={3}>

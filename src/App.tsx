@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import React, { useContext, useState } from "react";
 import {
   Route,
@@ -54,17 +53,6 @@ export default function App() {
               <Apply />
             </Route>
           ) : null}
-          {/* <Route
-            exact
-            path="/discord"
-            component={() => {
-              if (process.env.REACT_APP_DISCORD_SERVER_LINK) {
-                window.location.href =
-                  process.env.REACT_APP_DISCORD_SERVER_LINK;
-              }
-              return null;
-            }}
-          /> */}
           <Route path="/dashboard">
             {user == "loading" ? (
               <Loading />

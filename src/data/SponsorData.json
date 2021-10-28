@@ -13,12 +13,6 @@
       "website": "https://www.bet365.com/",
       "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Bet365_Logo.svg",
       "description": ""
-    },
-    {
-      "name": "Accenture",
-      "website": "",
-      "image": "https://steelcase-res.cloudinary.com/image/upload/v1594808802/www.steelcase.com/eu-en/2020/07/15/Accenture-Logo.png",
-      "description": ""
     }
   ],
   "silver": [
@@ -32,6 +26,12 @@
       "name": "Fuzzy Labs",
       "website": "",
       "image": "https://www.manchesterdigital.com/storage/1474/Fuzzy-Labs-FINAL-DEV-02-copy.png",
+      "description": ""
+    },
+    {
+      "name": "Accenture",
+      "website": "",
+      "image": "https://steelcase-res.cloudinary.com/image/upload/v1594808802/www.steelcase.com/eu-en/2020/07/15/Accenture-Logo.png",
       "description": ""
     }
   ],

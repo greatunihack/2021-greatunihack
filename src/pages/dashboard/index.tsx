@@ -1,4 +1,5 @@
-import { Box, Grid } from "@material-ui/core";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Box, Dialog, Grid, Typography } from "@material-ui/core";
 import Button from "src/pages/dashboard/Button";
 import StatusCard from "src/pages/dashboard/StatusCard";
 import pages from "src/data/DashboardButtonData.json";
@@ -11,8 +12,10 @@ import {
   collection,
   where,
 } from "@firebase/firestore";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
+import { useHistory } from "react-router-dom";
+import { signOut, getAuth } from "firebase/auth";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -20,11 +23,19 @@ export default function Dashboard() {
     return [0, "Loading..."];
   });
   const [linkedDiscord, setLinkedDiscord] = useState(false);
+  const [userNotAccepted, setUserNotAccepted] = useState(false);
+  const [userRejected, setUserRejected] = useState(false);
+  const history = useHistory();
+  const app = getApp();
+  const auth = getAuth();
+  const db = getFirestore(app);
 
-  if (userStatus[0] === 0) {
-    const app = getApp();
-    const db = getFirestore(app);
-    if (user && user != "loading") {
+  useEffect(() => {
+    if (user && user === "rejected") {
+      setUserRejected(true);
+    } else if (user && user === "notaccepted") {
+      setUserNotAccepted(true);
+    } else if (user && typeof user !== "string") {
       getDocs(
         query(collection(db, "users"), where("email", "==", user.email))
       ).then((userDocs) => {
@@ -39,10 +50,27 @@ export default function Dashboard() {
         }
       });
     }
-  }
+  }, [user]);
 
   return (
     <>
+      <Dialog
+        open={userNotAccepted || userRejected}
+        onClose={() => {
+          history.push("/");
+          signOut(auth);
+          history.push("/");
+        }}
+      >
+        <Box m={3}>
+          <Typography>
+            {userRejected
+              ? `Unfortunately, you haven't been accepted for this hackathon. If you think this is a mistake, feel free to contact us at: contact@unicsmcr.com`
+              : `Please wait until we've reviewed your application! We'll send you an email if your application has succeeded or not.
+`}
+          </Typography>
+        </Box>
+      </Dialog>
       <PageHeaders title={"Dashboard"} />
       <Box mt={2}>
         <Grid container>
