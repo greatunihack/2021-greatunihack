@@ -108,7 +108,7 @@ export function getActions(
               ...team.teamMembers,
               {
                 name: user.displayName as string,
-                email: user.displayName as string,
+                email: user.email as string,
               },
             ],
           },
