@@ -39,6 +39,9 @@ export default function App() {
           <Route exact path="/404">
             <Error code={404} message="Page Not Found" />
           </Route>
+          <Route exact path="/legal">
+            <Legal />
+          </Route>
           <Route exact path="/login">
             {user == "loading" ? (
               <Loading />
@@ -61,9 +64,6 @@ export default function App() {
             ) : (
               <Redirect to="/login" />
             )}
-          </Route>
-          <Route path="/legal">
-            <Legal />
           </Route>
           <Route path="*">
             <Redirect to="/404" />

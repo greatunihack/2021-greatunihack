@@ -99,7 +99,7 @@ export default function Launch() {
                       return (
                         <>
                           {completed
-                            ? "Applications are now closed! Get coding, and come back next year for more fun!"
+                            ? "Applications are now closed! Come back next year for more coding fun!"
                             : `Applications close in ${days} days, so don't wait!`}
                         </>
                       );

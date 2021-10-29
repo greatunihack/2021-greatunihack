@@ -4,10 +4,12 @@ import challenges from "src/data/ChallengeData.json";
 import Title from "src/components/title";
 import pages from "src/data/DashboardButtonData.json";
 import PageHeaders from "src/components/headers";
+import BackButton from "src/components/backbutton";
 
 export default function Challenges() {
   return (
     <>
+      <BackButton />
       <PageHeaders title={pages.pageItems[4].name} />
       <Title
         title={pages.pageItems[4].name}

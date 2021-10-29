@@ -57,10 +57,13 @@ export default function Team() {
   } = getActions(dispatch);
 
   useEffect(() => {
-    if (user && typeof user !== "string") {
-      axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
-      loadCurrentTeam(user);
+    async function effect() {
+      if (user && typeof user !== "string") {
+        await axios.get(`https://${process.env.REACT_APP_DISCORD_BOT_BASE}`);
+        loadCurrentTeam(user);
+      }
     }
+    effect();
   }, [user]);
 
   return (

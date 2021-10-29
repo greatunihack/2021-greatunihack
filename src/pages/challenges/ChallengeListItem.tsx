@@ -2,11 +2,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Avatar,
+  Box,
   Chip,
-  Link,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Typography,
 } from "@material-ui/core";
@@ -24,29 +22,30 @@ interface ChallengeListItemProps {
 }
 
 export default function ChallengeListItem(props: ChallengeListItemProps) {
-  const { sponsor, logo, title, difficulty, description, download } =
-    props.challenge;
+  const { sponsor, title, difficulty, description } = props.challenge;
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <ListItem>
-          <ListItemAvatar>
+          {/* <ListItemAvatar>
             <Avatar src={logo} alt={sponsor} />
-          </ListItemAvatar>
+          </ListItemAvatar> */}
           <ListItemText primary={title} secondary={"By " + sponsor} />
           <Chip label={difficulty} />
         </ListItem>
       </AccordionSummary>
-      {description.split("\n").map((paragraph, index) => (
-        <AccordionDetails key={index}>
-          <Typography>{paragraph}</Typography>
-        </AccordionDetails>
-      ))}
-      <AccordionDetails>
+      <Box p={2} pt={0}>
+        {description.split("\n").map((paragraph, index) => (
+          <AccordionDetails key={index}>
+            <Typography>{paragraph}</Typography>
+          </AccordionDetails>
+        ))}
+      </Box>
+      {/* <AccordionDetails>
         <Link variant="overline" href={download}>
           Download as a PDF
         </Link>
-      </AccordionDetails>
+      </AccordionDetails> */}
     </Accordion>
   );
 }

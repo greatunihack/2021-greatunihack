@@ -10,6 +10,7 @@ import Contact from "src/pages/contact";
 import Sponsors from "src/pages/sponsors";
 import Challenges from "src/pages/challenges";
 import Team from "src/pages/team";
+import Error from "src/pages/error";
 import Twitch from "src/pages/twitch";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -59,6 +60,12 @@ export default function Routes() {
         <Route exact path="/dashboard/home">
           <Dashboard />
         </Route>
+        <Route exact path="/dashboard">
+          <Redirect to="/dashboard/home" />
+        </Route>
+        <Route exact path="/dashboard/404">
+          <Error code={404} message="Page Not Found" />
+        </Route>
         {user !== "rejected" && user !== "notaccepted" ? (
           <>
             <Route exact path="/dashboard/discord">
@@ -93,8 +100,8 @@ export default function Routes() {
             </Route>
           </>
         ) : null}
-        <Route path="/dashboard">
-          <Redirect to="/dashboard/home" />
+        <Route exact path="/dashboard/*">
+          <Redirect to="/dashboard/404" />
         </Route>
       </Switch>
     </Router>

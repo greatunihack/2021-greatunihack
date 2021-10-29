@@ -115,6 +115,7 @@ export function getActions(
         },
       });
       closeJoinTeamDialog();
+      showSuccessMessage(`Team joined successfully!`);
     } catch (err) {
       if (err instanceof TeamNotExistsError) {
         setErrors("teamId", {
