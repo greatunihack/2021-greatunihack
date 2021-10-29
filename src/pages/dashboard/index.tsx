@@ -16,7 +16,6 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
 import { signOut, getAuth } from "firebase/auth";
-import { getDiscordServerStatus } from "src/data/accessors";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
