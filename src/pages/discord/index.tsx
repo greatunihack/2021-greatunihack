@@ -109,7 +109,7 @@ export default function Discord() {
                         <Typography>
                           You have linked your Discord account! You can join the{" "}
                           {process.env.REACT_APP_HACKATHON_NAME} Discord server
-                          form the link sent in the welcome email.
+                          from the link sent in your welcome email.
                         </Typography>
                       </Box>
                     </Grid>

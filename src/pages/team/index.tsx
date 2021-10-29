@@ -301,7 +301,10 @@ export default function Team() {
         }}
       >
         <Box m={3}>
-          <Typography>Join the server before creating a team!</Typography>
+          <Typography>
+            Please join the Discord server before creating a team! The invite
+            link is in your welcome email.
+          </Typography>
         </Box>
       </Dialog>
     </>
