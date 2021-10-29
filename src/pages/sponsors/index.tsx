@@ -8,11 +8,11 @@ import BackButton from "src/components/backbutton";
 export default function Sponsors() {
   return (
     <>
-      <PageHeaders title={pages.pageItems[2].name} />
+      <PageHeaders title={pages.pageItems["Sponsors"].name} />
       <BackButton />
       <Title
-        title={pages.pageItems[2].name}
-        description={pages.pageItems[2].description}
+        title={pages.pageItems["Sponsors"].name}
+        description={pages.pageItems["Sponsors"].description}
       ></Title>
       <Grid container>
         <SponsorSection />

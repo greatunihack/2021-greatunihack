@@ -16,6 +16,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "src/components/auth/AuthContext";
 import { useHistory } from "react-router-dom";
 import { signOut, getAuth } from "firebase/auth";
+import { getDiscordServerStatus } from "src/data/accessors";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -78,19 +79,18 @@ export default function Dashboard() {
             <StatusCard status={userStatus} />
           </Grid>
           <Grid container xs={12} justifyContent="center">
-            <Button pageDetails={pages.pageItems[0]} />
-            <Button pageDetails={pages.pageItems[4]} />
-            <Button pageDetails={pages.pageItems[1]} />
+            <Button pageDetails={pages.pageItems["Discord"]} />
+            <Button pageDetails={pages.pageItems["Challenges"]} />
+            <Button pageDetails={pages.pageItems["Submissions"]} />
             <Button
-              pageDetails={pages.pageItems[7]}
+              pageDetails={pages.pageItems["Team"]}
               disabled={!linkedDiscord}
             />
           </Grid>
           <Grid container xs={12} justifyContent="center">
-            <Button pageDetails={pages.pageItems[2]} />
-            {/* <Button pageDetails={pages.pageItems[5]} /> */}
-            <Button pageDetails={pages.pageItems[6]} />
-            <Button pageDetails={pages.pageItems[3]} />
+            <Button pageDetails={pages.pageItems["Sponsors"]} />
+            <Button pageDetails={pages.pageItems["Twitch"]} />
+            <Button pageDetails={pages.pageItems["Contact"]} />
           </Grid>
         </Grid>
       </Box>

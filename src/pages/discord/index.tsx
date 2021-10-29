@@ -86,11 +86,11 @@ export default function Discord() {
 
   return (
     <>
-      <PageHeaders title={pages.pageItems[0].name} />
+      <PageHeaders title={pages.pageItems["Discord"].name} />
       <BackButton />
       <Title
-        title={pages.pageItems[0].name}
-        description={pages.pageItems[0].description}
+        title={pages.pageItems["Discord"].name}
+        description={pages.pageItems["Discord"].description}
       ></Title>
       <Box m={2}>
         <Card>

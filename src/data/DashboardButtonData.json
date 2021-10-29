@@ -1,48 +1,42 @@
 {
-  "pageItems": [
-    {
+  "pageItems": {
+    "Discord": {
       "link": "/dashboard/discord",
       "name": "Discord",
       "description": "Link your Dicord account to join the Discord server"
     },
-    {
+    "Submissions": {
       "link": "https://greatunihack-2021.devpost.com/",
       "name": "Submissions",
       "description": "Submit your project or view other teams' submissions",
       "external": true,
       "restricted": true
     },
-    {
+    "Sponsors": {
       "link": "/dashboard/sponsors",
       "name": "Sponsors",
       "description": "View the amazing companies that sponsored this event"
     },
-    {
+    "Contact": {
       "link": "/dashboard/contact",
       "name": "Contact",
       "description": "Contact us in case you have any issues or urgent queries"
     },
-    {
+    "Challenges": {
       "link": "/dashboard/challenges",
       "name": "Challenges",
       "description": "Complete the sponsor challenges to win cool prizes",
       "restricted": true
     },
-    {
-      "link": "https://discord.com",
-      "name": "Discord",
-      "description": "Talk to your teammates and meet the sponsors",
-      "external": true
-    },
-    {
+    "Twitch": {
       "link": "/dashboard/twitch",
       "name": "Twitch",
       "description": "View the twitch stream"
     },
-    {
+    "Team": {
       "link": "/dashboard/team",
       "name": "Team",
       "description": "Create or join a team"
     }
-  ]
+  }
 }

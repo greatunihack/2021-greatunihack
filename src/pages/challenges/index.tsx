@@ -10,10 +10,10 @@ export default function Challenges() {
   return (
     <>
       <BackButton />
-      <PageHeaders title={pages.pageItems[4].name} />
+      <PageHeaders title={pages.pageItems["Challenges"].name} />
       <Title
-        title={pages.pageItems[4].name}
-        description={pages.pageItems[4].description}
+        title={pages.pageItems["Challenges"].name}
+        description={pages.pageItems["Challenges"].description}
       ></Title>
 
       <Box m={2}>

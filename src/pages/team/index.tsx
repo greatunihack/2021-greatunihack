@@ -68,11 +68,11 @@ export default function Team() {
 
   return (
     <>
-      <PageHeaders title={pages.pageItems[7].name} />
+      <PageHeaders title={pages.pageItems["Team"].name} />
       <BackButton />
       <Title
-        title={pages.pageItems[7].name}
-        description={pages.pageItems[7].description}
+        title={pages.pageItems["Team"].name}
+        description={pages.pageItems["Team"].description}
       ></Title>
       <Box m={2}>
         <Card>

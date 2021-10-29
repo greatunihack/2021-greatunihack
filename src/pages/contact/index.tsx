@@ -27,11 +27,11 @@ export default function Contact() {
   const { user } = useContext(AuthContext);
   return (
     <>
-      <PageHeaders title={pages.pageItems[3].name} />
+      <PageHeaders title={pages.pageItems["Contact"].name} />
       <BackButton />
       <Title
-        title={pages.pageItems[3].name}
-        description={pages.pageItems[3].description}
+        title={pages.pageItems["Contact"].name}
+        description={pages.pageItems["Contact"].description}
       ></Title>
       <Box m={2}>
         <Card>
