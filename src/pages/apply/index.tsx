@@ -406,7 +406,9 @@ export default function Apply() {
                             to="/legal"
                           >
                             terms and conditions
-                          </Link>
+                          </Link>{" "}
+                          and will be at least 18 years old by the start of this
+                          event.
                         </Typography>
                       </Box>
                       {touched.legal && Boolean(errors.legal) && (
