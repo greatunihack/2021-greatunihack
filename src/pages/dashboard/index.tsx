@@ -79,16 +79,15 @@ export default function Dashboard() {
           </Grid>
           <Grid container xs={12} justifyContent="center">
             <Button pageDetails={pages.pageItems["Discord"]} />
-            <Button pageDetails={pages.pageItems["Challenges"]} />
-            <Button pageDetails={pages.pageItems["Submissions"]} />
             <Button
               pageDetails={pages.pageItems["Team"]}
               disabled={!linkedDiscord}
             />
+            <Button pageDetails={pages.pageItems["Challenges"]} />
           </Grid>
           <Grid container xs={12} justifyContent="center">
+            <Button pageDetails={pages.pageItems["Submissions"]} />
             <Button pageDetails={pages.pageItems["Sponsors"]} />
-            <Button pageDetails={pages.pageItems["Twitch"]} />
             <Button pageDetails={pages.pageItems["Contact"]} />
           </Grid>
         </Grid>
