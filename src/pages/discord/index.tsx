@@ -105,11 +105,11 @@ export default function Discord() {
                         <Typography>
                           You have linked your Discord account! You can join the{" "}
                           {process.env.REACT_APP_HACKATHON_NAME} Discord server
-                          from the link sent in your welcome email.
+                          below.
                         </Typography>
                       </Box>
                     </Grid>
-                    {/* <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Box
                         p={2}
                         display="flex"
@@ -129,7 +129,7 @@ export default function Discord() {
                           Join Discord server
                         </Button>
                       </Box>
-                    </Grid> */}
+                    </Grid>
                   </Grid>
                 ) : (
                   <Button
