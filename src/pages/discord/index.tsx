@@ -48,24 +48,20 @@ export default function Discord() {
           history.replace({
             search: queryParams.toString(),
           });
-          const DiscordOauth2 = require("discord-oauth2");
-          const oauth = new DiscordOauth2();
-          const discordTokenRequest = await oauth
-            .tokenRequest({
-              clientId: process.env.REACT_APP_DISCORD_CLIENT,
-              clientSecret: process.env.REACT_APP_DISCORD_SECRET,
+
+          const res = await axios
+            .post("/.netlify/functions/discord", {
               code: discordCode,
-              scope: ["identify", "guilds.join"],
-              grantType: "authorization_code",
-              redirectUri: `${window.location.origin}/dashboard/discord`,
+              redirect: `${window.location.origin}/dashboard/discord`,
             })
             .catch();
-          if (discordTokenRequest) {
+
+          if (res.data) {
             const discordAccessRequest = await axios.get(
               "https://discord.com/api/users/@me",
               {
                 headers: {
-                  authorization: `Bearer ${discordTokenRequest.access_token}`,
+                  authorization: `Bearer ${res.data}`,
                 },
               }
             );
