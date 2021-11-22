@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
-import { useContext, useEffect, useReducer } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
@@ -42,7 +42,7 @@ export default function Team() {
   const createTeamForm = useForm<CreateTeamInputs>();
 
   const { user } = useContext(AuthContext);
-
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     createTeam,
@@ -210,10 +210,12 @@ export default function Team() {
             Cancel
           </Button>
           <Button
-            onClick={createTeamForm.handleSubmit(({ teamName }) =>
-              createTeam(user as User, teamName, createTeamForm.setError)
-            )}
+            onClick={createTeamForm.handleSubmit(({ teamName }) => {
+              createTeam(user as User, teamName, createTeamForm.setError);
+              setButtonDisabled(true);
+            })}
             color="primary"
+            disabled={buttonDisabled}
           >
             Create
           </Button>
