@@ -42,7 +42,9 @@ export default function Team() {
   const createTeamForm = useForm<CreateTeamInputs>();
 
   const { user } = useContext(AuthContext);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [createTeamButtonDisabled, setCreateTeamButtonDisabled] =
+    useState(false);
+  const [joinTeamButtonDisabled, setJoinTeamButtonDisabled] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     createTeam,
@@ -212,10 +214,10 @@ export default function Team() {
           <Button
             onClick={createTeamForm.handleSubmit(({ teamName }) => {
               createTeam(user as User, teamName, createTeamForm.setError);
-              setButtonDisabled(true);
+              setCreateTeamButtonDisabled(true);
             })}
             color="primary"
-            disabled={buttonDisabled}
+            disabled={createTeamButtonDisabled}
           >
             Create
           </Button>
@@ -255,10 +257,12 @@ export default function Team() {
             Cancel
           </Button>
           <Button
-            onClick={joinTeamForm.handleSubmit(({ teamId }) =>
-              joinTeam(user as User, teamId, joinTeamForm.setError)
-            )}
+            onClick={joinTeamForm.handleSubmit(({ teamId }) => {
+              joinTeam(user as User, teamId, joinTeamForm.setError);
+              setJoinTeamButtonDisabled(true);
+            })}
             color="primary"
+            disabled={joinTeamButtonDisabled}
           >
             Join
           </Button>

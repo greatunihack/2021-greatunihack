@@ -88,7 +88,6 @@ export default function Dashboard() {
           <Grid container xs={12} justifyContent="center">
             <Button pageDetails={pages.pageItems["Submissions"]} />
             <Button pageDetails={pages.pageItems["Sponsors"]} />
-            <Button pageDetails={pages.pageItems["Contact"]} />
           </Grid>
         </Grid>
       </Box>
